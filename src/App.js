@@ -46,7 +46,7 @@ function App() {
         const audio = new Audio(sound);
         showMessage("success", "طلب جديد", "هناك طلب جديد من " + data?.name);
         setNewOrder(data);
-        audio.play();
+        // audio.play();
       });
     }
   }, [isAuthenticated]);

@@ -18,10 +18,9 @@
     "bootstrap": "^5.2.1",
     "cra-template": "1.2.0",
     "primereact": "^10.8.5",
-    "react": "^19.0.0",
+    "react": "^18.3.1",
     "react-bootstrap": "^2.10.6",
-    "react-custom-scrollbars": "^4.2.1",
-    "react-dom": "^19.0.0",
+    "react-dom": "^18.3.1",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
@@ -31,9 +30,8 @@
     "swiper": "^8.4.2"
   },
   "scripts": {
-    "preinstall": "npm install --force",
     "start": "react-scripts start",
-    "build": "react-scripts build --force",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -56,8 +54,7 @@
     ]
   },
   "engines": {
-  "node": "16.14.2",
-  "npm": "8.13.2"
-}
-
+    "node": "16.14.2",
+    "npm": "8.13.2"
+  }
 }

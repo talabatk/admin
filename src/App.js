@@ -28,7 +28,7 @@ function App() {
   const toast = useRef(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:5000"); // Replace with your server's URL
+    const socket = io("https://api.talabatk.top/"); // Replace with your server's URL
     // Listen for the "registerAdmin" event
     if (isAuthenticated) {
       console.log(socket);

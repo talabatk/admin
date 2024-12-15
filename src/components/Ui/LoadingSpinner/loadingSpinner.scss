@@ -1,0 +1,18 @@
+.lazy-loading-spinner {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background-color: #fff;
+  border-radius: 10px;
+  z-index: 55;
+}
+.dark {
+  .lazy-loading-spinner {
+    background-color: var(--darkSecondColor);
+  }
+}
+@media (max-width: 1000px) {
+  .lazy-loading-spinner {
+    width: calc(100% - 20px);
+  }
+}

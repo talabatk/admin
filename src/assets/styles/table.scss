@@ -1,0 +1,193 @@
+.vendor-total {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: bold;
+  width: calc(50% - 20px);
+  height: 40px;
+  margin: 0 10px 0;
+}
+.table-container {
+  overflow: auto;
+  border-top: 1px solid rgb(228, 225, 225);
+  min-height: 200px;
+  min-width: 100%;
+
+  .contact {
+    a {
+      padding: 2px 10px;
+      border-radius: 10px;
+      background-color: #7267f01a;
+    }
+  }
+  table {
+    min-width: 100%;
+    height: fit-content;
+    table-layout: fixed;
+    th,
+    td {
+      white-space: nowrap;
+      padding: 0 20px;
+    }
+    thead {
+      background-color: #f3f2f7;
+      height: 35px;
+      border-bottom: 1px solid rgb(228, 225, 225);
+      color: #8d8a98;
+      th {
+        text-transform: uppercase;
+        font-size: 13px;
+        .form-check-input:checked {
+          background-color: #7367f0;
+          border-color: #7367f0;
+        }
+      }
+      th:first-child {
+        padding: 0 20px;
+      }
+    }
+    tbody {
+      td {
+        font-size: 14px;
+      }
+
+      /* Default styles for statuses */
+      .status {
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        display: inline-block;
+        font-weight: bold;
+      }
+
+      /* Status-specific classes */
+      .not {
+        background-color: #6c757d; /* Gray */
+        color: #ffffff;
+      }
+
+      .started {
+        background-color: #17a2b8; /* Cyan */
+        color: #ffffff;
+      }
+
+      .preparing {
+        background-color: #ffc107; /* Yellow */
+        color: #000000;
+      }
+
+      .finished {
+        background-color: #28a745; /* Green */
+        color: #ffffff;
+      }
+
+      .in {
+        background-color: #007bff; /* Blue */
+        color: #ffffff;
+      }
+
+      .complete {
+        background-color: #20c997; /* Teal */
+        color: #ffffff;
+      }
+
+      .cancel {
+        background-color: #dc3545; /* Red */
+        color: #ffffff;
+      }
+
+      .deleted {
+        background-color: #343a40; /* Dark Gray */
+        color: #ffffff;
+      }
+
+      .close {
+        background-color: red;
+        color: #fff;
+      }
+      .open {
+        background-color: green;
+        color: #fff;
+      }
+      .soon {
+        background-color: yellow;
+        color: #000;
+      }
+      .busy {
+        background-color: blue;
+        color: #fff;
+      }
+      .status button {
+        background-color: var(--headerFont);
+        color: #fff;
+        font-weight: bold;
+        width: 100px;
+      }
+      .status:hover button,
+      .status:focus button {
+        background-color: #0f7f3e9f !important;
+      }
+      tr {
+        border-bottom: 1px solid rgba(238, 238, 238, 0.753);
+        height: 65px;
+        .name {
+          padding: 0 15px;
+          h6 {
+            color: var(--headerFont);
+            margin-bottom: 0;
+            font-size: 16px;
+            font-weight: 700;
+          }
+          span {
+            display: flex;
+            align-items: center;
+            div {
+              img {
+                display: inline;
+                width: 40px;
+                height: 40px;
+                border-radius: 5px;
+                object-fit: cover;
+                margin-left: 10px;
+              }
+            }
+            div:last-child {
+              margin: 0 5px;
+              display: flex;
+              justify-content: center;
+              flex-direction: column;
+              p {
+                margin: 2px 0;
+                font-size: 13px;
+              }
+            }
+          }
+        }
+        td {
+          a {
+            text-decoration: none;
+            color: var(--headerFont);
+          }
+        }
+      }
+    }
+  }
+}
+.dark {
+  .table-container {
+    border-top: 1px solid #38393a;
+    table {
+      thead {
+        color: var(--darkFont);
+        background-color: #151515;
+        border-top: 1px solid #38393a;
+        border-bottom: 1px solid #38393a;
+      }
+      tbody {
+        tr {
+          border-bottom: 1px solid #38393a;
+          color: var(--darkFont);
+        }
+      }
+    }
+  }
+}

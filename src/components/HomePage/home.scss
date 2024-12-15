@@ -1,0 +1,44 @@
+.home {
+  min-height: 80vh;
+  .statics {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    h2 {
+      margin-bottom: 50px;
+    }
+  }
+  .col {
+    display: flex;
+    .image {
+      width: 45px;
+      height: 45px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 10px;
+    }
+    div {
+      display: flex;
+      flex-direction: column;
+      span {
+        margin: 0;
+        font-size: 14px;
+      }
+      span:first-child {
+        font-weight: bold;
+        font-size: 17px;
+      }
+    }
+  }
+  .loading-spinner {
+    height: 300px;
+  }
+}
+.dark {
+  .statics {
+    background-color: var(--darkSecondColor);
+    color: var(--darkFont);
+  }
+}

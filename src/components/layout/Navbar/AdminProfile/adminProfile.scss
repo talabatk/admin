@@ -1,0 +1,120 @@
+.adminProfile {
+  display: flex;
+  position: relative;
+  .adminImage {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    cursor: pointer;
+    img {
+      object-fit: cover;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      width: 100%;
+    }
+  }
+  .adminImage::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgb(46, 175, 46);
+    right: 0;
+    bottom: 0;
+    z-index: 5555;
+  }
+  .adminName {
+    display: flex;
+    flex-direction: column;
+    text-align: end;
+    p {
+      text-transform: capitalize;
+      margin-bottom: 0;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    span {
+      font-size: 12px;
+    }
+  }
+  .adminMenu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 150px;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid rgba(204, 204, 204, 0.397);
+    box-shadow: 0 0 5px 0px rgba(204, 204, 204, 0.589);
+    transition: 300ms;
+    padding: 5px 0;
+    z-index: 22;
+    button,
+    a {
+      width: 100%;
+      display: block;
+      text-decoration: none;
+      border: none;
+      text-align: start;
+      padding: 8px 10px;
+      background-color: #fff;
+      color: var(--mainFont);
+      transition: 300ms;
+      border-radius: 0;
+      font-size: 14px;
+      svg {
+        margin-right: 10px;
+      }
+    }
+    button:hover,
+    a:hover {
+      background-color: #eaeaf0;
+      color: #5b4eeb;
+      svg {
+        color: #5b4eeb;
+      }
+    }
+  }
+  .enterMenu {
+    opacity: 0;
+    top: 75px;
+  }
+  .enterActiveMenu {
+    opacity: 1;
+    top: 60px;
+  }
+}
+.rtl {
+  .adminImage {
+    margin-right: 10px;
+  }
+  .adminMenu {
+    right: -30px !important;
+  }
+}
+.dark {
+  .adminMenu {
+    background-color: var(--darkSecondColor) !important;
+    border: 1px solid var(--darkSecondColor);
+    box-shadow: 0 4px 24px 0 rgb(0 0 0 / 24%);
+    button,
+    a {
+      background-color: var(--darkSecondColor);
+      color: var(--darkFont);
+    }
+    button:hover,
+    a:hover {
+      background-color: #7a7afd34;
+    }
+  }
+}
+// @media (max-width: 470px) {
+//   .adminProfile {
+//     .adminName {
+//       display: none;
+//     }
+//   }
+// }

@@ -1,0 +1,35 @@
+.add-product {
+  background-color: #fff;
+  border-radius: 5px;
+  min-height: 490px;
+  padding: 20px 10px;
+  position: relative;
+  .group {
+    margin-top: 30px;
+    padding: 10px 20px;
+    .mb-2 {
+      display: flex;
+      gap: 10px;
+    }
+  }
+  .loading-spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 55;
+    background-color: rgba(255, 255, 255, 0.466);
+  }
+  button:disabled {
+    opacity: 0.7;
+    cursor: no-drop;
+  }
+  label {
+  }
+}
+.dark {
+  .add-product {
+    background-color: var(--darkSecondColor);
+  }
+}

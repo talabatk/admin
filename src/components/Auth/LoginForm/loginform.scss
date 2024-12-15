@@ -1,0 +1,92 @@
+.loginForm {
+  width: 450px;
+  height: fit-content;
+  padding: 20px;
+  margin-top: 50px;
+  border-radius: 7px;
+  background-color: #fff;
+  .welcomeMessage {
+    text-align: center;
+    margin-bottom: 20px;
+    h5 {
+      color: var(--headerFont);
+    }
+    p {
+      color: var(--mainFont);
+      margin: 5px 0;
+      font-size: 14px;
+    }
+  }
+  .form {
+    input {
+      font-size: 12px;
+      padding: 8px;
+    }
+    input:focus {
+      border: 1px solid #53ca85;
+      box-shadow: var(--inputshadow) !important ;
+    }
+    button {
+      display: block;
+      position: relative;
+      width: 100%;
+      font-size: 18px;
+      background-color: var(--headerFont);
+      border: none;
+      svg {
+        margin-right: 5px;
+      }
+    }
+    button:hover {
+      background-color: #0f7f3d;
+      box-shadow: var(--inputshadow) !important ;
+    }
+    button:focus {
+      background-color: #0f7f3d;
+      box-shadow: var(--inputshadow) !important ;
+    }
+    p {
+      color: red;
+      margin-top: 10px;
+      font-weight: bold;
+      border-radius: 5px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+      -o-border-radius: 5px;
+    }
+    .mb-3 {
+      position: relative;
+      i {
+        position: absolute;
+        left: 10px;
+        top: 55%;
+        cursor: pointer;
+      }
+    }
+    .form-check-input:checked {
+      background-color: var(--headerFont);
+      border-color: var(--headerFont);
+    }
+    .form-check-label {
+      margin-left: 5px;
+    }
+    .inputError,
+    .inputError:focus {
+      border: 1px solid #ff000054;
+      box-shadow: 0px 0px 5px 0px red !important ;
+    }
+  }
+}
+.dark {
+  .loginForm {
+    background-color: var(--darkSecondColor);
+    color: var(--darkFont);
+    p {
+      color: var(--darkFont);
+    }
+    input {
+      background-color: var(--darkMaincolor) !important;
+    }
+  }
+}

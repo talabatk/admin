@@ -1,0 +1,40 @@
+.item {
+  border-bottom: 1px solid rgba(204, 204, 204, 0.493);
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  cursor: pointer;
+  transition: 200ms;
+  text-decoration: none;
+  color: var(--fontColor);
+  .content {
+    margin-left: 10px;
+    p {
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+      font-size: 15px;
+      margin-top: 5px;
+    }
+    span {
+      font-size: 13px;
+      color: #ccc;
+      display: block;
+      margin-bottom: 5px;
+    }
+  }
+}
+.dark {
+  .item {
+    background-color: var(--darkSecondColor);
+    border-bottom: 1px solid rgba(204, 204, 204, 0.1);
+    color: var(--darkFont);
+  }
+  .item:hover {
+    background-color: #7a7afd34;
+  }
+}
+.item:hover {
+  background-color: rgb(245, 245, 245);
+}

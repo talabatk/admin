@@ -1,0 +1,288 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap");
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import url(assets/styles/modelForm.scss);
+:root {
+  --bodyColor: #f1f1f1;
+  --mainFont: #6e6b7b;
+  --headerFont: #0f7f3d;
+  --linkHover: #6659f1;
+  --linkActive: linear-gradient(80deg, #0f7f3d, #53ca85);
+  --linkshadow: 0 0 6px 0px #0f7f3d;
+  --inputshadow: 0px 0px 5px 0px #0f7f3d;
+  --borderColor: #eae8f0;
+  --darkMaincolor: #151515;
+  --darkSecondColor: #242424;
+  --darkFont: #d0d2d6;
+  --darkborderColor: #38393a;
+}
+* {
+  font-family: "Cairo", serif;
+}
+body {
+  margin: 0;
+  font-family: "Cairo", serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bodyColor) !important;
+  color: var(--mainFont) !important;
+  overflow-x: hidden;
+  direction: rtl;
+  .MuiFormControlLabel-root {
+    margin: 30px 0 -15px;
+  }
+  .p-toast {
+    direction: ltr !important;
+    z-index: 555555 !important;
+  }
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .MuiPagination-ul {
+    button {
+      background-color: #0f7f3d;
+      color: #fff;
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+    button.Mui-selected {
+      color: #fff;
+      background-color: #003516;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #53ca85;
+    }
+  }
+  .Login-loadingSpinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.637);
+    flex-direction: column;
+    z-index: 555555;
+    span {
+      color: #fff;
+      font-weight: 500;
+      font-size: 16px;
+    }
+  }
+  button {
+    border: none;
+    transition: 200ms;
+    padding: 7px 20px;
+    border-radius: 5px;
+  }
+  .base-MenuButton-root {
+    position: relative !important;
+  }
+  .button {
+    min-width: 170px;
+    height: fit-content;
+    margin: 0 10px;
+    color: #fff;
+    background-color: var(--headerFont);
+    border: none;
+  }
+  .button:hover {
+    background-color: #0f7f3d;
+    box-shadow: var(--inputshadow) !important ;
+  }
+  .button:focus {
+    background-color: #0f7f3d;
+    box-shadow: var(--inputshadow) !important ;
+  }
+  input,
+  textarea {
+    font-size: 12px;
+    padding: 8px;
+  }
+  textarea:focus,
+  input:focus,
+  .form-select:focus {
+    border: 1px solid #0f7f3d !important;
+    box-shadow: var(--inputshadow) !important ;
+  }
+  textarea {
+    resize: none;
+  }
+  .dropdown {
+    button {
+      background-color: rgb(241 241 241);
+      color: var(--headerFont);
+      border: none;
+    }
+    button:focus,
+    button:hover {
+      box-shadow: none;
+      background-color: #f1f1f183 !important;
+      color: var(--headerFont);
+    }
+
+    .dropdown-item {
+      color: #000;
+      text-align: right !important;
+      a {
+        color: #000;
+        width: 100%;
+        display: block;
+      }
+      svg {
+        color: var(--mainFont);
+        margin: 0 10px;
+      }
+    }
+    .dropdown-item:hover {
+      background-color: #eaeaf0;
+      color: #0f7f3d;
+      svg {
+        color: #0f7f3d;
+      }
+    }
+  }
+  .dropdown-toggle::after {
+    display: none !important;
+  }
+  .dropdown-menu {
+    border: none;
+    box-shadow: 0 5px 10px rgb(30 32 37 / 12%);
+  }
+  .items {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--borderColor);
+    background-color: #fff;
+    position: relative;
+    min-height: 80vh;
+    padding-bottom: 30px;
+    .loadingSpinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      form {
+        gap: 10px;
+      }
+      a {
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-align: center;
+        transition: 200ms;
+        color: #fff;
+      }
+      input {
+        max-width: 300px;
+        font-size: 15px;
+      }
+    }
+    .items-container {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  @media (max-width: 668px) {
+    .items {
+      .controls {
+        flex-direction: column;
+        padding: 15px;
+        div {
+          margin-top: 10px;
+          display: flex;
+          button {
+            flex-grow: 1;
+          }
+        }
+        input {
+          max-width: 100% !important;
+        }
+      }
+    }
+  }
+}
+.dark {
+  background-color: var(--darkMaincolor) !important;
+  .items {
+    background-color: var(--darkSecondColor);
+    border: 1px solid var(--darkborderColor);
+    .filters {
+      h6,
+      span {
+        color: var(--darkFont);
+      }
+    }
+    select {
+      background-color: var(--darkSecondColor);
+      border: 1px solid var(--darkborderColor);
+      color: var(--darkFont);
+    }
+    .controls {
+      input,
+      select {
+        background-color: var(--darkSecondColor) !important;
+        border: 1px solid var(--darkborderColor);
+        color: var(--darkFont);
+      }
+    }
+  }
+  .dropdown {
+    button {
+      background-color: #15151570;
+    }
+    button:focus,
+    button:hover {
+      background-color: #15151570 !important;
+    }
+    .dropdown-menu {
+      background-color: var(--darkSecondColor) !important;
+      border: 1px solid var(--darkSecondColor);
+      box-shadow: 0 4px 24px 0 rgb(0 0 0 / 24%);
+    }
+    .dropdown-item {
+      background-color: var(--darkSecondColor);
+      color: var(--darkFont);
+      text-align: right !important;
+      a,
+      svg {
+        color: var(--darkFont) !important;
+      }
+    }
+    .dropdown-item:hover {
+      background-color: #15151570;
+    }
+  }
+  input::placeholder {
+    color: rgb(146, 146, 146);
+  }
+  input,
+  textarea {
+    background-color: var(--darkSecondColor);
+    border: 1px solid var(--darkborderColor);
+    color: var(--darkFont);
+  }
+  input:focus,
+  textarea:focus {
+    background-color: var(--darkSecondColor);
+    color: var(--darkFont);
+  }
+}
+.rtl {
+  direction: rtl;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}

@@ -11,39 +11,29 @@ import Notifications from "./Notifications/Notifications";
 
 const Navbar = (props) => {
   const [data, setData] = useState();
+  const [seen, setseen] = useState(0);
 
   const { loading, fetchNotification, updateNotification } = useHome();
   const isDark = useSelector((state) => state.ui.isDark);
   const [notificationiIsVisible, setnotificationiIsVisible] = useState(false);
-  const nodeRef = useRef();
 
   const toggleNotification = () => {
     setnotificationiIsVisible((pre) => (pre = !pre));
+    updateNotification();
+    setseen(0);
   };
 
   useEffect(() => {
     const fetchNumbers = async () => {
       try {
         const response = await fetchNotification({ size: 30, page: 1 });
-        console.log(response);
-
+        setseen(response.notSeen);
         setData(response);
       } catch (error) {
         console.log(error);
       }
     };
     fetchNumbers();
-
-    const handleClickOutside = (event) => {
-      if (nodeRef.current && !nodeRef.current.contains(event.target)) {
-        toggleNotification(); // Hide the menu if clicked outside
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, [props.newOrder]);
 
   const dispatch = useDispatch();
@@ -79,11 +69,12 @@ const Navbar = (props) => {
           )}
           <li onClick={toggleNotification}>
             <FontAwesomeIcon icon={faBell} size="lg" />
-            {data?.notSeen ? <span className="active-new"></span> : ""}
+            {seen ? <span className="active-new"></span> : ""}
             <Notifications
-              ref={nodeRef}
+              toggleNotification={toggleNotification}
               notifications={data}
               show={notificationiIsVisible}
+              seen={seen}
             />
           </li>
         </ul>

@@ -43,8 +43,6 @@ const useLogin = () => {
 
       setUser(response.data); // Assuming the API returns the user data
 
-      console.log(response);
-
       dispatch(authSliceActions.login(response.data));
 
       return response.data; // You can return any response data if needed

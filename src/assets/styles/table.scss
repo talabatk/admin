@@ -1,6 +1,6 @@
 .vendor-total {
   display: inline-block;
-  font-size: 20px;
+  font-size: 13px;
   font-weight: bold;
   width: calc(50% - 20px);
   height: 40px;
@@ -48,6 +48,9 @@
     tbody {
       td {
         font-size: 14px;
+        a {
+          color: var(--headerFont) !important;
+        }
       }
 
       /* Default styles for statuses */
@@ -186,6 +189,11 @@
         tr {
           border-bottom: 1px solid #38393a;
           color: var(--darkFont);
+        }
+        td {
+          a {
+            color: var(--darkFont) !important;
+          }
         }
       }
     }

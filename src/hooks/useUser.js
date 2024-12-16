@@ -87,9 +87,18 @@ const useUser = () => {
     setLoading(true);
     try {
       const updated = await editUser(updatedData);
-
       fetchUsers(params);
-
+      return updated;
+    } catch (err) {
+      setError(err.message || "Failed to update user");
+    } finally {
+      setLoading(false);
+    }
+  };
+  const updateFcm = async (fcm) => {
+    setLoading(true);
+    try {
+      const updated = await editUser({ fcm });
       return updated;
     } catch (err) {
       setError(err.message || "Failed to update user");
@@ -124,6 +133,7 @@ const useUser = () => {
     addDelivery,
     deleteUser,
     updateUser,
+    updateFcm,
   };
 };
 

@@ -5,6 +5,7 @@ import {
   addRestaurant,
   editRestaurant,
   deleteUser,
+  addDeliveryCostForVendor,
 } from "api/apiURLs";
 
 export const getVendors = async () => {
@@ -12,8 +13,18 @@ export const getVendors = async () => {
   return response.data;
 };
 
+export const getVendorById = async (id) => {
+  const response = await api.get(`vendor/get-vendor/${id}`);
+  return response.data;
+};
+
 export const createVendor = async (data) => {
   const response = await api.post(addRestaurant, data);
+  return response.data;
+};
+
+export const createCosts = async (data) => {
+  const response = await api.post(addDeliveryCostForVendor, data);
   return response.data;
 };
 

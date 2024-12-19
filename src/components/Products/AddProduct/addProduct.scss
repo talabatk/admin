@@ -10,6 +10,9 @@
     .mb-2 {
       display: flex;
       gap: 10px;
+      .mb-3 {
+        width: 50%;
+      }
     }
   }
   .loading-spinner {
@@ -31,5 +34,6 @@
 .dark {
   .add-product {
     background-color: var(--darkSecondColor);
+    color: var(--darkFont);
   }
 }

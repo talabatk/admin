@@ -7,14 +7,11 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { filterDateByName, setPage, setVendors } from "store/vendorSlice";
 import { useState, useRef } from "react";
-import AddVendor from "./AddVendor/AddVendor";
 import { Toast } from "primereact/toast";
-import EditVendor from "./EditVendor/EditVendor";
 import DeleteItem from "components/Ui/DeleteItem/DeleteItem";
+import { NavLink } from "react-router-dom";
 
 const Vendors = () => {
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [showEditForm, setShowEditForm] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [selectedVendor, setSelectedVendor] = useState(null);
   const { vendors, loading, updateVendor, removeVendor } = useVendors();
@@ -45,15 +42,6 @@ const Vendors = () => {
       dispatch(setVendors(vendors));
     }
   };
-
-  const toggleAddForm = () => {
-    setShowAddForm((pre) => (pre = !pre));
-  };
-
-  const toggleEditForm = () => {
-    setShowEditForm((pre) => (pre = !pre));
-  };
-
   const setSelectedVendorValue = (vendor) => {
     setSelectedVendor(vendor);
   };
@@ -97,9 +85,9 @@ const Vendors = () => {
               onChange={searchChangeHandler}
             />
             <div>
-              <button className="button" onClick={toggleAddForm}>
+              <NavLink to={"add"} className="button">
                 إضافه مطعم
-              </button>
+              </NavLink>
             </div>
           </div>
           <div className="table-container">
@@ -122,7 +110,6 @@ const Vendors = () => {
                       vendor={vendor}
                       updateVendor={updateVendor}
                       setSelectedVendor={setSelectedVendor}
-                      toggleEditForm={toggleEditForm}
                       setSelectedVendorValue={setSelectedVendorValue}
                       toggleDelete={toggleDelete}
                     />
@@ -136,24 +123,13 @@ const Vendors = () => {
           <Stack spacing={1}>
             <Pagination
               count={pages}
-              defaultPage={currentPage}
               shape="rounded"
               color="#0f7f3d"
               style={{ margin: "20px auto 0" }}
               onChange={handleChangePage}
             />
           </Stack>
-          <AddVendor
-            show={showAddForm}
-            close={toggleAddForm}
-            showMessage={showMessage}
-          />
-          <EditVendor
-            show={showEditForm}
-            close={toggleEditForm}
-            showMessage={showMessage}
-            vendor={selectedVendor}
-          />
+
           <DeleteItem
             show={showDelete}
             close={toggleDelete}

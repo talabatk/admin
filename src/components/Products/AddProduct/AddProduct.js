@@ -27,7 +27,6 @@ const AddProduct = (props) => {
     options.push(data);
     setProductOptions(options);
   };
-  console.log(productOptions);
 
   useEffect(() => {
     const optionList = [];
@@ -56,7 +55,6 @@ const AddProduct = (props) => {
     productData.append("show_price", form.current[6].checked);
     productData.append("available", form.current[7].checked);
     productData.append("featured", form.current[8].checked);
-    console.log(productOptions);
 
     try {
       const response = await createProduct(productData);
@@ -65,10 +63,6 @@ const AddProduct = (props) => {
         products: [response.product?.id],
         groups: productOptions,
       });
-
-      // Assuming `response` contains information to check if the operation succeeded
-      console.log(response);
-      console.log(groupResponse);
 
       if (response.product && groupResponse.groups) {
         props.showMessage("success", "تمت الاضافه", "تمت إضافه المنتج بنجاح");

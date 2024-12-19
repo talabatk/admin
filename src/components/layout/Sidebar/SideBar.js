@@ -11,6 +11,7 @@ import icon5 from "assets/icons/group.png";
 import icon6 from "assets/icons/checkout.png";
 import icon7 from "assets/icons/menu.png";
 import icon8 from "assets/icons/home.png";
+import icon9 from "assets/icons/complain.png";
 
 const SideBar = () => {
   const sideBarVisiablity = useSelector((state) => state.ui.sideBarIsVisiable);
@@ -130,6 +131,18 @@ const SideBar = () => {
               >
                 <img src={icon4} alt="categories icon" />
                 <span>مناطق التوصيل</span>
+              </NavLink>
+            </div>
+            <div>
+              <NavLink
+                exact="true"
+                to="/complains"
+                activeclassname="true"
+                className="link"
+                onClick={sideBarHandler}
+              >
+                <img src={icon9} alt="categories icon" />
+                <span>الشكاوى</span>
               </NavLink>
             </div>
           </div>

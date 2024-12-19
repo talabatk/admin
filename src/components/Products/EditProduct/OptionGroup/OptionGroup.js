@@ -6,8 +6,6 @@ import Option from "./Option/Option";
 import { useEffect, useRef, useState } from "react";
 
 const OptionGroup = (props) => {
-  const [optionsNumber, setOptionsNumber] = useState(1);
-  const [options, setOptions] = useState([]);
   const [optionsValues, setOptionsValues] = useState([]);
   const groupName = useRef();
   const single = useRef();
@@ -16,6 +14,7 @@ const OptionGroup = (props) => {
     let options = optionsValues.filter((option) => +option.id !== +data.id);
     options.push(data);
     setOptionsValues(options);
+
     props.getOptionData({
       id: props.index,
       name: groupName.current.value,
@@ -34,7 +33,7 @@ const OptionGroup = (props) => {
   };
 
   useEffect(() => {
-    setOptions(props.group.options);
+    setOptionsValues(props.group.options);
   }, [props]);
 
   return (
@@ -67,7 +66,7 @@ const OptionGroup = (props) => {
           />
         </FormGroup>
       </div>
-      {options.map((item, index) => (
+      {optionsValues.map((item, index) => (
         <Option
           index={item.id}
           option={item}
@@ -81,7 +80,15 @@ const OptionGroup = (props) => {
           style={{ minWidth: "fit-content" }}
           className="button"
           onClick={() => {
-            setOptionsNumber((pre) => (pre += 1));
+            setOptionsValues([
+              ...optionsValues,
+              {
+                id: optionsValues.length,
+                name: "",
+                value: 0,
+                optionsGroupId: props.index,
+              },
+            ]);
           }}
           type="button"
         >
@@ -89,9 +96,9 @@ const OptionGroup = (props) => {
         </button>
         <button
           style={{ background: "red", color: "#fff" }}
-          disabled={optionsNumber === 1 ? true : false}
+          disabled={optionsValues.length === 1 ? true : false}
           onClick={() => {
-            setOptionsNumber((pre) => (pre -= 1));
+            setOptionsValues((pre) => (pre = pre.slice(0, pre.length - 1)));
           }}
           type="button"
         >

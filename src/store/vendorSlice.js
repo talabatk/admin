@@ -55,7 +55,7 @@ const vendorSlice = createSlice({
       );
       let pagesNum = Math.ceil(filteredVendors.length / state.size);
       state.pages = pagesNum;
-
+      state.currentPage = 1;
       const currentPageStartRows = (state.currentPage - 1) * state.size;
       const currentPageEndRows = state.currentPage * state.size;
 

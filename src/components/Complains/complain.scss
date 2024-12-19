@@ -1,0 +1,12 @@
+.complain {
+  padding: 25px 20px;
+  border-bottom: 1px solid var(--borderColor);
+  p {
+    margin: 10px 0;
+  }
+  button {
+    background-color: red;
+    color: #fff;
+    font-weight: bold;
+  }
+}

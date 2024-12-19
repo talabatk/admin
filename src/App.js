@@ -22,6 +22,9 @@ import OrderDetails from "components/Order/OrderDetails/OrderDetails";
 import Home from "components/HomePage/HomePage";
 import sound from "assets/notification.mp3";
 import useUser from "hooks/useUser";
+import AddVendorPage from "components/Vendors/AddVendorPage/AddVendorPage";
+import EditVendor from "components/Vendors/EditVendor/EditVendor";
+import Complains from "components/Complains/Complains";
 function App() {
   const { updateFcm } = useUser();
   const [newOrder, setNewOrder] = useState(1);
@@ -110,6 +113,15 @@ function App() {
           {/* Nested Protected Routes */}
           <Route index element={<Home />} />
           <Route path="vendors" element={<VendorScreen />} />
+          <Route path="complains" element={<Complains />} />
+          <Route
+            path="vendors/:id"
+            element={<EditVendor showMessage={showMessage} />}
+          />
+          <Route
+            path="vendors/add"
+            element={<AddVendorPage showMessage={showMessage} />}
+          />
           <Route path="/orders/*" element={<Orders newOrder={newOrder} />} />
           <Route
             path="orders/:id"

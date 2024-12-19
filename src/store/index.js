@@ -8,6 +8,7 @@ import areaSlice from "./areaSlice";
 import userSlice from "./userSlice";
 import productSlice from "./productSlice";
 import orderSlice from "./orderSlice";
+import complainSlice from "./complainSlice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     user: userSlice.reducer,
     product: productSlice.reducer,
     order: orderSlice.reducer,
+    complain: complainSlice.reducer,
   },
 });
 

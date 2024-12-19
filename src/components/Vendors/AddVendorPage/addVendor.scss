@@ -1,0 +1,85 @@
+.add-vendor {
+  background-color: #fff;
+  border-radius: 5px;
+  min-height: 490px;
+  padding: 20px 10px;
+  position: relative;
+  .images {
+    display: flex;
+    gap: 14px;
+  }
+  .image-input {
+    position: relative;
+    margin-bottom: 15px;
+    input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    svg {
+      position: absolute;
+      top: -6px;
+      right: 0;
+      cursor: pointer;
+      z-index: 55;
+    }
+    label {
+      img {
+        width: 200px;
+        height: 200px;
+        border-radius: 10px;
+        cursor: pointer;
+        object-fit: cover;
+      }
+    }
+  }
+  .area-cost {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    .mb-3 {
+      width: 50%;
+    }
+  }
+  .group {
+    margin-top: 30px;
+    padding: 10px 20px;
+    .mb-2 {
+      display: flex;
+      gap: 10px;
+    }
+  }
+  .loading-spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 55;
+    background-color: rgba(255, 255, 255, 0.466);
+  }
+  button:disabled {
+    opacity: 0.7;
+    cursor: no-drop;
+  }
+}
+.dark {
+  .add-vendor {
+    background-color: var(--darkSecondColor);
+    color: var(--darkFont);
+  }
+}
+
+@media (max-width: 450px) {
+  .add-vendor {
+    .image-input {
+      label {
+        width: 100%;
+        img {
+          width: calc(100% - 0px);
+        }
+      }
+    }
+  }
+}

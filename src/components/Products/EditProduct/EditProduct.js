@@ -13,7 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 const EditProduct = (props) => {
-  const { loading, error, editProduct, fetchProductBYId } = useProduct();
+  const { loading, error, editProduct, fetchProductBYId, createGroup } =
+    useProduct();
   const [OptionGroupsNumber, setOptionGroupsNumber] = useState(0);
   const [OptionGroups, setOptionGroups] = useState([]);
   const [productOptions, setProductOptions] = useState([]);
@@ -50,10 +51,19 @@ const EditProduct = (props) => {
   }, [id]);
 
   const getOptionData = (data) => {
-    let options = productOptions.filter((option) => +option.id !== +data.id);
-    options.push(data);
+    let options = productOptions;
+
+    let index = options.findIndex((option) => +option.id === +data.id);
+
+    if (index > -1) {
+      options[index] = data;
+    } else {
+      options.push(data);
+    }
     setProductOptions(options);
   };
+
+  console.log(productOptions);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -80,16 +90,16 @@ const EditProduct = (props) => {
     try {
       const response = await editProduct(productData);
 
-      //   const groupResponse = await createGroup({
-      //     products: [response.product?.id],
-      //     groups: productOptions,
-      //   });
+      const groupResponse = await createGroup({
+        products: [response.product?.id],
+        groups: productOptions,
+      });
 
       // Assuming `response` contains information to check if the operation succeeded
 
-      if (response.product) {
-        props.showMessage("success", "تمت الاضافه", "تمت تعديل المنتج بنجاح");
-        navigate("/products");
+      if ((response.product, groupResponse.groups)) {
+        props.showMessage("success", "تم التعديل", "تم تعديل المنتج بنجاح");
+        navigate(-1);
       } else {
         props.showMessage("error", "هناك خطأ", response || "حدث خطأ غير متوقع");
       }
@@ -98,7 +108,6 @@ const EditProduct = (props) => {
       props.showMessage("error", "هناك خطأ", error || "حدث خطأ غير متوقع");
     }
   };
-  console.log(productOptions);
 
   return (
     <div className={`add-product`}>
@@ -265,7 +274,7 @@ const EditProduct = (props) => {
           </button>
           <button
             style={{ marginTop: "40px", background: "red", color: "#fff" }}
-            disabled={OptionGroupsNumber === 0 ? true : false}
+            disabled={productOptions.length === 0 ? true : false}
             onClick={() => {
               setOptionGroupsNumber((pre) => (pre -= 1));
               setProductOptions((pre) => (pre = pre.slice(0, pre.length - 1)));

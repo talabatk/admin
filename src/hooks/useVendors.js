@@ -6,6 +6,8 @@ import {
   createVendor,
   deleteVendor,
   editVendor,
+  createCosts,
+  getVendorById,
 } from "services/vendors";
 import { setVendors } from "store/vendorSlice";
 
@@ -35,7 +37,34 @@ const useVendors = () => {
     setLoading(true);
     try {
       const response = await createVendor(newVendor);
-      fetchVendors();
+      return response;
+    } catch (err) {
+      setError(err.response.data.message || "Failed to create Vendor");
+      return err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Create Vendor
+  const addDeliveryCost = async (costs) => {
+    setLoading(true);
+    try {
+      const response = await createCosts(costs);
+      return response;
+    } catch (err) {
+      setError(err.response.data.message || "Failed to create Vendor");
+      return err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Create Vendor
+  const getVendor = async (id) => {
+    setLoading(true);
+    try {
+      const response = await getVendorById(id);
       return response;
     } catch (err) {
       setError(err.response.data.message || "Failed to create Vendor");
@@ -50,9 +79,6 @@ const useVendors = () => {
     setLoading(true);
     try {
       const updated = await editVendor(updatedData);
-
-      fetchVendors();
-
       return updated;
     } catch (err) {
       setError(err.message || "Failed to update Vendor");
@@ -89,6 +115,8 @@ const useVendors = () => {
     addVendor,
     updateVendor,
     removeVendor,
+    addDeliveryCost,
+    getVendor,
   };
 };
 

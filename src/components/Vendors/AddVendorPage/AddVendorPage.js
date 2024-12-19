@@ -3,55 +3,26 @@ import { useEffect, useRef, useState } from "react";
 import { Form } from "react-bootstrap";
 
 import { Ring } from "@uiball/loaders";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useVendors from "hooks/useVendors";
 import profileImage from "assets/images/profile.jpg";
 import coverImage from "assets/images/notfound.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import useArea from "hooks/useArea";
-import AreaCost from "../AddVendorPage/AreaCost/AreaCost";
+import AreaCost from "./AreaCost/AreaCost";
 
-const EditVendor = (props) => {
-  const { loading, updateVendor, error, addDeliveryCost, getVendor } =
-    useVendors();
+const AddVendorPage = (props) => {
+  const { loading, addVendor, error, addDeliveryCost } = useVendors();
+  const { areas } = useArea();
   const [image, setImage] = useState(profileImage);
   const [cover, setCover] = useState(coverImage);
   const [areaNumber, setAreaNumber] = useState([]);
   const [vendorAreas, setVendorArea] = useState([]);
-  const [vendor, setVendor] = useState([]);
-  const { areas } = useArea();
   const form = useRef();
   const imageRef = useRef();
   const coverRef = useRef();
   const navigate = useNavigate();
-  const { id } = useParams();
-
-  useEffect(() => {
-    const fetchVendor = async () => {
-      try {
-        const response = await getVendor(id);
-        if (response) {
-          setVendor(response.result);
-          setImage(response.result.image || profileImage);
-          setCover(response.result.cover || coverImage);
-          const areasInputs = response.result.areas.map((area) => (
-            <AreaCost
-              index={area.delivery_cost.id}
-              getAreaCost={getAreaCost}
-              areas={areas}
-              key={area.delivery_cost.id}
-              area={area}
-            />
-          ));
-          setAreaNumber(areasInputs);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchVendor();
-  }, [id]);
 
   const getAreaCost = (data) => {
     let areas = vendorAreas.filter((option) => +option.id !== +data.id);
@@ -78,7 +49,6 @@ const EditVendor = (props) => {
       );
     }
 
-    vendorData.append("id", vendor.id);
     vendorData.append("name", form.current[0].value);
     vendorData.append("phone", form.current[1].value);
     vendorData.append("address", form.current[2].value);
@@ -86,27 +56,24 @@ const EditVendor = (props) => {
     vendorData.append("free_delivery_limit", form.current[4].value || 0);
     vendorData.append("email", form.current[5].value);
     vendorData.append("status", form.current[6].value);
-    if (form.current[7].value) {
-      vendorData.append("password", form.current[7].value);
-      vendorData.append("confirm_password", form.current[8].value);
-    }
+    vendorData.append("password", form.current[7].value);
+    vendorData.append("confirm_password", form.current[8].value);
 
     try {
-      const response = await updateVendor(vendorData);
+      const response = await addVendor(vendorData);
       // Assuming `response` contains information to check if the operation succeeded
       const costsRes = await addDeliveryCost({
-        vendorId: vendor.id,
+        vendorId: response.user.id,
         costs: vendorAreas,
       });
-
-      if (response.name && costsRes.results) {
-        props.showMessage("success", "تم التعديل", "تم تعديل المطعم بنجاح");
+      if (response.user && costsRes.results) {
+        props.showMessage("success", "تمت الاضافه", "تمت إضافه المطعم بنجاح");
         navigate("/vendors");
       } else {
         props.showMessage(
           "error",
           "هناك خطأ",
-          response.message || "حدث خطأ غير متوقع"
+          response.response.data.message || "حدث خطأ غير متوقع"
         );
       }
     } catch (err) {
@@ -123,7 +90,7 @@ const EditVendor = (props) => {
         </div>
       ) : null}
       <h3 className="text-center" style={{ marginBottom: "20px" }}>
-        تعديل مطعم
+        إضافة مطعم
       </h3>
       <div className="images">
         <div className="image-input">
@@ -185,12 +152,7 @@ const EditVendor = (props) => {
             <Form.Label>
               اسم المطعم<span style={{ color: "red" }}>*</span>
             </Form.Label>
-            <Form.Control
-              type="text"
-              defaultValue={vendor?.name}
-              placeholder="اسم المطعم"
-              required
-            />
+            <Form.Control type="text" placeholder="اسم المطعم" required />
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">
@@ -198,12 +160,7 @@ const EditVendor = (props) => {
             <Form.Label>
               رقم الهاتف<span style={{ color: "red" }}>*</span>
             </Form.Label>
-            <Form.Control
-              defaultValue={vendor?.phone}
-              type="text"
-              placeholder="رقم الهاتف"
-              required
-            />
+            <Form.Control type="text" placeholder="رقم الهاتف" required />
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">
@@ -211,12 +168,7 @@ const EditVendor = (props) => {
             <Form.Label>
               العنوان<span style={{ color: "red" }}>*</span>
             </Form.Label>
-            <Form.Control
-              defaultValue={vendor?.address}
-              type="text"
-              placeholder="العنوان"
-              required
-            />
+            <Form.Control type="text" placeholder="العنوان" required />
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">
@@ -228,7 +180,7 @@ const EditVendor = (props) => {
               type="number"
               placeholder="وقت التوصيل"
               min={0}
-              defaultValue={vendor?.delivery_time}
+              defaultValue={0}
               required
             />
           </Form.Group>
@@ -240,7 +192,7 @@ const EditVendor = (props) => {
               type="number"
               placeholder="لا يوجد"
               min={0}
-              defaultValue={vendor?.free_delivery_limit}
+              defaultValue={0}
             />
           </Form.Group>
         </div>
@@ -249,7 +201,7 @@ const EditVendor = (props) => {
             <Form.Label>
               طريقه الطلب<span style={{ color: "red" }}>*</span>
             </Form.Label>
-            <Form.Select required defaultValue={vendor?.email}>
+            <Form.Select required>
               <option value={"cart"}>السله</option>
               <option value={"phone"}>الهاتف</option>
             </Form.Select>
@@ -260,7 +212,7 @@ const EditVendor = (props) => {
             <Form.Label>
               الحاله<span style={{ color: "red" }}>*</span>
             </Form.Label>
-            <Form.Select required defaultValue={vendor?.status}>
+            <Form.Select required>
               <option value={"close"}>مغلق</option>
               <option value={"open"}>مفتوح</option>
               <option value={"soon"}>قريبا</option>
@@ -270,14 +222,22 @@ const EditVendor = (props) => {
         </div>
         <div className="col-md-4 col-lg-4">
           <Form.Group className="mb-3" controlId="password">
-            <Form.Label>كلمه المرور</Form.Label>
-            <Form.Control type="password" placeholder="كلمه المرور" />
+            <Form.Label>
+              كلمه المرور<span style={{ color: "red" }}>*</span>
+            </Form.Label>
+            <Form.Control type="password" placeholder="كلمه المرور" required />
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">
           <Form.Group className="mb-3" controlId="confirm-password">
-            <Form.Label>تأكيد كلمه المرور</Form.Label>
-            <Form.Control type="password" placeholder="تأكيد كلمه المرور" />
+            <Form.Label>
+              تأكيد كلمه المرور<span style={{ color: "red" }}>*</span>
+            </Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="تأكيد كلمه المرور"
+              required
+            />
           </Form.Group>
         </div>
         <div>
@@ -323,11 +283,11 @@ const EditVendor = (props) => {
             className="button"
             type="submit"
           >
-            حفظ التعديلات
+            إضافه المطعم
           </button>
         </div>
       </form>
     </div>
   );
 };
-export default EditVendor;
+export default AddVendorPage;

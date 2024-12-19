@@ -10,3 +10,9 @@
     font-weight: bold;
   }
 }
+.dark {
+  .complain {
+    color: var(--darkFont);
+    border-color: var(--darkborderColor);
+  }
+}

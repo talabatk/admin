@@ -60,6 +60,29 @@ function App() {
         `هناك طلبيه جديده من ${orderData.name}`
       );
     });
+
+    socket.on("update-order-admin", (orderData) => {
+      setNewOrder(orderData);
+      const audio = new Audio(sound); // Ensure this path is correct
+      const playSound = () => {
+        audio.play().catch((error) => {
+          console.error("Error playing notification sound:", error);
+        });
+        // Remove the event listener after playing sound
+        window.removeEventListener("click", playSound);
+        window.removeEventListener("keydown", playSound);
+      };
+      playSound();
+      new Notification("تحديث للطلبيه", {
+        body: `هناك تحديث للطلبيه الخاصه ب  ${orderData.name}`,
+        icon: "logo.png",
+      });
+      showMessage(
+        "success",
+        "تحديث للطلبيه",
+        `هناك تحديث للطلبيه الخاصه ب  ${orderData.name}`
+      );
+    });
   }, []);
 
   const showMessage = (type, head, content) => {

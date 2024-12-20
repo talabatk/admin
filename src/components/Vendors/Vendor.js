@@ -123,6 +123,7 @@ const Vendors = () => {
           <Stack spacing={1}>
             <Pagination
               count={pages}
+              page={currentPage}
               shape="rounded"
               color="#0f7f3d"
               style={{ margin: "20px auto 0" }}

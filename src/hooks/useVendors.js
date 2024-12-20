@@ -79,6 +79,7 @@ const useVendors = () => {
     setLoading(true);
     try {
       const updated = await editVendor(updatedData);
+      fetchVendors();
       return updated;
     } catch (err) {
       setError(err.message || "Failed to update Vendor");

@@ -303,6 +303,7 @@ const Orders = (props) => {
           <Stack spacing={1}>
             <Pagination
               count={pages}
+              page={page}
               shape="rounded"
               color="#0f7f3d"
               style={{ margin: "20px auto 0" }}

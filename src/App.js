@@ -25,44 +25,19 @@ import useUser from "hooks/useUser";
 import AddVendorPage from "components/Vendors/AddVendorPage/AddVendorPage";
 import EditVendor from "components/Vendors/EditVendor/EditVendor";
 import Complains from "components/Complains/Complains";
+import { io } from "socket.io-client";
 function App() {
   const { updateFcm } = useUser();
   const [newOrder, setNewOrder] = useState(1);
   const toast = useRef(null);
 
   useEffect(() => {
-    // Request permission to send notifications
-    const requestPermission = async () => {
-      try {
-        const token = await getToken(messaging, {
-          vapidKey:
-            "BHBfikqY8olpHPlcqj29svYWxyHIYXHPcWhkuI-cNorF47Go1wVR_CeKFjUoYaHJt4RkArolEbbaI4FaObLDh9c",
-        });
-        if (token) {
-          console.log("FCM Token:", token);
-          updateFcm(token);
-          // Send this token to your server and subscribe to the topic (admin)
-        } else {
-          console.error(
-            "No registration token available. Request permission to generate one."
-          );
-        }
-      } catch (err) {
-        console.error("An error occurred while retrieving token. ", err);
-      }
-    };
+    const socket = io("https://api.talabatk.top");
 
-    requestPermission();
+    socket.emit("join-room", "admins"); // For admins
 
-    // Listen for messages while the app is in the foreground
-    onMessage(messaging, (payload) => {
-      showMessage(
-        "success",
-        payload.notification.title,
-        payload.notification.body
-      );
-      setNewOrder((pre) => (pre = pre + 1));
-
+    socket.on("new-order-admin", (orderData) => {
+      setNewOrder(orderData);
       const audio = new Audio(sound); // Ensure this path is correct
       const playSound = () => {
         audio.play().catch((error) => {
@@ -72,16 +47,16 @@ function App() {
         window.removeEventListener("click", playSound);
         window.removeEventListener("keydown", playSound);
       };
-
       playSound();
-
-      new Notification(payload.notification.title, {
-        body: payload.notification.body,
+      new Notification("طلببه جديده", {
+        body: `هناك طلبيه جديده من ${orderData.name}`,
         icon: "logo.png",
       });
-
-      console.log("Message received. ", payload);
-      // Handle foreground messages here
+      showMessage(
+        "success",
+        "طلببه جديده",
+        `هناك طلبيه جديده من ${orderData.name}`
+      );
     });
   }, []);
 

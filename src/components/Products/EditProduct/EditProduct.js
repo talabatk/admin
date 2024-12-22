@@ -82,9 +82,9 @@ const EditProduct = (props) => {
     productData.append("categoryId", form.current[3].value);
     productData.append("price", form.current[4].value);
     productData.append("description", form.current[5].value);
-    productData.append("show_price", form.current[6].checked);
+    productData.append("show_price", form.current[8].checked);
     productData.append("available", form.current[7].checked);
-    productData.append("featured", form.current[8].checked);
+    productData.append("featured", form.current[6].checked);
     console.log(productOptions);
 
     try {

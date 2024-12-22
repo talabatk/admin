@@ -5,8 +5,6 @@ import Layout from "components/layout/Layout";
 import LoginScreen from "screens/Login";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "components/Auth/ProtectedRoute/ProtectedRoute ";
-import { messaging } from "./firbase";
-import { getToken, onMessage } from "firebase/messaging";
 import VendorScreen from "screens/Vendor";
 import CategoriesScreen from "screens/Categories";
 import Sliders from "components/Sliders/Sliders";
@@ -21,13 +19,11 @@ import Orders from "components/Order/Order";
 import OrderDetails from "components/Order/OrderDetails/OrderDetails";
 import Home from "components/HomePage/HomePage";
 import sound from "assets/notification.mp3";
-import useUser from "hooks/useUser";
 import AddVendorPage from "components/Vendors/AddVendorPage/AddVendorPage";
 import EditVendor from "components/Vendors/EditVendor/EditVendor";
 import Complains from "components/Complains/Complains";
 import { io } from "socket.io-client";
 function App() {
-  const { updateFcm } = useUser();
   const [newOrder, setNewOrder] = useState(1);
   const toast = useRef(null);
 

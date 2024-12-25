@@ -11,8 +11,15 @@ const OptionGroup = (props) => {
   const single = useRef();
 
   const setOptionData = (data) => {
-    let options = optionsValues.filter((option) => +option.id !== +data.id);
-    options.push(data);
+    let options = optionsValues;
+
+    let index = options.findIndex((option) => +option.id === +data.id);
+
+    if (index > -1) {
+      options[index] = data;
+    } else {
+      options.push(data);
+    }
     setOptionsValues(options);
 
     props.getOptionData({

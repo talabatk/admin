@@ -63,8 +63,6 @@ const EditProduct = (props) => {
     setProductOptions(options);
   };
 
-  console.log(productOptions);
-
   const submitHandler = async (e) => {
     e.preventDefault();
     const productData = new FormData();
@@ -85,18 +83,14 @@ const EditProduct = (props) => {
     productData.append("show_price", form.current[8].checked);
     productData.append("available", form.current[7].checked);
     productData.append("featured", form.current[6].checked);
-    console.log(productOptions);
 
     try {
       const response = await editProduct(productData);
-
       const groupResponse = await createGroup({
         products: [response.product?.id],
         groups: productOptions,
       });
-
       // Assuming `response` contains information to check if the operation succeeded
-
       if ((response.product, groupResponse.groups)) {
         props.showMessage("success", "تم التعديل", "تم تعديل المنتج بنجاح");
         navigate(-1);

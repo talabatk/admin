@@ -11,12 +11,12 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import OptionGroup from "./OptionGroup/OptionGroup";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import imageCompression from "browser-image-compression";
 
 const EditProduct = (props) => {
   const { loading, error, editProduct, fetchProductBYId, createGroup } =
     useProduct();
   const [OptionGroupsNumber, setOptionGroupsNumber] = useState(0);
-  const [OptionGroups, setOptionGroups] = useState([]);
   const [productOptions, setProductOptions] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState("");
   const [selectedCategory, setSelectedVCategory] = useState("");
@@ -26,10 +26,10 @@ const EditProduct = (props) => {
   const [product, setProduct] = useState(null);
   const { vendors } = useVendors();
   const { categories } = useCategories();
-  const navigate = useNavigate();
   const form = useRef();
   const { id } = useParams();
-
+  const [image, setImage] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -63,16 +63,31 @@ const EditProduct = (props) => {
     setProductOptions(options);
   };
 
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        const compressedFile = await imageCompression(file, {
+          maxWidthOrHeight: 1024, // Resize to max 1024px width/height
+          maxSizeMB: 0.6, // Limit to 1MB
+        });
+        const compressedFileObj = new File([compressedFile], file.name, {
+          type: file.type,
+        });
+
+        setImage(compressedFileObj); // Set resized image preview
+      } catch (error) {
+        console.error("Error resizing image:", error);
+      }
+    }
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     const productData = new FormData();
 
     if (form.current[0].files[0]) {
-      productData.append(
-        "image",
-        form.current[0].files[0],
-        form.current[0].files[0].name
-      );
+      productData.append("image", image, form.current[0].files[0].name);
     }
     productData.append("id", product.id);
     productData.append("title", form.current[1].value);
@@ -117,7 +132,11 @@ const EditProduct = (props) => {
         <div className="col-md-4 col-lg-4">
           <Form.Group className="mb-3" controlId="image">
             <Form.Label>صوره المنتج</Form.Label>
-            <Form.Control type="file" accept=".png,.jpg,.svg" />
+            <Form.Control
+              type="file"
+              onChange={handleImageChange}
+              accept=".png,.jpg,.svg,.jpeg"
+            />
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">

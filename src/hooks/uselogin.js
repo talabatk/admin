@@ -17,7 +17,11 @@ const useLogin = () => {
     setError(null);
 
     try {
-      const response = await api.post(adminLogin, credentials);
+      const response = await api.post(adminLogin, credentials, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       setUser(response.data.user); // Assuming the API returns the user data
 

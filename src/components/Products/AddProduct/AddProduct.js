@@ -11,8 +11,11 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import OptionGroup from "./OptionGroup/OptionGroup";
 import { useNavigate } from "react-router-dom";
+import imageCompression from "browser-image-compression";
 
 const AddProduct = (props) => {
+  const [image, setImage] = useState(null);
+
   const [OptionGroupsNumber, setOptionGroupsNumber] = useState(0);
   const [OptionGroups, setOptionGroups] = useState([]);
   const [productOptions, setProductOptions] = useState([]);
@@ -36,16 +39,31 @@ const AddProduct = (props) => {
     setOptionGroups(optionList);
   }, [OptionGroupsNumber]);
 
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        const compressedFile = await imageCompression(file, {
+          maxWidthOrHeight: 1024, // Resize to max 1024px width/height
+          maxSizeMB: 0.6, // Limit to 1MB
+        });
+        const compressedFileObj = new File([compressedFile], file.name, {
+          type: file.type,
+        });
+
+        setImage(compressedFileObj); // Set resized image preview
+      } catch (error) {
+        console.error("Error resizing image:", error);
+      }
+    }
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     const productData = new FormData();
 
     if (form.current[0].files[0]) {
-      productData.append(
-        "image",
-        form.current[0].files[0],
-        form.current[0].files[0].name
-      );
+      productData.append("image", image, form.current[0].files[0].name);
     }
     productData.append("title", form.current[1].value);
     productData.append("vendorId", form.current[2].value);
@@ -64,7 +82,7 @@ const AddProduct = (props) => {
         groups: productOptions,
       });
 
-      if (response.product && groupResponse.groups) {
+      if (response.product) {
         props.showMessage("success", "تمت الاضافه", "تمت إضافه المنتج بنجاح");
         navigate("/products");
       } else {
@@ -92,7 +110,11 @@ const AddProduct = (props) => {
             <Form.Label>
               صوره المنتج<span style={{ color: "red" }}>*</span>
             </Form.Label>
-            <Form.Control type="file" accept=".png,.jpg,.svg" />
+            <Form.Control
+              onChange={handleImageChange}
+              type="file"
+              accept=".png,.jpg,.svg,.jpeg"
+            />
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">

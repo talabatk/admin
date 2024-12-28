@@ -10,6 +10,21 @@ const OptionGroup = (props) => {
   const groupName = useRef();
   const single = useRef();
 
+  useEffect(() => {
+    setOptionsValues(props.group.options);
+  }, [props.group.options]);
+
+  const deleteOptionHandler = async (id) => {
+    const checkExist = optionsValues.findIndex((option) => +option.id === +id);
+    if (checkExist > -1) {
+      await props.deleteOption(id);
+    }
+    let newOptions = optionsValues.filter((option) => +option.id !== +id);
+    console.log(newOptions);
+
+    setOptionsValues(newOptions);
+  };
+
   const setOptionData = (data) => {
     let options = optionsValues;
 
@@ -38,10 +53,6 @@ const OptionGroup = (props) => {
       options: optionsValues,
     });
   };
-
-  useEffect(() => {
-    setOptionsValues(props.group.options);
-  }, [props]);
 
   return (
     <div className="group">
@@ -80,6 +91,7 @@ const OptionGroup = (props) => {
           groupIndex={props.index}
           key={index}
           getOptionData={setOptionData}
+          deleteOption={deleteOptionHandler}
         />
       ))}
       <div>
@@ -102,14 +114,13 @@ const OptionGroup = (props) => {
           إضافه قيمه
         </button>
         <button
-          style={{ background: "red", color: "#fff" }}
-          disabled={optionsValues.length === 1 ? true : false}
           onClick={() => {
-            setOptionsValues((pre) => (pre = pre.slice(0, pre.length - 1)));
+            props.deleteGroup(props.index);
           }}
+          style={{ background: "red", color: "#fff" }}
           type="button"
         >
-          حذف
+          حذف الخيار
         </button>
       </div>
       <hr />

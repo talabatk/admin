@@ -2,7 +2,9 @@ import { api } from "api";
 import {
   createCommonGroup,
   createProduct,
+  deleteoptionsGroupById,
   deleteProduct,
+  deleteProductOptionById,
   editProduct,
   getAllProducts,
 } from "api/apiURLs";
@@ -35,5 +37,13 @@ export const updateProduct = async (data) => {
 
 export const removeProduct = async (id) => {
   const response = await api.delete(`${deleteProduct}${id}`);
+  return response.data;
+};
+export const removeGroup = async (id) => {
+  const response = await api.delete(`${deleteoptionsGroupById}${id}`);
+  return response.data;
+};
+export const removeOption = async (id) => {
+  const response = await api.delete(`${deleteProductOptionById}${id}`);
   return response.data;
 };

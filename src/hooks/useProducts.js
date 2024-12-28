@@ -8,6 +8,8 @@ import {
   removeProduct,
   addGroup,
   getProductById,
+  removeGroup,
+  removeOption,
 } from "services/products";
 import { setProducts } from "store/productSlice";
 import { useSearchParams } from "react-router-dom";
@@ -139,7 +141,31 @@ const useProduct = () => {
       setLoading(false);
     }
   };
-
+  // Delete Product
+  const deleteGroup = async (id) => {
+    setLoading(true);
+    try {
+      await removeGroup(id);
+      return true;
+    } catch (err) {
+      setError(err.message || "Failed to delete Product");
+      return err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  const deleteOption = async (id) => {
+    setLoading(true);
+    try {
+      await removeOption(id);
+      return true;
+    } catch (err) {
+      setError(err.message || "Failed to delete Product");
+      return err;
+    } finally {
+      setLoading(false);
+    }
+  };
   return {
     products,
     loading,
@@ -150,6 +176,8 @@ const useProduct = () => {
     deleteProduct,
     createGroup,
     fetchProductBYId,
+    deleteGroup,
+    deleteOption,
   };
 };
 

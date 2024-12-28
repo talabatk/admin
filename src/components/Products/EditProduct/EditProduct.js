@@ -14,9 +14,15 @@ import { useParams } from "react-router-dom";
 import imageCompression from "browser-image-compression";
 
 const EditProduct = (props) => {
-  const { loading, error, editProduct, fetchProductBYId, createGroup } =
-    useProduct();
-  const [OptionGroupsNumber, setOptionGroupsNumber] = useState(0);
+  const {
+    loading,
+    error,
+    editProduct,
+    fetchProductBYId,
+    createGroup,
+    deleteGroup,
+    deleteOption,
+  } = useProduct();
   const [productOptions, setProductOptions] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState("");
   const [selectedCategory, setSelectedVCategory] = useState("");
@@ -30,6 +36,7 @@ const EditProduct = (props) => {
   const { id } = useParams();
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -49,6 +56,18 @@ const EditProduct = (props) => {
     };
     fetchProduct();
   }, [id]);
+
+  const deleteGroupHandler = async (id) => {
+    const checkExist = product.options_groups.findIndex(
+      (group) => +group.id === +id
+    );
+    if (checkExist > -1) {
+      await deleteGroup(id);
+    }
+    let newGroups = productOptions.filter((group) => +group.id !== +id);
+
+    setProductOptions(newGroups);
+  };
 
   const getOptionData = (data) => {
     let options = productOptions;
@@ -278,23 +297,13 @@ const EditProduct = (props) => {
                   name: "",
                   options: [],
                   type: "single",
+                  new: true,
                 },
               ]);
             }}
             type="button"
           >
             إضافه خيار
-          </button>
-          <button
-            style={{ marginTop: "40px", background: "red", color: "#fff" }}
-            disabled={productOptions.length === 0 ? true : false}
-            onClick={() => {
-              setOptionGroupsNumber((pre) => (pre -= 1));
-              setProductOptions((pre) => (pre = pre.slice(0, pre.length - 1)));
-            }}
-            type="button"
-          >
-            حذف خيار
           </button>
         </div>
         {productOptions.map((item, index) => (
@@ -303,6 +312,8 @@ const EditProduct = (props) => {
             index={item.id}
             getOptionData={getOptionData}
             group={item}
+            deleteGroup={deleteGroupHandler}
+            deleteOption={deleteOption}
           />
         ))}
         <div className="submit">

@@ -1,5 +1,7 @@
 import { Form } from "react-bootstrap";
 import { useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 const Option = (props) => {
   const name = useRef();
@@ -42,6 +44,20 @@ const Option = (props) => {
           required
         />
       </Form.Group>
+      <span
+        className="center"
+        style={{
+          color: "red",
+          backgroundColor: "transparent",
+          paddingTop: "10px",
+        }}
+        type="button"
+        onClick={() => {
+          props.deleteOption(props.index);
+        }}
+      >
+        <FontAwesomeIcon icon={faTrashCan} size="lg" />
+      </span>
     </div>
   );
 };

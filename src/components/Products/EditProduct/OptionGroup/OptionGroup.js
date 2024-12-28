@@ -20,10 +20,10 @@ const OptionGroup = (props) => {
       await props.deleteOption(id);
     }
     let newOptions = optionsValues.filter((option) => +option.id !== +id);
-    console.log(newOptions);
 
     setOptionsValues(newOptions);
   };
+  console.log(optionsValues);
 
   const setOptionData = (data) => {
     let options = optionsValues;
@@ -84,12 +84,12 @@ const OptionGroup = (props) => {
           />
         </FormGroup>
       </div>
-      {optionsValues.map((item, index) => (
+      {optionsValues.map((item) => (
         <Option
           index={item.id}
           option={item}
           groupIndex={props.index}
-          key={index}
+          key={item.id}
           getOptionData={setOptionData}
           deleteOption={deleteOptionHandler}
         />

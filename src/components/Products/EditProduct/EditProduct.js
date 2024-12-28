@@ -306,9 +306,9 @@ const EditProduct = (props) => {
             إضافه خيار
           </button>
         </div>
-        {productOptions.map((item, index) => (
+        {productOptions.map((item) => (
           <OptionGroup
-            key={index}
+            key={item.id}
             index={item.id}
             getOptionData={getOptionData}
             group={item}

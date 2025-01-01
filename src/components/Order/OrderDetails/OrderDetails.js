@@ -125,8 +125,12 @@ const OrderDetails = (props) => {
               </span>
             </div>
             <div>
+              <span className="label">العنوان :</span>
+              <span>{order?.address}</span>
+            </div>
+            <div>
               <span className="label">ملاحظات :</span>
-              <span>{order?.notes}</span>
+              <span>{order?.notes || "لا يوجد"}</span>
             </div>
           </div>
         </div>

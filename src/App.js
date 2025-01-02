@@ -28,36 +28,33 @@ function App() {
   const toast = useRef(null);
 
   useEffect(() => {
-    let socket = io("https://api.talabatk.top", {
+    // Initialize the socket connection
+    const socket = io("https://api.talabatk.top", {
       transports: ["websocket"], // Force WebSocket transport
+      reconnection: true, // Enable automatic reconnection
+      reconnectionAttempts: 5, // Number of retry attempts
+      reconnectionDelay: 2000, // Time between retries
     });
 
-    socket.emit("join-room", "admins"); // For admins
+    // Join the room once
+    socket.emit("join-room", "admins");
 
-    setInterval(() => {
-      socket = io("https://api.talabatk.top", {
-        transports: ["websocket"], // Force WebSocket transport
-      });
-
-      socket.emit("join-room", "admins"); // For admins
-    }, 60000);
-
+    // Listen for "new-order-admin" event
     socket.on("new-order-admin", (orderData) => {
       setNewOrder(orderData);
       const audio = new Audio(sound); // Ensure this path is correct
-      const playSound = () => {
-        audio.play().catch((error) => {
-          console.error("Error playing notification sound:", error);
-        });
-        // Remove the event listener after playing sound
-        window.removeEventListener("click", playSound);
-        window.removeEventListener("keydown", playSound);
-      };
-      playSound();
+
+      // Play the sound after user interaction
+      audio.play().catch((error) => {
+        console.error("Error playing notification sound:", error);
+      });
+
+      // Display browser notification
       new Notification("طلببه جديده", {
         body: `هناك طلبيه جديده من ${orderData.name}`,
         icon: "logo.png",
       });
+
       showMessage(
         "success",
         "طلببه جديده",
@@ -65,13 +62,19 @@ function App() {
       );
     });
 
+    // Listen for "update-order-admin" event
     socket.on("update-order-admin", (orderData) => {
       setNewOrder(orderData);
       new Notification("تحديث للطلبيه", {
-        body: `هناك تحديث للطلبيه الخاصه ب  ${orderData.name}`,
+        body: `هناك تحديث للطلبيه الخاصه ب ${orderData.name}`,
         icon: "logo.png",
       });
     });
+
+    // Cleanup on component unmount
+    return () => {
+      socket.disconnect(); // Disconnect the socket
+    };
   }, []);
 
   const showMessage = (type, head, content) => {

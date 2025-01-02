@@ -28,11 +28,19 @@ function App() {
   const toast = useRef(null);
 
   useEffect(() => {
-    const socket = io("https://api.talabatk.top", {
+    let socket = io("https://api.talabatk.top", {
       transports: ["websocket"], // Force WebSocket transport
     });
 
     socket.emit("join-room", "admins"); // For admins
+
+    setInterval(() => {
+      socket = io("https://api.talabatk.top", {
+        transports: ["websocket"], // Force WebSocket transport
+      });
+
+      socket.emit("join-room", "admins"); // For admins
+    }, 60000);
 
     socket.on("new-order-admin", (orderData) => {
       setNewOrder(orderData);

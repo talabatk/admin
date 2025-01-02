@@ -2,6 +2,7 @@
 import { useState } from "react";
 import {
   getUserNotifications,
+  sendUserNotifications,
   statistics,
   updateUserNotifications,
 } from "services/home";
@@ -46,10 +47,24 @@ const useHome = () => {
       setLoading(false);
     }
   };
+
+  const sendNotification = async (data) => {
+    setLoading(true);
+    try {
+      const res = await sendUserNotifications(data);
+      return res;
+    } catch (err) {
+      setError(err.message || "Failed to send notification");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     loading,
     error,
     fetchNotification,
+    sendNotification,
     updateNotification,
     fetchData,
   };

@@ -14,3 +14,8 @@ export const updateUserNotifications = async () => {
   const response = await api.get("api/edit-notifications");
   return response.data;
 };
+
+export const sendUserNotifications = async (data) => {
+  const response = await api.post("api/send-notification", data);
+  return response.data;
+};

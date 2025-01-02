@@ -12,9 +12,11 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Form } from "react-bootstrap";
 import useComplain from "hooks/useComplain";
 import Complain from "./complainItem";
+import SendNotification from "./SendNotification/SendNotification";
 
 const Complains = () => {
   const [showDelete, setShowDelete] = useState(false);
+  const [showSendNotification, setSendNotification] = useState(false);
   const [selectedComplain, setSelectedComplain] = useState(null);
   const { loading, fetchComplains, deleteComplain } = useComplain();
   const page = useSelector((state) => state.complain.page);
@@ -46,6 +48,10 @@ const Complains = () => {
 
   const toggleDelete = () => {
     setShowDelete((pre) => (pre = !pre));
+  };
+
+  const toggleNotification = () => {
+    setSendNotification((pre) => (pre = !pre));
   };
 
   const setSelectedComplainValue = (complain) => {
@@ -91,6 +97,7 @@ const Complains = () => {
                   complain={complain}
                   toggleDelete={toggleDelete}
                   setSelectedComplainValue={setSelectedComplainValue}
+                  toggleNotification={toggleNotification}
                   key={complain.id}
                 />
               ))
@@ -108,7 +115,12 @@ const Complains = () => {
               onChange={handleChangePage}
             />
           </Stack>
-
+          <SendNotification
+            show={showSendNotification}
+            close={toggleNotification}
+            fcm={selectedComplain ? selectedComplain.user.fcm : ""}
+            showMessage={showMessage}
+          />
           <DeleteItem
             show={showDelete}
             close={toggleDelete}

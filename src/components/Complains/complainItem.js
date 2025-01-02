@@ -18,6 +18,15 @@ const Complain = (props) => {
       >
         مسح
       </button>
+      <button
+        style={{ backgroundColor: "#0f7f3d", marginRight: "10px" }}
+        onClick={() => {
+          props.toggleNotification();
+          props.setSelectedComplainValue(props.complain);
+        }}
+      >
+        ارسال اشعار
+      </button>
     </div>
   );
 };

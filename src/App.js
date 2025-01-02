@@ -29,15 +29,19 @@ function App() {
 
   useEffect(() => {
     // Initialize the socket connection
-    const socket = io("https://api.talabatk.top", {
+    let socket = io("https://api.talabatk.top", {
       transports: ["websocket"], // Force WebSocket transport
-      reconnection: true, // Enable automatic reconnection
-      reconnectionAttempts: 5, // Number of retry attempts
-      reconnectionDelay: 2000, // Time between retries
     });
 
-    // Join the room once
     socket.emit("join-room", "admins");
+
+    setInterval(() => {
+      socket = io("https://api.talabatk.top", {
+        transports: ["websocket"], // Force WebSocket transport
+      });
+      socket.emit("join-room", "admins");
+    }, 60000);
+    // Join the room once
 
     // Listen for "new-order-admin" event
     socket.on("new-order-admin", (orderData) => {

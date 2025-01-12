@@ -5,6 +5,7 @@ import {
   getAllOrders,
   getOrder,
   removeOrder,
+  removeOrders,
   updateOrder,
 } from "services/order";
 import { setOrders } from "store/orderSlice";
@@ -109,6 +110,21 @@ const useOrder = () => {
     }
   };
 
+  const deleteOrders = async (params) => {
+    setLoading(true);
+    try {
+      await removeOrders(params);
+
+      fetchOrders(params);
+
+      return true;
+    } catch (err) {
+      setError(err.message || "Failed to delete Order");
+      return err;
+    } finally {
+      setLoading(false);
+    }
+  };
   return {
     orders,
     loading,
@@ -117,6 +133,7 @@ const useOrder = () => {
     fetchOrderBYId,
     deleteOrder,
     editOrder,
+    deleteOrders,
   };
 };
 

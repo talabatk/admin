@@ -19,10 +19,11 @@ const Orders = (props) => {
   const { vendors } = useVendors();
   const { users, fetchUsers } = useUser();
   const [orderValue, setOrderValue] = useState(1);
-  const [showEditForm, setShowEditForm] = useState(false);
+  const [deleteAllOrders, setDeleteAllOrders] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const { loading, fetchOrders, deleteOrder, editOrder } = useOrder();
+  const { loading, fetchOrders, deleteOrder, deleteOrders, editOrder } =
+    useOrder();
   const page = useSelector((state) => state.order.page);
   const data = useSelector((state) => state.order.orders);
   const pages = useSelector((state) => state.order.pages);
@@ -30,6 +31,7 @@ const Orders = (props) => {
   const dispatch = useDispatch();
   const toast = useRef(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [params, setParams] = useState(null);
 
   useEffect(() => {
     let newParams = {};
@@ -54,6 +56,7 @@ const Orders = (props) => {
     if (searchParams.get("search")) {
       newParams.search = searchParams.get("search");
     }
+    setParams(newParams);
     fetchOrders(newParams);
     fetchUsers({ role: "delivery" });
   }, [page, props.newOrder, searchParams]);
@@ -80,10 +83,6 @@ const Orders = (props) => {
     dispatch(setPage(1));
   };
 
-  const toggleEditForm = () => {
-    setShowEditForm((pre) => (pre = !pre));
-  };
-
   const setSelectedOrderValue = (vendor) => {
     setSelectedOrder(vendor);
   };
@@ -99,6 +98,26 @@ const Orders = (props) => {
 
       if (response) {
         showMessage("warn", "تم الحذف", "تم حذف الطلب بنجاح");
+        toggleDelete();
+      } else {
+        showMessage("error", "هناك خطأ", "حدث خطأ غير متوقع");
+      }
+    } catch (err) {
+      console.error("Error deleting order:", err);
+      showMessage("error", "هناك خطأ", "حدث خطأ غير متوقع");
+    }
+  };
+
+  const deleteAll = async () => {
+    try {
+      console.log(params);
+
+      const response = await deleteOrders(params);
+      // Assuming `response` contains information to check if the operation succeeded
+
+      if (response) {
+        showMessage("warn", "تم الحذف", "تم حذف الطلبات بنجاح");
+        setDeleteAllOrders(false);
         toggleDelete();
       } else {
         showMessage("error", "هناك خطأ", "حدث خطأ غير متوقع");
@@ -193,7 +212,7 @@ const Orders = (props) => {
               <h6>من</h6>
               <input
                 className="form-control"
-                type="datetime-local"
+                type="date"
                 defaultValue={searchParams.get("startDate") || ""}
                 onChange={(e) => {
                   console.log(e.target.value);
@@ -212,7 +231,7 @@ const Orders = (props) => {
               <h6>الى</h6>
               <input
                 className="form-control"
-                type="datetime-local"
+                type="date"
                 defaultValue={searchParams.get("endDate") || ""}
                 onChange={(e) => {
                   if (e.target.value === "") {
@@ -266,6 +285,15 @@ const Orders = (props) => {
                 />
               </button>
             </form>
+            <button
+              onClick={() => {
+                setDeleteAllOrders(true);
+                toggleDelete();
+              }}
+              style={{ backgroundColor: "red", color: "#fff" }}
+            >
+              حذف الكل
+            </button>
           </div>
           <div className="table-container">
             <table>
@@ -288,7 +316,6 @@ const Orders = (props) => {
                       key={order.id}
                       order={order}
                       setSelectedOrder={setSelectedOrder}
-                      toggleEditForm={toggleEditForm}
                       setSelectedOrderValue={setSelectedOrderValue}
                       toggleDelete={toggleDelete}
                       editOrder={editOrder}
@@ -310,18 +337,11 @@ const Orders = (props) => {
               onChange={handleChangePage}
             />
           </Stack>
-          {/* 
-          <EditOrder
-            show={showEditForm}
-            close={toggleEditForm}
-            showMessage={showMessage}
-            order={selectedOrder}
-          /> */}
           <DeleteItem
             show={showDelete}
             close={toggleDelete}
             loading={loading}
-            confirm={confirmDelete}
+            confirm={deleteAllOrders ? deleteAll : confirmDelete}
           />
         </>
       )}

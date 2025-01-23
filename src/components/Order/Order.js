@@ -28,6 +28,8 @@ const Orders = (props) => {
   const data = useSelector((state) => state.order.orders);
   const pages = useSelector((state) => state.order.pages);
   const count = useSelector((state) => state.order.count);
+  const total = useSelector((state) => state.order.total);
+  const shipping = useSelector((state) => state.order.shipping);
   const dispatch = useDispatch();
   const toast = useRef(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -110,8 +112,6 @@ const Orders = (props) => {
 
   const deleteAll = async () => {
     try {
-      console.log(params);
-
       const response = await deleteOrders(params);
       // Assuming `response` contains information to check if the operation succeeded
 
@@ -260,6 +260,49 @@ const Orders = (props) => {
                 }}
               />
               <span className="vendor-total">{+count * orderValue} شيكل </span>
+            </div>
+          </div>
+          <div
+            className="row row-cols-1 row-cols-md-2"
+            style={{ padding: "20px" }}
+          >
+            <div className="col" style={{ display: "flex" }}>
+              <div className="orders-total" style={{ marginLeft: "10px" }}>
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    marginLeft: "10px",
+                    color: "#0f7f3d",
+                  }}
+                >
+                  الاجمالي:
+                </span>
+                <span>{total?.toLocaleString() || 0}</span>
+              </div>
+              <div className="orders-total">
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    marginLeft: "10px",
+                    color: "#0f7f3d",
+                  }}
+                >
+                  نسبه 5%:
+                </span>
+                <span>{(total * 0.05).toLocaleString() || 0}</span>
+              </div>
+              <div className="orders-total" style={{ marginRight: "10px" }}>
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    marginLeft: "10px",
+                    color: "#0f7f3d",
+                  }}
+                >
+                  اجمالي الشحن:
+                </span>
+                <span>{shipping?.toLocaleString() || 0}</span>
+              </div>
             </div>
           </div>
           <div className="controls">

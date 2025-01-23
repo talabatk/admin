@@ -7,6 +7,8 @@ const orderSlice = createSlice({
     page: 1,
     pages: 1,
     count: 1,
+    total: 0,
+    shipping: 0,
   },
   reducers: {
     setOrders(state, action) {
@@ -14,6 +16,8 @@ const orderSlice = createSlice({
       state.orders = data.results;
       state.pages = data.pages;
       state.count = data.count;
+      state.shipping = data.totalShipping;
+      state.total = data.total;
     },
     setPage(state, action) {
       const page = action.payload;

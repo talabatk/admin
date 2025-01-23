@@ -11,10 +11,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import useArea from "hooks/useArea";
 import AreaCost from "../AddVendorPage/AreaCost/AreaCost";
+import useVendorCategories from "hooks/useVendorCategories";
 
 const EditVendor = (props) => {
   const { loading, updateVendor, error, addDeliveryCost, getVendor } =
     useVendors();
+  const { categories } = useVendorCategories();
+
   const [image, setImage] = useState(profileImage);
   const [cover, setCover] = useState(coverImage);
   const [areaNumber, setAreaNumber] = useState([]);
@@ -86,9 +89,11 @@ const EditVendor = (props) => {
     vendorData.append("free_delivery_limit", form.current[4].value || 0);
     vendorData.append("email", form.current[5].value);
     vendorData.append("status", form.current[6].value);
+    vendorData.append("vendorCategoryId", form.current[7].value);
+
     if (form.current[7].value) {
-      vendorData.append("password", form.current[7].value);
-      vendorData.append("confirm_password", form.current[8].value);
+      vendorData.append("password", form.current[8].value);
+      vendorData.append("confirm_password", form.current[9].value);
     }
 
     try {
@@ -265,6 +270,20 @@ const EditVendor = (props) => {
               <option value={"open"}>مفتوح</option>
               <option value={"soon"}>قريبا</option>
               <option value={"busy"}>مشغول</option>
+            </Form.Select>
+          </Form.Group>
+        </div>
+        <div className="col-md-4 col-lg-4">
+          <Form.Group className="mb-3" controlId="status">
+            <Form.Label>
+              التصنيف<span style={{ color: "red" }}>*</span>
+            </Form.Label>
+            <Form.Select defaultValue={vendor?.vendorCategory?.id}>
+              {categories.map((category) => (
+                <option value={category.id} key={category.id}>
+                  {category.name}
+                </option>
+              ))}
             </Form.Select>
           </Form.Group>
         </div>

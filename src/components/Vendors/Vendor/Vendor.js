@@ -31,6 +31,7 @@ const Vendor = (props) => {
           status={props.vendor?.status}
         />
       </td>
+      <td>{props.vendor?.vendorCategory?.name || "لا يوجد"}</td>
       <td>
         <DropDownButtons
           vendor={props.vendor}

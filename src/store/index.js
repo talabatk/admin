@@ -9,6 +9,7 @@ import userSlice from "./userSlice";
 import productSlice from "./productSlice";
 import orderSlice from "./orderSlice";
 import complainSlice from "./complainSlice";
+import vendorCategorySlice from "./vendorCategories";
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     product: productSlice.reducer,
     order: orderSlice.reducer,
     complain: complainSlice.reducer,
+    vendorCategory: vendorCategorySlice.reducer,
   },
 });
 

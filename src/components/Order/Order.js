@@ -266,7 +266,7 @@ const Orders = (props) => {
             className="row row-cols-1 row-cols-md-2"
             style={{ padding: "20px" }}
           >
-            <div className="col" style={{ display: "flex" }}>
+            <div className="col" style={{ display: "flex", flexWrap: "wrap" }}>
               <div className="orders-total" style={{ marginLeft: "10px" }}>
                 <span
                   style={{

@@ -112,6 +112,18 @@ const SideBar = () => {
             <div>
               <NavLink
                 exact="true"
+                to="/vendor-categories"
+                activeclassname="true"
+                className="link"
+                onClick={sideBarHandler}
+              >
+                <img src={icon2} alt="categories icon" />
+                <span>تصنيف المطاعم</span>
+              </NavLink>
+            </div>
+            <div>
+              <NavLink
+                exact="true"
                 to="/sliders"
                 activeclassname="true"
                 className="link"

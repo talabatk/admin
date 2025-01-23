@@ -23,6 +23,7 @@ import AddVendorPage from "components/Vendors/AddVendorPage/AddVendorPage";
 import EditVendor from "components/Vendors/EditVendor/EditVendor";
 import Complains from "components/Complains/Complains";
 import { io } from "socket.io-client";
+import VendorCategories from "components/VendorCategories/VendorCategories";
 function App() {
   const [newOrder, setNewOrder] = useState(1);
   const toast = useRef(null);
@@ -136,6 +137,7 @@ function App() {
           <Route path="regions" element={<Regions />} />
           <Route path="users" element={<Users />} />
           <Route path="categories" element={<CategoriesScreen />} />
+          <Route path="vendor-categories" element={<VendorCategories />} />
         </Route>
       </Routes>
     </>

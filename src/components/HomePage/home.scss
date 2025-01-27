@@ -4,31 +4,52 @@
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
+    margin-bottom: 20px;
     h2 {
       margin-bottom: 50px;
     }
-  }
-  .col {
-    display: flex;
-    .image {
-      width: 45px;
-      height: 45px;
-      border-radius: 5px;
+    .col {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: 10px;
-    }
-    div {
-      display: flex;
-      flex-direction: column;
-      span {
-        margin: 0;
-        font-size: 14px;
+      .image {
+        width: 45px;
+        height: 45px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10px;
       }
-      span:first-child {
-        font-weight: bold;
-        font-size: 17px;
+      div {
+        display: flex;
+        flex-direction: column;
+        span {
+          margin: 0;
+          font-size: 14px;
+        }
+        span:first-child {
+          font-weight: bold;
+          font-size: 17px;
+        }
+      }
+    }
+  }
+  .alerts {
+    .col {
+      padding: 10px;
+      .cont {
+        background-color: #fff;
+        padding: 20px 20px 70px;
+        border-radius: 5px;
+        h5 {
+          margin-bottom: 30px;
+        }
+        .MuiFormGroup-root {
+          margin-top: -30px;
+          .MuiTypography-root {
+            font-size: 17px;
+            font-weight: bold;
+          }
+        }
       }
     }
   }
@@ -37,7 +58,8 @@
   }
 }
 .dark {
-  .statics {
+  .statics,
+  .alerts .col .cont {
     background-color: var(--darkSecondColor);
     color: var(--darkFont);
   }

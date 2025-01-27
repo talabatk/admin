@@ -5,6 +5,7 @@ import {
   sendUserNotifications,
   statistics,
   updateUserNotifications,
+  updateAlerts,
 } from "services/home";
 
 const useHome = () => {
@@ -31,6 +32,18 @@ const useHome = () => {
       return data;
     } catch (err) {
       setError(err.message || "Failed to fetch notification");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateAlertsContent = async (newData) => {
+    setLoading(true);
+    try {
+      const data = await updateAlerts(newData);
+      return data;
+    } catch (err) {
+      setError(err.message || "Failed to edit notification");
     } finally {
       setLoading(false);
     }
@@ -66,6 +79,7 @@ const useHome = () => {
     fetchNotification,
     sendNotification,
     updateNotification,
+    updateAlertsContent,
     fetchData,
   };
 };

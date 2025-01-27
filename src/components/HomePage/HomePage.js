@@ -4,29 +4,77 @@ import cart from "assets/icons/shopping-cart.png";
 import dollar from "assets/icons/fast-delivery.png";
 import funds from "assets/icons/funds.png";
 import useHome from "hooks/useHome";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Ring } from "@uiball/loaders";
+import Switch from "@mui/material/Switch";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { Toast } from "primereact/toast";
 
 const Home = () => {
   const [data, setData] = useState();
-  const { loading, fetchData } = useHome();
+  const { loading, fetchData, updateAlertsContent } = useHome();
+  const statusForm = useRef();
+  const alertForm = useRef();
+  const toast = useRef(null);
 
+  const fetchNumbers = async () => {
+    try {
+      const response = await fetchData();
+      console.log(response);
+
+      setData(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const fetchNumbers = async () => {
-      try {
-        const response = await fetchData();
-        console.log(response);
-
-        setData(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchNumbers();
   }, []);
 
+  const showMessage = (type, head, content) => {
+    toast.current.show({
+      severity: type,
+      summary: head,
+      detail: content,
+      life: 3000,
+    });
+  };
+
+  const statusSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      await updateAlertsContent({
+        name: "app_status",
+        content: statusForm.current[0].value,
+        active: statusForm.current[1].checked,
+      });
+      fetchNumbers();
+      showMessage("success", "تم التعديل", "تم التعديل بنجاح");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const alertSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      await updateAlertsContent({
+        name: "alert",
+        content: alertForm.current[0].value,
+        active: alertForm.current[1].checked,
+      });
+      fetchNumbers();
+      showMessage("success", "تم التعديل", "تم التعديل بنجاح");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="home">
+      <Toast style={{ direction: "rtf" }} ref={toast} position="top-left" />
+
       {loading ? (
         <div className="loadingSpinner center">
           <Ring size={40} lineWeight={5} speed={2} color="#0f7f3d" />
@@ -70,6 +118,92 @@ const Home = () => {
                 <div className="info">
                   <span>{data?.orders.toLocaleString()}</span>
                   <span>طلبيه</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="alerts">
+            <div className=" row row-col-1 row-cols-md-2">
+              <div className="col">
+                <div className="cont">
+                  <h5>إغلاق التطبيق</h5>
+                  <form ref={statusForm} onSubmit={statusSubmitHandler}>
+                    <div className="mb-3">
+                      <textarea
+                        rows={2}
+                        placeholder="اكتب رساله الاغلاق...."
+                        className="form-control"
+                        defaultValue={data?.app_status?.content}
+                      ></textarea>
+                    </div>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            defaultChecked={data?.app_status?.active}
+                            color="warning"
+                            onChange={(e) => {}}
+                          />
+                        }
+                        label="تفعيل"
+                      />
+                    </FormGroup>
+                    <div className="submit">
+                      <button
+                        style={{
+                          marginTop: "20px",
+                          width: "200px",
+                          fontWeight: "bold",
+                          float: "left",
+                        }}
+                        className="button"
+                        type="submit"
+                      >
+                        حفظ
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div className="col">
+                <div className="cont">
+                  <h5>التنبيه</h5>
+                  <form ref={alertForm} onSubmit={alertSubmitHandler}>
+                    <div className="mb-3">
+                      <textarea
+                        rows={2}
+                        placeholder="اكتب رساله الاغلاق...."
+                        className="form-control"
+                        defaultValue={data?.alert?.content}
+                      ></textarea>
+                    </div>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            defaultChecked={data?.alert?.active}
+                            color="warning"
+                            onChange={(e) => {}}
+                          />
+                        }
+                        label="تفعيل"
+                      />
+                    </FormGroup>
+                    <div className="submit">
+                      <button
+                        style={{
+                          marginTop: "20px",
+                          width: "200px",
+                          fontWeight: "bold",
+                          float: "left",
+                        }}
+                        className="button"
+                        type="submit"
+                      >
+                        حفظ
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>

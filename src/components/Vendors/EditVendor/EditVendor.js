@@ -12,12 +12,14 @@ import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import useArea from "hooks/useArea";
 import AreaCost from "../AddVendorPage/AreaCost/AreaCost";
 import useVendorCategories from "hooks/useVendorCategories";
+import Select from "react-select";
 
 const EditVendor = (props) => {
   const { loading, updateVendor, error, addDeliveryCost, getVendor } =
     useVendors();
   const { categories } = useVendorCategories();
-
+  const [newCategories, setNewCategories] = useState([]);
+  const [seletedCategories, setSelectedCategories] = useState([]);
   const [image, setImage] = useState(profileImage);
   const [cover, setCover] = useState(coverImage);
   const [areaNumber, setAreaNumber] = useState([]);
@@ -30,14 +32,24 @@ const EditVendor = (props) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const handleChange = (selectedOptions) => {
+    setSelectedCategories(selectedOptions);
+  };
+
   useEffect(() => {
     const fetchVendor = async () => {
       try {
         const response = await getVendor(id);
+
         if (response) {
           setVendor(response.result);
           setImage(response.result.image || profileImage);
           setCover(response.result.cover || coverImage);
+          setSelectedCategories(
+            response.result.vendorCategories.map((category) => {
+              return { value: category.id, label: category.name };
+            })
+          );
           const areasInputs = response.result.areas.map((area) => (
             <AreaCost
               index={area.delivery_cost.id}
@@ -53,6 +65,13 @@ const EditVendor = (props) => {
         console.log(error);
       }
     };
+    if (categories) {
+      setNewCategories(
+        categories.map((category) => {
+          return { value: category.id, label: category.name };
+        })
+      );
+    }
     fetchVendor();
   }, [id]);
 
@@ -66,6 +85,9 @@ const EditVendor = (props) => {
     e.preventDefault();
     const vendorData = new FormData();
 
+    seletedCategories.forEach((category) => {
+      vendorData.append("categories[]", category.value);
+    });
     if (imageRef.current.value) {
       vendorData.append(
         "image",
@@ -278,13 +300,12 @@ const EditVendor = (props) => {
             <Form.Label>
               التصنيف<span style={{ color: "red" }}>*</span>
             </Form.Label>
-            <Form.Select defaultValue={vendor?.vendorCategory?.id}>
-              {categories.map((category) => (
-                <option value={category.id} key={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </Form.Select>
+            <Select
+              value={seletedCategories}
+              options={newCategories}
+              isMulti
+              onChange={handleChange}
+            />
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">

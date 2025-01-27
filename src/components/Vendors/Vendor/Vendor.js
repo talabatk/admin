@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 const Vendor = (props) => {
   const navigate = useNavigate();
+  const categories = props.vendor.vendorCategories.map(
+    (category) => category.name
+  );
   return (
     <tr className="item">
       <td>{props.vendor?.id}</td>
@@ -31,7 +34,7 @@ const Vendor = (props) => {
           status={props.vendor?.status}
         />
       </td>
-      <td>{props.vendor?.vendorCategory?.name || "لا يوجد"}</td>
+      <td>{categories.join(",") || "لا يوجد"}</td>
       <td>
         <DropDownButtons
           vendor={props.vendor}

@@ -12,6 +12,7 @@ import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import useArea from "hooks/useArea";
 import AreaCost from "./AreaCost/AreaCost";
 import useVendorCategories from "hooks/useVendorCategories";
+import Select from "react-select";
 
 const AddVendorPage = (props) => {
   const { loading, addVendor, error, addDeliveryCost } = useVendors();
@@ -21,10 +22,22 @@ const AddVendorPage = (props) => {
   const [cover, setCover] = useState(coverImage);
   const [areaNumber, setAreaNumber] = useState([]);
   const [vendorAreas, setVendorArea] = useState([]);
+  const [newCategories, setNewCategories] = useState([]);
+  const [seletedCategories, setSelectedCategories] = useState([]);
   const form = useRef();
   const imageRef = useRef();
   const coverRef = useRef();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (categories) {
+      setNewCategories(
+        categories.map((category) => {
+          return { value: category.id, label: category.name };
+        })
+      );
+    }
+  }, [categories]);
 
   const getAreaCost = (data) => {
     let areas = vendorAreas.filter((option) => +option.id !== +data.id);
@@ -32,10 +45,16 @@ const AddVendorPage = (props) => {
     setVendorArea(areas);
   };
 
+  const handleChange = (selectedOptions) => {
+    setSelectedCategories(selectedOptions);
+  };
   const submitHandler = async (e) => {
     e.preventDefault();
     const vendorData = new FormData();
 
+    seletedCategories.forEach((category) => {
+      vendorData.append("categories[]", category.value);
+    });
     if (imageRef.current.value) {
       vendorData.append(
         "image",
@@ -228,13 +247,12 @@ const AddVendorPage = (props) => {
             <Form.Label>
               التصنيف<span style={{ color: "red" }}>*</span>
             </Form.Label>
-            <Form.Select required>
-              {categories.map((category) => (
-                <option value={category.id} key={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </Form.Select>
+            <Select
+              value={seletedCategories}
+              options={newCategories}
+              isMulti
+              onChange={handleChange}
+            />
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">

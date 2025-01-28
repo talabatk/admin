@@ -113,7 +113,7 @@ const EditVendor = (props) => {
     vendorData.append("status", form.current[6].value);
     vendorData.append("vendorCategoryId", form.current[7].value);
 
-    if (form.current[7].value) {
+    if (form.current[8].value) {
       vendorData.append("password", form.current[8].value);
       vendorData.append("confirm_password", form.current[9].value);
     }

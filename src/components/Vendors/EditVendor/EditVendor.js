@@ -73,7 +73,7 @@ const EditVendor = (props) => {
       );
     }
     fetchVendor();
-  }, [id]);
+  }, [id, categories, areas]);
 
   const getAreaCost = (data) => {
     let areas = vendorAreas.filter((option) => +option.id !== +data.id);

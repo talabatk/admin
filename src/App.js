@@ -30,7 +30,10 @@ function App() {
 
   useEffect(() => {
     // Initialize the socket connection
-    let socket = io("https://api.talabatk.top");
+    let socket = io("https://api.talabatk.top", {
+      transports: ["polling", "websocket"], // Ensure WebSocket connection
+      withCredentials: true, // Needed for CORS
+    });
 
     socket.on("connect", () => {
       console.log("✅ Connected to WebSocket server:", socket.id);

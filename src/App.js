@@ -30,16 +30,16 @@ function App() {
 
   useEffect(() => {
     // Initialize the socket connection
-    let socket = io("https://api.talabatk.top", {
-      transports: ["websocket"], // Force WebSocket transport
+    let socket = io("https://api.talabatk.top");
+
+    socket.on("connect", () => {
+      console.log("✅ Connected to WebSocket server:", socket.id);
     });
 
     socket.emit("join-room", "admins");
 
     setInterval(() => {
-      socket = io("https://api.talabatk.top", {
-        transports: ["websocket"], // Force WebSocket transport
-      });
+      socket = io("https://api.talabatk.top");
       socket.emit("join-room", "admins");
     }, 60000);
     // Join the room once

@@ -36,7 +36,7 @@ function App() {
         : "https://api.talabatk.top";
 
     let socket = io(SOCKET_URL, {
-      // transports: ["websocket"],
+      transports: [],
       // withCredentials: true,
     });
 

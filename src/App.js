@@ -76,6 +76,9 @@ function App() {
       });
     });
 
+    socket.on("new-message", (message) => {
+      console.log(message);
+    });
     // Cleanup on component unmount
     return () => {
       socket.disconnect(); // Disconnect the socket

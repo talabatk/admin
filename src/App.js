@@ -30,22 +30,20 @@ function App() {
 
   useEffect(() => {
     // Initialize the socket connection
-    let socket = io("https://api.talabatk.top", {
-      transports: ["websocket"], // Ensure WebSocket connection
-      // withCredentials: true, // Needed for CORS
+    const SOCKET_URL =
+      window.location.hostname === "localhost"
+        ? "http://localhost:5000"
+        : "https://api.talabatk.top";
+
+    let socket = io(SOCKET_URL, {
+      transports: ["websocket"],
+      // withCredentials: true,
     });
 
     socket.on("connect", () => {
       console.log("✅ Connected to WebSocket server:", socket.id);
-    });
-
-    socket.emit("join-room", "admins");
-
-    setInterval(() => {
-      socket = io("https://api.talabatk.top");
       socket.emit("join-room", "admins");
-    }, 60000);
-    // Join the room once
+    });
 
     // Listen for "new-order-admin" event
     socket.on("new-order-admin", (orderData) => {
@@ -85,6 +83,7 @@ function App() {
     // Cleanup on component unmount
     return () => {
       socket.disconnect(); // Disconnect the socket
+      console.log("🛑 WebSocket disconnected");
     };
   }, []);
 

@@ -33,11 +33,16 @@ function App() {
     const SOCKET_URL =
       window.location.hostname === "localhost"
         ? "http://localhost:5000"
-        : "https://api.talabatk.top";
+        : "wss://api.talabatk.top";
 
     let socket = io(SOCKET_URL, {
       transports: ["websocket"],
+      reconnection: true, // Enable reconnection
+      reconnectionAttempts: Infinity, // Keep trying to reconnect
+      reconnectionDelay: 3000, // Wait 3 seconds before retrying
       withCredentials: true,
+      timeout: 20000, // Wait 20 seconds before giving up
+      autoConnect: true, // Automatically try to connect
     });
 
     socket.on("connect", () => {
@@ -80,6 +85,24 @@ function App() {
     socket.on("new-message", (message) => {
       console.log(message);
     });
+
+    socket.on("disconnect", (reason) => {
+      console.error("❌ Disconnected:", reason);
+      if (reason === "ping timeout") {
+        console.warn("🔄 Attempting to reconnect...");
+        socket.connect();
+      }
+    });
+
+    socket.on("pong", () => {
+      console.log("📡 Pong received from server");
+    });
+
+    // Send a ping manually every 20 seconds (extra safeguard)
+    setInterval(() => {
+      console.log("📡 Sending ping...");
+      socket.emit("ping");
+    }, 20000);
     // Cleanup on component unmount
     return () => {
       socket.disconnect(); // Disconnect the socket

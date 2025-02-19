@@ -1,9 +1,17 @@
 import DropDownButtons from "components/Ui/DropDownButtons/DropDownButtons";
 import MenuSimple from "./Dropdown";
 import { NavLink } from "react-router-dom";
+import UpdateTime from "./updateTime";
 
 const Order = (props) => {
   const date = new Date(props.order.createdAt);
+
+  const updateTime = async (time) => {
+    let fm = new FormData();
+    fm.append("time", time);
+    await props.editOrder(props.order.id, fm);
+  };
+
   return (
     <tr className="item">
       <td>
@@ -27,6 +35,9 @@ const Order = (props) => {
           updateOrder={props.editOrder}
           status={props.order?.status}
         />
+      </td>
+      <td>
+        <UpdateTime updateTime={updateTime} value={props.order?.time} />
       </td>
       <td>
         {props.order?.deliveryId ? props.order.delivery.user.name : "لا يوجد"}

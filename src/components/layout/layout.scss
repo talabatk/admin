@@ -1,12 +1,12 @@
 main {
-  margin: 90px 10px 10px 250px;
-  width: calc(100% - 260px);
+  margin: 90px 10px 10px 230px;
+  width: calc(100% - 240px);
   height: 500px;
   border-radius: 5px;
 }
 .rtl {
   main {
-    margin: 90px 250px 30px 10px;
+    margin: 90px 230px 30px 10px;
   }
 }
 @media (max-width: 1000px) {

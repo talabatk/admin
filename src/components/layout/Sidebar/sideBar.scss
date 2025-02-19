@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   height: 100vh;
-  width: 240px;
+  width: 220px;
   background-color: #fff;
   border-right: 1px solid rgba(255, 255, 255, 0.959);
   padding: 0px;
@@ -13,16 +13,15 @@
   -moz-transition: all 0.3s ease-in-out;
   -ms-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
-  // overflow: auto;
   z-index: 5555;
   .link-container {
     position: relative;
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    height: 85vh;
+    overflow: auto;
   }
   .logo {
-    padding: 10px 15px 0;
+    padding: 5px 15px 0;
     margin-bottom: 0px;
     position: relative;
     justify-content: space-between;
@@ -32,14 +31,16 @@
       font-weight: 800;
     }
     img {
-      width: 60px;
+      width: 50px;
       display: inline-block;
     }
   }
   .pages {
     padding: 0px 15px;
-    margin-bottom: 100px;
     p {
+      font-size: 15px;
+      margin-bottom: 5px;
+      font-weight: bold;
       color: var(--mainFont);
     }
     div {
@@ -48,7 +49,7 @@
         display: block;
         text-decoration: none;
         color: var(--mainFont);
-        padding: 7px 10px;
+        padding: 5px 10px;
         width: 100%;
         border-radius: 5px;
         -webkit-border-radius: 5px;
@@ -60,6 +61,10 @@
         -moz-transition: all 0.3s ease-out;
         -ms-transition: all 0.3s ease-out;
         -o-transition: all 0.3s ease-out;
+        font-size: 14px;
+        img {
+          width: 18px;
+        }
         span {
           margin-left: 10px;
         }

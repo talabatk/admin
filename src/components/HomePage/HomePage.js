@@ -10,10 +10,12 @@ import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Toast } from "primereact/toast";
+import { Form } from "react-bootstrap";
 
 const Home = () => {
   const [data, setData] = useState();
-  const { loading, fetchData, updateAlertsContent } = useHome();
+  const { loading, fetchData, updateAlertsContent, sendNotification } =
+    useHome();
   const statusForm = useRef();
   const alertForm = useRef();
   const toast = useRef(null);
@@ -64,13 +66,25 @@ const Home = () => {
         content: alertForm.current[0].value,
         active: alertForm.current[1].checked,
       });
-      fetchNumbers();
       showMessage("success", "تم التعديل", "تم التعديل بنجاح");
     } catch (error) {
       console.log(error);
     }
   };
 
+  const notificationSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      await sendNotification({
+        topic: e.target[0].value,
+        title: e.target[1].value,
+        description: e.target[2].value,
+      });
+      showMessage("success", "تم ارسال اشعار بنجاح", "تم الارسال");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="home">
       <Toast style={{ direction: "rtf" }} ref={toast} position="top-left" />
@@ -123,38 +137,37 @@ const Home = () => {
             </div>
           </div>
           <div className="alerts">
-            <div className=" row row-col-1 row-cols-md-2">
+            <div className=" row row-col-1 row-cols-md-3">
               <div className="col">
                 <div className="cont">
                   <h5>إغلاق التطبيق</h5>
                   <form ref={statusForm} onSubmit={statusSubmitHandler}>
-                    <div className="mb-3">
-                      <textarea
-                        rows={2}
-                        placeholder="اكتب رساله الاغلاق...."
-                        className="form-control"
-                        defaultValue={data?.app_status?.content}
-                      ></textarea>
+                    <div style={{ minHeight: "130px" }}>
+                      <div className="mb-3">
+                        <textarea
+                          rows={2}
+                          placeholder="اكتب رساله الاغلاق...."
+                          className="form-control"
+                          defaultValue={data?.app_status?.content}
+                        ></textarea>
+                      </div>
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              defaultChecked={data?.app_status?.active}
+                              color="warning"
+                              onChange={(e) => {}}
+                            />
+                          }
+                          label="تفعيل"
+                        />
+                      </FormGroup>
                     </div>
-                    <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            defaultChecked={data?.app_status?.active}
-                            color="warning"
-                            onChange={(e) => {}}
-                          />
-                        }
-                        label="تفعيل"
-                      />
-                    </FormGroup>
                     <div className="submit">
                       <button
                         style={{
-                          marginTop: "20px",
-                          width: "200px",
-                          fontWeight: "bold",
-                          float: "left",
+                          margin: "auto",
                         }}
                         className="button"
                         type="submit"
@@ -169,38 +182,81 @@ const Home = () => {
                 <div className="cont">
                   <h5>التنبيه</h5>
                   <form ref={alertForm} onSubmit={alertSubmitHandler}>
-                    <div className="mb-3">
-                      <textarea
-                        rows={2}
-                        placeholder="اكتب رساله الاغلاق...."
-                        className="form-control"
-                        defaultValue={data?.alert?.content}
-                      ></textarea>
+                    <div style={{ minHeight: "130px" }}>
+                      <div className="mb-3">
+                        <textarea
+                          rows={2}
+                          placeholder="اكتب رساله الاغلاق...."
+                          className="form-control"
+                          defaultValue={data?.alert?.content}
+                        ></textarea>
+                      </div>
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              defaultChecked={data?.alert?.active}
+                              color="warning"
+                              onChange={(e) => {}}
+                            />
+                          }
+                          label="تفعيل"
+                        />
+                      </FormGroup>
                     </div>
-                    <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            defaultChecked={data?.alert?.active}
-                            color="warning"
-                            onChange={(e) => {}}
-                          />
-                        }
-                        label="تفعيل"
-                      />
-                    </FormGroup>
                     <div className="submit">
                       <button
                         style={{
-                          marginTop: "20px",
-                          width: "200px",
-                          fontWeight: "bold",
-                          float: "left",
+                          margin: "auto",
                         }}
                         className="button"
                         type="submit"
                       >
                         حفظ
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div className="col">
+                <div className="cont">
+                  <h5>ارسال اشعار</h5>
+                  <form ref={alertForm} onSubmit={notificationSubmitHandler}>
+                    <div style={{ minHeight: "130px" }}>
+                      <div className="mb-3">
+                        <Form.Select required>
+                          <option value={"all"}>الكل</option>
+                          <option value={"customer"}>المستخدمين</option>
+                        </Form.Select>
+                      </div>
+                      <div className="mb-3">
+                        <Form.Group className="mb-3" controlId="name">
+                          <Form.Control
+                            type="text"
+                            placeholder="العنوان : مرحبا بك"
+                            required
+                          />
+                        </Form.Group>
+                      </div>
+                      <div className="mb-3">
+                        <Form.Group className="mb-3" controlId="name">
+                          <Form.Control
+                            type="text"
+                            placeholder="الوصف : لدينا عروض جديده"
+                            required
+                          />
+                        </Form.Group>
+                      </div>
+                    </div>
+                    <div className="submit">
+                      <button
+                        style={{
+                          margin: "auto",
+                        }}
+                        className="button"
+                        type="submit"
+                      >
+                        ارسال
                       </button>
                     </div>
                   </form>

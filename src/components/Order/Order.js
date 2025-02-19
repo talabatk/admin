@@ -347,6 +347,7 @@ const Orders = (props) => {
                   <th style={{ width: "80px" }}>المطعم</th>
                   <th style={{ width: "50px" }}>المجموع</th>
                   <th style={{ width: "100px" }}>الحاله</th>
+                  <th style={{ width: "100px" }}>وقت التحضير</th>
                   <th style={{ width: "100px" }}>الديلفرى</th>
                   <th style={{ width: "100px" }}>وقت الانشاء</th>
                   <th style={{ width: "50px" }}>الاعدادات</th>

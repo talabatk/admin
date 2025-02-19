@@ -58,6 +58,10 @@ const OrderDetails = (props) => {
                   : order?.phone}
               </span>
             </div>
+            <div>
+              <span className="label">رقم المستخدم:</span>
+              <span>{order?.user?.phone}</span>
+            </div>
           </div>
           <div className="col">
             <div>

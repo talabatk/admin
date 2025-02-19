@@ -12,6 +12,7 @@ import icon6 from "assets/icons/checkout.png";
 import icon7 from "assets/icons/menu.png";
 import icon8 from "assets/icons/home.png";
 import icon9 from "assets/icons/complain.png";
+import icon10 from "assets/icons/paper-plane.png";
 
 const SideBar = () => {
   const sideBarVisiablity = useSelector((state) => state.ui.sideBarIsVisiable);
@@ -36,7 +37,6 @@ const SideBar = () => {
         <div className="link-container">
           <div className="pages">
             <p>الصفحات</p>
-
             <div>
               <NavLink
                 exact="true"
@@ -157,6 +157,18 @@ const SideBar = () => {
                 <span>الشكاوى</span>
               </NavLink>
             </div>
+            {/* <div>
+              <NavLink
+                exact="true"
+                to="/send-notification"
+                activeclassname="true"
+                className="link"
+                onClick={sideBarHandler}
+              >
+                <img src={icon10} alt="categories icon" />
+                <span>ارسال اشعار</span>
+              </NavLink>
+            </div> */}
           </div>
         </div>
       </div>

@@ -129,7 +129,7 @@ const EditUser = (props) => {
               </Form.Group>
               <Form.Group className="mb-3" controlId="active">
                 <Form.Label>
-                  نوع المستخدم<span>*</span>
+                  حظر<span>*</span>
                 </Form.Label>
                 <Form.Select required defaultValue={props.user?.active}>
                   <option value={"true"}>غير محظور</option>

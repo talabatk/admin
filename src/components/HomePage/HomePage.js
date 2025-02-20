@@ -221,7 +221,7 @@ const Home = () => {
               <div className="col">
                 <div className="cont">
                   <h5>ارسال اشعار</h5>
-                  <form ref={alertForm} onSubmit={notificationSubmitHandler}>
+                  <form onSubmit={notificationSubmitHandler}>
                     <div style={{ minHeight: "130px" }}>
                       <div className="mb-3">
                         <Form.Select required>

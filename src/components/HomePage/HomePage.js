@@ -66,6 +66,7 @@ const Home = () => {
         content: alertForm.current[0].value,
         active: alertForm.current[1].checked,
       });
+      fetchNumbers();
       showMessage("success", "تم التعديل", "تم التعديل بنجاح");
     } catch (error) {
       console.log(error);

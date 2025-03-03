@@ -26,6 +26,7 @@ const EditProduct = (props) => {
   const [productOptions, setProductOptions] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState("");
   const [selectedCategory, setSelectedVCategory] = useState("");
+  const [isOffer, setIsOffer] = useState(false);
   const [available, setAvailable] = useState(false);
   const [featured, setFeatured] = useState(false);
   const [show_price, setShowPrice] = useState(false);
@@ -48,6 +49,7 @@ const EditProduct = (props) => {
           setAvailable(response.available);
           setShowPrice(response.show_price);
           setProductOptions(response.options_groups);
+          setIsOffer(response.isOffer);
         }
         setProduct(response);
       } catch (error) {
@@ -114,9 +116,11 @@ const EditProduct = (props) => {
     productData.append("categoryId", form.current[3].value);
     productData.append("price", form.current[4].value);
     productData.append("description", form.current[5].value);
-    productData.append("show_price", form.current[8].checked);
-    productData.append("available", form.current[7].checked);
-    productData.append("featured", form.current[6].checked);
+    productData.append("offerPrice", form.current[6].value);
+    productData.append("isOffer", form.current[7].checked);
+    productData.append("featured", form.current[8].checked);
+    productData.append("available", form.current[9].checked);
+    productData.append("show_price", form.current[10].checked);
 
     try {
       const response = await editProduct(productData);
@@ -236,6 +240,29 @@ const EditProduct = (props) => {
               placeholder="الوصف"
             />
           </Form.Group>
+        </div>
+        <div className="col-md-4 col-lg-4">
+          <Form.Group className="mb-3" controlId=" offerPrice">
+            <Form.Label>السعر بعد الخصم</Form.Label>
+            <Form.Control
+              type="number"
+              defaultValue={product?.offerPrice}
+              min={0}
+              placeholder="السعر بعد الخصم"
+            />
+          </Form.Group>
+        </div>
+        <div className="col-md-4 col-lg-4">
+          <FormGroup>
+            <FormControlLabel
+              checked={isOffer}
+              control={<Switch color="warning" onChange={(e) => {}} />}
+              label="تفعيل العرض"
+              onChange={(e) => {
+                setIsOffer((pre) => (pre = !pre));
+              }}
+            />
+          </FormGroup>
         </div>
         <div className="col-md-4 col-lg-4">
           <FormGroup>

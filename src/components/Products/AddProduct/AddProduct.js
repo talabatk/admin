@@ -70,9 +70,11 @@ const AddProduct = (props) => {
     productData.append("categoryId", form.current[3].value);
     productData.append("price", form.current[4].value);
     productData.append("description", form.current[5].value);
-    productData.append("show_price", form.current[8].checked);
-    productData.append("available", form.current[7].checked);
-    productData.append("featured", form.current[6].checked);
+    productData.append("offerPrice", form.current[6].value);
+    productData.append("isOffer", form.current[7].checked);
+    productData.append("featured", form.current[8].checked);
+    productData.append("available", form.current[9].checked);
+    productData.append("show_price", form.current[10].checked);
 
     try {
       const response = await createProduct(productData);
@@ -168,6 +170,26 @@ const AddProduct = (props) => {
             <Form.Label>الوصف</Form.Label>
             <Form.Control type="text" placeholder="الوصف" />
           </Form.Group>
+        </div>
+        <div className="col-md-4 col-lg-4">
+          <Form.Group className="mb-3" controlId=" offerPrice">
+            <Form.Label>السعر بعد الخصم</Form.Label>
+            <Form.Control type="number" min={0} placeholder="السعر بعد الخصم" />
+          </Form.Group>
+        </div>
+        <div className="col-md-4 col-lg-4">
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  defaultChecked={false}
+                  color="warning"
+                  onChange={(e) => {}}
+                />
+              }
+              label="تفعيل العرض"
+            />
+          </FormGroup>
         </div>
         <div className="col-md-4 col-lg-4">
           <FormGroup>

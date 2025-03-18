@@ -52,11 +52,7 @@ const OrderDetails = (props) => {
             </div>
             <div>
               <span className="label">هاتف العميل:</span>
-              <span>
-                {order?.phone.includes("97")
-                  ? "0" + order?.phone.slice(3)
-                  : order?.phone}
-              </span>
+              <span>{order?.phone}</span>
             </div>
             <div>
               <span className="label">رقم المستخدم:</span>

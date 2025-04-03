@@ -1,16 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./orderDetail.scss";
 import { Ring } from "@uiball/loaders";
-import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import useOrder from "hooks/useOrder";
 
 const OrderDetails = (props) => {
-  const { loading, error, fetchOrderBYId } = useOrder();
+  const { loading, fetchOrderBYId } = useOrder();
   const [order, setOrder] = useState(null);
   const [date, setDate] = useState(new Date());
-  const navigate = useNavigate();
-  const form = useRef();
   const { id } = useParams();
 
   useEffect(() => {
@@ -18,7 +15,9 @@ const OrderDetails = (props) => {
       try {
         const response = await fetchOrderBYId(id);
         setOrder(response);
-        setDate(new Date(response.updatedTime));
+        const newDate = new Date(response.createdAt);
+        newDate.setHours(newDate.getHours() + 1); // Add 1 hour
+        setDate(newDate);
       } catch (error) {
         console.log(error);
       }

@@ -18,7 +18,7 @@ const OrderDetails = (props) => {
       try {
         const response = await fetchOrderBYId(id);
         setOrder(response);
-        setDate(new Date(response.createdAt));
+        setDate(new Date(response.updatedTime));
       } catch (error) {
         console.log(error);
       }

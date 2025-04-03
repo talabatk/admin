@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import UpdateTime from "./updateTime";
 
 const Order = (props) => {
-  const date = new Date(props.order.createdAt);
+  const date = new Date(props.order.updatedTime);
 
   const updateTime = async (time) => {
     let fm = new FormData();

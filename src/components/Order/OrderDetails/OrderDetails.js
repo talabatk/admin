@@ -16,7 +16,7 @@ const OrderDetails = (props) => {
         const response = await fetchOrderBYId(id);
         setOrder(response);
         const newDate = new Date(response.createdAt);
-        newDate.setHours(newDate.getHours() + 1); // Add 1 hour
+        // newDate.setHours(newDate.getHours() + 1); // Add 1 hour
         setDate(newDate);
       } catch (error) {
         console.log(error);

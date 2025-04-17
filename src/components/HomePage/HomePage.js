@@ -228,6 +228,8 @@ const Home = () => {
                         <Form.Select required>
                           <option value={"all"}>الكل</option>
                           <option value={"customer"}>المستخدمين</option>
+                          <option value={"restaurant "}>المطاعم</option>
+                          <option value={"delivery "}>الديلفيرى</option>
                         </Form.Select>
                       </div>
                       <div className="mb-3">

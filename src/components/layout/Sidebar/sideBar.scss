@@ -45,6 +45,21 @@
     }
     div {
       margin-bottom: 10px;
+      position: relative;
+      .unseenComplains {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        left: 10px;
+        top: 5px;
+        width: 20px;
+        height: 20px;
+        background-color: #0f7f3d;
+        border-radius: 50%;
+        z-index: 55;
+        color: #fff;
+      }
       .link {
         display: block;
         text-decoration: none;

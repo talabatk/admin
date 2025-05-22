@@ -6,9 +6,9 @@ const Complain = (props) => {
       <h4>{props.complain?.title}</h4>
       <p>{props.complain?.description}</p>
       <span style={{ fontWeight: "bold" }}>الاسم: </span>
-      <span>{props.complain?.user?.name}</span>
+      <span>{props.complain?.name}</span>
       <span style={{ marginRight: "20px", fontWeight: "bold" }}>الهاتف: </span>
-      <span>{props.complain?.user?.phone}</span>
+      <span>{props.complain?.phone}</span>
       <p>{date.toLocaleString()}</p>
       <button
         onClick={() => {

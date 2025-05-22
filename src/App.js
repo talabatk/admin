@@ -30,10 +30,7 @@ function App() {
 
   useEffect(() => {
     // Initialize the socket connection
-    const SOCKET_URL =
-      window.location.hostname === "localhost"
-        ? "http://localhost:5000"
-        : "wss://api.talabatk.top";
+    const SOCKET_URL = "wss://api.talabatk.top";
 
     let socket = io(SOCKET_URL, {
       transports: ["websocket"],

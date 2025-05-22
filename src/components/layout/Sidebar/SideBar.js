@@ -12,9 +12,13 @@ import icon6 from "assets/icons/checkout.png";
 import icon7 from "assets/icons/menu.png";
 import icon8 from "assets/icons/home.png";
 import icon9 from "assets/icons/complain.png";
-import icon10 from "assets/icons/paper-plane.png";
+
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { db } from "firbase";
+import { useEffect, useState } from "react";
 
 const SideBar = () => {
+  const [unSeenComplains, setUnSeenComplains] = useState(0);
   const sideBarVisiablity = useSelector((state) => state.ui.sideBarIsVisiable);
 
   const dispatch = useDispatch();
@@ -23,6 +27,16 @@ const SideBar = () => {
     dispatch(uiSliceActions.toggleSideBar());
   };
 
+  useEffect(() => {
+    const q = query(collection(db, "complains"), where("seen", "==", false));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const data = querySnapshot.docs;
+      setUnSeenComplains(data.length);
+    });
+
+    // Cleanup on unmount
+    return () => unsubscribe();
+  }, []);
   return (
     <>
       <div
@@ -156,6 +170,7 @@ const SideBar = () => {
                 <img src={icon9} alt="categories icon" />
                 <span>الشكاوى</span>
               </NavLink>
+              <span className="unseenComplains">{unSeenComplains}</span>
             </div>
             {/* <div>
               <NavLink

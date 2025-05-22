@@ -1,41 +1,72 @@
 import { Ring } from "@uiball/loaders";
 import "assets/styles/table.scss";
-import { useDispatch, useSelector } from "react-redux";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
 import { useState, useRef, useEffect } from "react";
 import { Toast } from "primereact/toast";
-import { setPage } from "store/complainSlice";
 import DeleteItem from "components/Ui/DeleteItem/DeleteItem";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { Form } from "react-bootstrap";
 import useComplain from "hooks/useComplain";
 import Complain from "./complainItem";
 import SendNotification from "./SendNotification/SendNotification";
+import {
+  collection,
+  onSnapshot,
+  query,
+  writeBatch,
+  where,
+  getDocs,
+} from "firebase/firestore";
+import { db } from "firbase";
 
 const Complains = () => {
+  const [complaints, setComplaints] = useState([]);
+
   const [showDelete, setShowDelete] = useState(false);
   const [showSendNotification, setSendNotification] = useState(false);
   const [selectedComplain, setSelectedComplain] = useState(null);
-  const { loading, fetchComplains, deleteComplain } = useComplain();
-  const page = useSelector((state) => state.complain.page);
-  const data = useSelector((state) => state.complain.complains);
-  const pages = useSelector((state) => state.complain.pages);
-  const dispatch = useDispatch();
+  const { loading, deleteComplain } = useComplain();
   const toast = useRef(null);
 
   useEffect(() => {
-    let newParams = {};
-    newParams.page = page;
-    newParams.size = 12;
+    const markAllUnseenAsSeen = async () => {
+      try {
+        const q = query(
+          collection(db, "complains"),
+          where("seen", "==", false)
+        );
+        const snapshot = await getDocs(q);
 
-    fetchComplains(newParams);
-  }, [page]);
+        if (!snapshot.empty) {
+          const batch = writeBatch(db);
 
-  const handleChangePage = (event, newPage) => {
-    dispatch(setPage(newPage));
-  };
+          snapshot.docs.forEach((doc) => {
+            batch.update(doc.ref, {
+              seen: true,
+              seenAt: new Date(),
+            });
+          });
+
+          await batch.commit();
+          console.log(`Marked ${snapshot.size} unseen complaints as seen.`);
+        }
+      } catch (error) {
+        console.error("Error updating unseen complaints:", error);
+      }
+    };
+
+    // Run the update when page loads
+    markAllUnseenAsSeen();
+
+    const q = query(collection(db, "complains")); // Add where(...) if you want to filter
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setComplaints(data);
+    });
+
+    // Cleanup on unmount
+    return () => unsubscribe();
+  }, []);
 
   const showMessage = (type, head, content) => {
     toast.current.show({
@@ -91,8 +122,8 @@ const Complains = () => {
       ) : (
         <>
           <div className="row row-cols-1" style={{ padding: "10px" }}>
-            {data.length ? (
-              data.map((complain) => (
+            {complaints.length ? (
+              complaints.map((complain) => (
                 <Complain
                   complain={complain}
                   toggleDelete={toggleDelete}
@@ -105,7 +136,7 @@ const Complains = () => {
               <h3>لا يوجد شكاوى</h3>
             )}
           </div>
-          <Stack spacing={1}>
+          {/* <Stack spacing={1}>
             <Pagination
               count={pages}
               page={page}
@@ -114,11 +145,11 @@ const Complains = () => {
               style={{ margin: "20px auto 0" }}
               onChange={handleChangePage}
             />
-          </Stack>
+          </Stack> */}
           <SendNotification
             show={showSendNotification}
             close={toggleNotification}
-            fcm={selectedComplain ? selectedComplain.user.fcm : ""}
+            fcm={selectedComplain ? selectedComplain.fcm : ""}
             showMessage={showMessage}
           />
           <DeleteItem

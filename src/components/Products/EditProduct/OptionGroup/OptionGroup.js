@@ -22,8 +22,13 @@ const OptionGroup = (props) => {
     let newOptions = optionsValues.filter((option) => +option.id !== +id);
 
     setOptionsValues(newOptions);
+    props.getOptionData({
+      id: props.index,
+      name: groupName.current.value,
+      type: single.current.children[0].checked ? "multi" : "single",
+      options: newOptions,
+    });
   };
-  console.log(optionsValues);
 
   const setOptionData = (data) => {
     let options = optionsValues;

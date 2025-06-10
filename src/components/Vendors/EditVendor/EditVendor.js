@@ -42,15 +42,15 @@ const EditVendor = (props) => {
         const response = await getVendor(id);
 
         if (response) {
-          setVendor(response.result);
-          setImage(response.result.image || profileImage);
-          setCover(response.result.cover || coverImage);
+          setVendor(response.results);
+          setImage(response.results.image || profileImage);
+          setCover(response.results.cover || coverImage);
           setSelectedCategories(
-            response.result.vendorCategories.map((category) => {
+            response.results.vendorCategories.map((category) => {
               return { value: category.id, label: category.name };
             })
           );
-          const areasInputs = response.result.areas.map((area) => (
+          const areasInputs = response.results.areas.map((area) => (
             <AreaCost
               index={area.delivery_cost.id}
               getAreaCost={getAreaCost}

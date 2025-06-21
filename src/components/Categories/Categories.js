@@ -84,6 +84,7 @@ const Categories = () => {
                   <th style={{ width: "10px" }}>#</th>
                   <th style={{ width: "100px" }}>الاسم</th>
                   <th style={{ width: "80px" }}>الترتيب</th>
+                  <th style={{ width: "80px" }}>النوع</th>
                   <th style={{ width: "50px" }}>الاعدادات</th>
                 </tr>
               </thead>

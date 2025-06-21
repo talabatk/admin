@@ -19,6 +19,7 @@ const Category = (props) => {
         </span>
       </td>
       <td>{props.category?.order}</td>
+      <td>{props.category?.type === "supermarket" ? "سوبر ماركت" : "مطعم"}</td>
       <td>
         <DropDownButtons
           category={props.category}

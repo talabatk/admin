@@ -27,6 +27,7 @@ const EditCategory = (props) => {
     categoryData.append("id", props.category.id);
     categoryData.append("name", form.current[1].value);
     categoryData.append("order", form.current[2].value);
+    categoryData.append("type", form.current[3].value);
 
     try {
       const response = await editCategory(categoryData);
@@ -104,7 +105,15 @@ const EditCategory = (props) => {
                   required
                 />
               </Form.Group>
-
+              <Form.Group className="mb-3" controlId="status">
+                <Form.Label>
+                  النوع<span style={{ color: "red" }}>*</span>
+                </Form.Label>
+                <Form.Select required defaultValue={props.category?.type}>
+                  <option value={"restaurant"}>مطعم</option>
+                  <option value={"supermarket"}>سوبرماركت</option>
+                </Form.Select>
+              </Form.Group>
               <div className="buttons">
                 <button className="cancel" onClick={props.close} type="none">
                   إلغاء

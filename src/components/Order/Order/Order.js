@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 const Order = (props) => {
+  const date = new Date(props.order.createdAt);
   const updateTime = async (time) => {
     let fm = new FormData();
     fm.append("time", time);
@@ -43,7 +44,7 @@ const Order = (props) => {
         {props.order?.deliveryId ? props.order.delivery.user.name : "لا يوجد"}
       </td>
       <td>{props.order.lang === "delivery" ? "توصيل" : "استلام"}</td>
-      <td>{props.order.createdAt}</td>
+      <td>{date.toLocaleString()}</td>
       <td
         style={{
           display: "flex",

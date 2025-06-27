@@ -4,21 +4,13 @@ import { NavLink } from "react-router-dom";
 import UpdateTime from "./updateTime";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import {
-  faLocationDot,
-  faMapLocationDot,
-} from "@fortawesome/free-solid-svg-icons";
 
 const Order = (props) => {
-  const date = new Date(props.order.createdAt);
-  // date.setHours(date.getHours() + 1); // Add 1 hour
-
   const updateTime = async (time) => {
     let fm = new FormData();
     fm.append("time", time);
     await props.editOrder(props.order.id, fm);
   };
-  console.log(props.order);
 
   return (
     <tr className="item">
@@ -50,7 +42,8 @@ const Order = (props) => {
       <td>
         {props.order?.deliveryId ? props.order.delivery.user.name : "لا يوجد"}
       </td>
-      <td>{date.toLocaleString()}</td>
+      <td>{props.order.lang === "delivery" ? "توصيل" : "استلام"}</td>
+      <td>{props.order.createdAt}</td>
       <td
         style={{
           display: "flex",
@@ -66,15 +59,6 @@ const Order = (props) => {
         >
           <FontAwesomeIcon icon={faWhatsapp} size="xl" />
         </a>
-        {props.order?.lat && props.order?.lang ? (
-          <a
-            href={`https://www.google.com/maps?q=${props.order?.lat},${props.order?.lang}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FontAwesomeIcon icon={faMapLocationDot} size="xl" />
-          </a>
-        ) : null}
         <DropDownButtons
           vendor={props.vendor}
           delete={() => {

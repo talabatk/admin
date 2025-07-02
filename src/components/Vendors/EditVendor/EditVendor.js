@@ -296,7 +296,7 @@ const EditVendor = (props) => {
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">
-          <Form.Group className="mb-3" controlId="status">
+          <Form.Group className="mb-3" controlId="status2">
             <Form.Label>
               التصنيف<span style={{ color: "red" }}>*</span>
             </Form.Label>
@@ -305,13 +305,18 @@ const EditVendor = (props) => {
               options={newCategories}
               isMulti
               onChange={handleChange}
+              name="status2"
             />
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">
-          <Form.Group className="mb-3" controlId="password">
+          <Form.Group className="mb-3" controlId="password2">
             <Form.Label>كلمه المرور</Form.Label>
-            <Form.Control type="password" placeholder="كلمه المرور" />
+            <Form.Control
+              name="password2"
+              type="password"
+              placeholder="كلمه المرور"
+            />
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">

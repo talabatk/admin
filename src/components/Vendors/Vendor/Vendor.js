@@ -35,6 +35,7 @@ const Vendor = (props) => {
         />
       </td>
       <td>{categories.join(",") || "لا يوجد"}</td>
+      <td>{props.vendor.type === "restaurant" ? "مطعم" : "سوبر ماركت"}</td>
       <td>
         <DropDownButtons
           vendor={props.vendor}

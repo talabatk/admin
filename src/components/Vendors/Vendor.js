@@ -100,6 +100,7 @@ const Vendors = () => {
                   <th style={{ width: "50px" }}>المناطق</th>
                   <th style={{ width: "100px" }}>الحاله</th>
                   <th style={{ width: "100px" }}>التصنيف</th>
+                  <th style={{ width: "100px" }}>النوع</th>
                   <th style={{ width: "50px" }}>الاعدادات</th>
                 </tr>
               </thead>

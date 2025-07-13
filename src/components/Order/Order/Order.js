@@ -54,7 +54,9 @@ const Order = (props) => {
         }}
       >
         <a
-          href={`https://wa.me/972${props.order?.phone.slice(1)}?text=""`}
+          href={`https://wa.me/972${props.order?.phone.slice(
+            1
+          )}?text="مرحبا طلبت طلبية من تطبيق طلباتك"`}
           target="_blank"
           rel="noopener noreferrer"
         >

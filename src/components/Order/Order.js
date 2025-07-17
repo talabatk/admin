@@ -328,7 +328,7 @@ const Orders = (props) => {
                 />
               </button>
             </form>
-            <button
+            {/* <button
               onClick={() => {
                 setDeleteAllOrders(true);
                 toggleDelete();
@@ -336,7 +336,7 @@ const Orders = (props) => {
               style={{ backgroundColor: "red", color: "#fff" }}
             >
               حذف الكل
-            </button>
+            </button> */}
           </div>
           <div className="table-container">
             <table>

@@ -16,6 +16,7 @@ import useVendors from "hooks/useVendors";
 import useUser from "hooks/useUser";
 
 const Orders = (props) => {
+  const adminInfo = useSelector((state) => state.auth.userData);
   const { vendors } = useVendors();
   const { users, fetchUsers } = useUser();
   const [orderValue, setOrderValue] = useState(1);
@@ -328,15 +329,17 @@ const Orders = (props) => {
                 />
               </button>
             </form>
-            {/* <button
-              onClick={() => {
-                setDeleteAllOrders(true);
-                toggleDelete();
-              }}
-              style={{ backgroundColor: "red", color: "#fff" }}
-            >
-              حذف الكل
-            </button> */}
+            {adminInfo.name === "05432668291" || adminInfo.name === "دار" ? (
+              <button
+                onClick={() => {
+                  setDeleteAllOrders(true);
+                  toggleDelete();
+                }}
+                style={{ backgroundColor: "red", color: "#fff" }}
+              >
+                حذف الكل
+              </button>
+            ) : null}
           </div>
           <div className="table-container">
             <table>

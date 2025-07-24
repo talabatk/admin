@@ -289,7 +289,7 @@ const EditVendor = (props) => {
               النوع<span style={{ color: "red" }}>*</span>
             </Form.Label>
             <Form.Select required defaultValue={vendor?.type}>
-              <option value={"ُrestaurant"}>مطعم</option>
+              <option value={"restaurant"}>مطعم</option>
               <option value={"supermarket"}>سوبر ماركت</option>
             </Form.Select>
           </Form.Group>

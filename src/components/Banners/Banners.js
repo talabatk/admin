@@ -1,24 +1,26 @@
 import { Ring } from "@uiball/loaders";
 import "assets/styles/table.scss";
 import { useSelector } from "react-redux";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Toast } from "primereact/toast";
 import DeleteItem from "components/Ui/DeleteItem/DeleteItem";
-import useArea from "hooks/useArea";
-import Region from "./Region/Region";
-import AddRegion from "./AddRegion/AddRegion";
-import EditRegion from "./EditRegion/EditRegion";
-import useCity from "hooks/useCity";
+import useBanner from "hooks/userBanners";
+import Banner from "./Banner/Banner";
+import AddBanner from "./AddBanner/AddBanner";
+import EditBanner from "./EditBanner/EditBanner";
 
-const Regions = () => {
+const Banners = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState(null);
-  const { loading, deleteArea } = useArea();
-  const data = useSelector((state) => state.area.areas);
+  const [selectedSlider, setSelectedSlider] = useState(null);
+  const { loading, deleteBanner, fetchBanner } = useBanner();
+  const data = useSelector((state) => state.banner.banners);
   const toast = useRef(null);
-  const { cities } = useCity();
+
+  useEffect(() => {
+    fetchBanner();
+  }, []);
 
   const showMessage = (type, head, content) => {
     toast.current.show({
@@ -37,8 +39,8 @@ const Regions = () => {
     setShowEditForm((pre) => (pre = !pre));
   };
 
-  const setSelectedRegionValue = (category) => {
-    setSelectedRegion(category);
+  const setSelectedSliderValue = (slider) => {
+    setSelectedSlider(slider);
   };
 
   const toggleDelete = () => {
@@ -47,17 +49,17 @@ const Regions = () => {
 
   const confirmDelete = async () => {
     try {
-      const response = await deleteArea(selectedRegion.id);
+      const response = await deleteBanner(selectedSlider.id);
       // Assuming `response` contains information to check if the operation succeeded
 
       if (response) {
-        showMessage("warn", "تم الحذف", "تم حذف المنطقه بنجاح");
+        showMessage("warn", "تم الحذف", "تم حذف سلايدر بنجاح");
         toggleDelete();
       } else {
         showMessage("error", "هناك خطأ", "حدث خطأ غير متوقع");
       }
     } catch (err) {
-      console.error("Error adding Area:", err);
+      console.error("Error adding vendor:", err);
       showMessage("error", "هناك خطأ", "حدث خطأ غير متوقع");
     }
   };
@@ -75,7 +77,7 @@ const Regions = () => {
           <div className="controls">
             <div>
               <button className="button" onClick={toggleAddForm}>
-                إضافه منطقه
+                إضافه بانر
               </button>
             </div>
           </div>
@@ -84,41 +86,40 @@ const Regions = () => {
               <thead>
                 <tr>
                   <th style={{ width: "10px" }}>#</th>
-                  <th style={{ width: "100px" }}>الاسم</th>
-                  <th style={{ width: "100px" }}>المدينه</th>
+                  <th style={{ width: "100px" }}>العنوان</th>
+                  <th style={{ width: "80px" }}>الوصف</th>
+                  <th style={{ width: "80px" }}>الحاله</th>
                   <th style={{ width: "50px" }}>الاعدادات</th>
                 </tr>
               </thead>
               <tbody>
-                {data ? (
-                  data.map((region) => (
-                    <Region
-                      key={region.id}
-                      region={region}
-                      selectedRegion={selectedRegion}
+                {data.length ? (
+                  data.map((slider) => (
+                    <Banner
+                      key={slider.id}
+                      slider={slider}
+                      selectedSlider={selectedSlider}
                       toggleEditForm={toggleEditForm}
-                      setSelectedRegionValue={setSelectedRegionValue}
+                      setSelectedSliderValue={setSelectedSliderValue}
                       toggleDelete={toggleDelete}
                     />
                   ))
                 ) : (
-                  <h4>لا يوجد مناطق!</h4>
+                  <h4>لا يوجد بيانات!</h4>
                 )}
               </tbody>
             </table>
           </div>
-          <AddRegion
+          <AddBanner
             show={showAddForm}
             close={toggleAddForm}
             showMessage={showMessage}
-            cities={cities}
           />
-          <EditRegion
+          <EditBanner
             show={showEditForm}
             close={toggleEditForm}
             showMessage={showMessage}
-            region={selectedRegion}
-            cities={cities}
+            slider={selectedSlider}
           />
           <DeleteItem
             show={showDelete}
@@ -131,4 +132,4 @@ const Regions = () => {
     </div>
   );
 };
-export default Regions;
+export default Banners;

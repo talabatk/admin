@@ -28,19 +28,22 @@ const Product = (props) => {
             المطعم: {props.product?.user.name}
           </span>
           <span
-            style={{ margin: "0 5px", color: "#0f7f3d", fontWeight: "bold" }}
-          >
+            style={{ margin: "0 5px", color: "#0f7f3d", fontWeight: "bold" }}>
             |
           </span>
           <span style={{ fontSize: "13px" }}>
             القسم: {props.product?.category.name}
           </span>
+          <div>
+            <span style={{ fontSize: "13px" }}>
+              ترتيب الظهور: {props.product?.order}
+            </span>
+          </div>
           <div className="price-rate">
             <div className="price">
               <i
                 className="fa fa-tag"
-                style={{ fontSize: "lg", color: "#d9176f" }}
-              ></i>
+                style={{ fontSize: "lg", color: "#d9176f" }}></i>
               <span>{props.product?.price} شيكل</span>
             </div>
             <div className="rate">

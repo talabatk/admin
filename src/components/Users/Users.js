@@ -15,6 +15,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import AddUser from "./AddUser/AddUser";
 import EditUser from "./EditUser/EditUser";
 import { Form } from "react-bootstrap";
+import useCity from "hooks/useCity";
 
 const Users = () => {
   const [showAddForm, setShowAddForm] = useState(false);
@@ -29,6 +30,7 @@ const Users = () => {
   const dispatch = useDispatch();
   const toast = useRef(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const { cities } = useCity();
 
   useEffect(() => {
     let newParams = {};
@@ -123,8 +125,7 @@ const Users = () => {
                     searchParams.delete("role");
                     setSearchParams(searchParams);
                   }
-                }}
-              >
+                }}>
                 <option value={""}>الكل</option>
                 <option value={"delivery"}>عامل توصيل</option>
                 <option value={"customer"}>مستخدم</option>
@@ -164,6 +165,7 @@ const Users = () => {
                   <th style={{ width: "10px" }}>#</th>
                   <th style={{ width: "100px" }}>الاسم</th>
                   <th style={{ width: "80px" }}>العنوان</th>
+                  <th style={{ width: "80px" }}>المدينه</th>
                   <th style={{ width: "50px" }}>النوع</th>
                   <th style={{ width: "100px" }}>الحظر</th>
                   <th style={{ width: "50px" }}>الاعدادات</th>
@@ -201,12 +203,14 @@ const Users = () => {
             show={showAddForm}
             close={toggleAddForm}
             showMessage={showMessage}
+            cities={cities}
           />
           <EditUser
             show={showEditForm}
             close={toggleEditForm}
             showMessage={showMessage}
             user={selectedUser}
+            cities={cities}
           />
           <DeleteItem
             show={showDelete}

@@ -28,6 +28,7 @@ const Vendor = (props) => {
         </span>
       </td>
       <td>{props.vendor?.address}</td>
+      <td>{props.vendor?.city ? props.vendor.city.name : "لا يوجد"}</td>
       <td>{props.vendor?.areas?.length} مناطق</td>
       <td>
         <MenuSimple
@@ -47,8 +48,7 @@ const Vendor = (props) => {
           delete={() => {
             props.setSelectedVendorValue(props.vendor);
             props.toggleDelete();
-          }}
-        ></DropDownButtons>
+          }}></DropDownButtons>
       </td>
     </tr>
   );

@@ -24,6 +24,8 @@ import EditVendor from "components/Vendors/EditVendor/EditVendor";
 import Complains from "components/Complains/Complains";
 import { io } from "socket.io-client";
 import VendorCategories from "components/VendorCategories/VendorCategories";
+import Cities from "components/Cities/Cities";
+import Banners from "components/Banners/Banners";
 function App() {
   const [newOrder, setNewOrder] = useState(1);
   const toast = useRef(null);
@@ -130,8 +132,7 @@ function App() {
             <ProtectedRoute>
               <Layout newOrder={newOrder} />
             </ProtectedRoute>
-          }
-        >
+          }>
           {/* Nested Protected Routes */}
           <Route index element={<Home />} />
           <Route path="vendors" element={<VendorScreen />} />
@@ -159,6 +160,8 @@ function App() {
             element={<AddProduct showMessage={showMessage} />}
           />
           <Route path="sliders" element={<Sliders />} />
+          <Route path="banners" element={<Banners />} />
+          <Route path="cities" element={<Cities />} />
           <Route path="regions" element={<Regions />} />
           <Route path="users" element={<Users />} />
           <Route path="categories" element={<CategoriesScreen />} />

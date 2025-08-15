@@ -116,11 +116,12 @@ const EditProduct = (props) => {
     productData.append("categoryId", form.current[3].value);
     productData.append("price", form.current[4].value);
     productData.append("description", form.current[5].value);
-    productData.append("offerPrice", form.current[6].value);
-    productData.append("isOffer", form.current[7].checked);
-    productData.append("featured", form.current[8].checked);
-    productData.append("available", form.current[9].checked);
-    productData.append("show_price", form.current[10].checked);
+    productData.append("order", form.current[6].value);
+    productData.append("offerPrice", form.current[7].value);
+    productData.append("isOffer", form.current[8].checked);
+    productData.append("featured", form.current[9].checked);
+    productData.append("available", form.current[10].checked);
+    productData.append("show_price", form.current[11].checked);
 
     try {
       const response = await editProduct(productData);
@@ -185,8 +186,7 @@ const EditProduct = (props) => {
               value={selectedVendor}
               onChange={(e) => {
                 setSelectedVendor(e.target.value);
-              }}
-            >
+              }}>
               <option value={""}>----</option>
               {vendors?.map((vendor) => (
                 <option key={vendor.id} value={vendor.id}>
@@ -206,8 +206,7 @@ const EditProduct = (props) => {
               value={selectedCategory}
               onChange={(e) => {
                 setSelectedVCategory(e.target.value);
-              }}
-            >
+              }}>
               <option value={""}>----</option>
               {categories?.map((category) => (
                 <option key={category.id} value={category.id}>
@@ -238,6 +237,17 @@ const EditProduct = (props) => {
               defaultValue={product?.description}
               type="text"
               placeholder="الوصف"
+            />
+          </Form.Group>
+        </div>
+        <div className="col-md-4 col-lg-4">
+          <Form.Group className="mb-3" controlId=" offerPrice">
+            <Form.Label>ترتيب الظهور</Form.Label>
+            <Form.Control
+              type="number"
+              defaultValue={product?.order}
+              min={1}
+              placeholder=""
             />
           </Form.Group>
         </div>
@@ -328,8 +338,7 @@ const EditProduct = (props) => {
                 },
               ]);
             }}
-            type="button"
-          >
+            type="button">
             إضافه خيار
           </button>
         </div>
@@ -352,8 +361,7 @@ const EditProduct = (props) => {
               float: "left",
             }}
             className="button"
-            type="submit"
-          >
+            type="submit">
             حفظ التعديلات
           </button>
         </div>

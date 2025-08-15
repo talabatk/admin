@@ -70,11 +70,12 @@ const AddProduct = (props) => {
     productData.append("categoryId", form.current[3].value);
     productData.append("price", form.current[4].value);
     productData.append("description", form.current[5].value);
-    productData.append("offerPrice", form.current[6].value);
-    productData.append("isOffer", form.current[7].checked);
-    productData.append("featured", form.current[8].checked);
-    productData.append("available", form.current[9].checked);
-    productData.append("show_price", form.current[10].checked);
+    productData.append("order", form.current[6].value);
+    productData.append("offerPrice", form.current[7].value);
+    productData.append("isOffer", form.current[8].checked);
+    productData.append("featured", form.current[9].checked);
+    productData.append("available", form.current[10].checked);
+    productData.append("show_price", form.current[11].checked);
 
     try {
       const response = await createProduct(productData);
@@ -173,6 +174,17 @@ const AddProduct = (props) => {
         </div>
         <div className="col-md-4 col-lg-4">
           <Form.Group className="mb-3" controlId=" offerPrice">
+            <Form.Label>ترتيب الظهور</Form.Label>
+            <Form.Control
+              type="number"
+              defaultValue={1}
+              min={1}
+              placeholder=""
+            />
+          </Form.Group>
+        </div>
+        <div className="col-md-4 col-lg-4">
+          <Form.Group className="mb-3" controlId=" offerPrice">
             <Form.Label>السعر بعد الخصم</Form.Label>
             <Form.Control type="number" min={0} placeholder="السعر بعد الخصم" />
           </Form.Group>
@@ -240,8 +252,7 @@ const AddProduct = (props) => {
             onClick={() => {
               setOptionGroupsNumber((pre) => (pre += 1));
             }}
-            type="button"
-          >
+            type="button">
             إضافه خيار
           </button>
           <button
@@ -251,8 +262,7 @@ const AddProduct = (props) => {
               setOptionGroupsNumber((pre) => (pre -= 1));
               setProductOptions((pre) => (pre = pre.slice(0, pre.length - 1)));
             }}
-            type="button"
-          >
+            type="button">
             حذف خيار
           </button>
         </div>
@@ -272,8 +282,7 @@ const AddProduct = (props) => {
               float: "left",
             }}
             className="button"
-            type="submit"
-          >
+            type="submit">
             إضافه المنتج
           </button>
         </div>

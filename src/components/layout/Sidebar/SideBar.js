@@ -41,8 +41,7 @@ const SideBar = () => {
     <>
       <div
         className={sideBarVisiablity ? "overlay openOverlay" : "overlay"}
-        onClick={sideBarHandler}
-      ></div>
+        onClick={sideBarHandler}></div>
       <div className={`sidebar ${sideBarVisiablity ? "openSideBar" : ""}`}>
         <div className="logo center">
           <h3>طالباتك</h3>
@@ -57,8 +56,7 @@ const SideBar = () => {
                 to="/"
                 activeclassname="true"
                 className="link"
-                onClick={sideBarHandler}
-              >
+                onClick={sideBarHandler}>
                 <img src={icon8} alt="categories icon" />
                 <span>الرئيسيه</span>
               </NavLink>
@@ -69,8 +67,7 @@ const SideBar = () => {
                 to="/orders"
                 activeclassname="true"
                 className="link"
-                onClick={sideBarHandler}
-              >
+                onClick={sideBarHandler}>
                 <img src={icon6} alt="categories icon" />
                 <span>الطلبات</span>
               </NavLink>
@@ -81,8 +78,7 @@ const SideBar = () => {
                 to="/vendors"
                 activeclassname="true"
                 className="link"
-                onClick={sideBarHandler}
-              >
+                onClick={sideBarHandler}>
                 <img src={icon1} alt="categories icon" />
                 <span>المطاعم</span>
               </NavLink>
@@ -93,8 +89,7 @@ const SideBar = () => {
                 to="/products"
                 activeclassname="true"
                 className="link"
-                onClick={sideBarHandler}
-              >
+                onClick={sideBarHandler}>
                 <img src={icon7} alt="categories icon" />
                 <span>المنتجات</span>
               </NavLink>
@@ -105,8 +100,7 @@ const SideBar = () => {
                 to="/users"
                 activeclassname="true"
                 className="link"
-                onClick={sideBarHandler}
-              >
+                onClick={sideBarHandler}>
                 <img src={icon5} alt="categories icon" />
                 <span>المستخدمين</span>
               </NavLink>
@@ -117,8 +111,7 @@ const SideBar = () => {
                 to="/categories"
                 activeclassname="true"
                 className="link"
-                onClick={sideBarHandler}
-              >
+                onClick={sideBarHandler}>
                 <img src={icon2} alt="categories icon" />
                 <span>الاقسام</span>
               </NavLink>
@@ -129,8 +122,7 @@ const SideBar = () => {
                 to="/vendor-categories"
                 activeclassname="true"
                 className="link"
-                onClick={sideBarHandler}
-              >
+                onClick={sideBarHandler}>
                 <img src={icon2} alt="categories icon" />
                 <span>تصنيف المطاعم</span>
               </NavLink>
@@ -141,10 +133,31 @@ const SideBar = () => {
                 to="/sliders"
                 activeclassname="true"
                 className="link"
-                onClick={sideBarHandler}
-              >
+                onClick={sideBarHandler}>
                 <img src={icon3} alt="categories icon" />
                 <span>سلايدر الصور</span>
+              </NavLink>
+            </div>
+            <div>
+              <NavLink
+                exact="true"
+                to="/banners"
+                activeclassname="true"
+                className="link"
+                onClick={sideBarHandler}>
+                <img src={icon3} alt="categories icon" />
+                <span>بانر إعلاني</span>
+              </NavLink>
+            </div>
+            <div>
+              <NavLink
+                exact="true"
+                to="/cities"
+                activeclassname="true"
+                className="link"
+                onClick={sideBarHandler}>
+                <img src={icon4} alt="categories icon" />
+                <span>المدن</span>
               </NavLink>
             </div>
             <div>
@@ -153,8 +166,7 @@ const SideBar = () => {
                 to="/regions"
                 activeclassname="true"
                 className="link"
-                onClick={sideBarHandler}
-              >
+                onClick={sideBarHandler}>
                 <img src={icon4} alt="categories icon" />
                 <span>مناطق التوصيل</span>
               </NavLink>
@@ -165,8 +177,7 @@ const SideBar = () => {
                 to="/complains"
                 activeclassname="true"
                 className="link"
-                onClick={sideBarHandler}
-              >
+                onClick={sideBarHandler}>
                 <img src={icon9} alt="categories icon" />
                 <span>الشكاوى</span>
               </NavLink>

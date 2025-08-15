@@ -10,6 +10,8 @@ import productSlice from "./productSlice";
 import orderSlice from "./orderSlice";
 import complainSlice from "./complainSlice";
 import vendorCategorySlice from "./vendorCategories";
+import citySlice from "./citySlice";
+import bannerSlice from "./bannerSlice";
 
 const store = configureStore({
   reducer: {
@@ -18,7 +20,9 @@ const store = configureStore({
     vendor: vendorSlice.reducer,
     category: categorySlice.reducer,
     slider: sliderSlice.reducer,
+    banner: bannerSlice.reducer,
     area: areaSlice.reducer,
+    city: citySlice.reducer,
     user: userSlice.reducer,
     product: productSlice.reducer,
     order: orderSlice.reducer,

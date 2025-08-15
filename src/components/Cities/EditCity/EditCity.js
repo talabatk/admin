@@ -6,12 +6,12 @@ import { Form } from "react-bootstrap";
 
 import { CSSTransition } from "react-transition-group";
 import { Ring } from "@uiball/loaders";
-import useArea from "hooks/useArea";
+import useCity from "hooks/useCity";
 
-const EditRegion = (props) => {
+const EditCity = (props) => {
   const form = useRef();
   const nodeRef = useRef();
-  const { loading, editArea, error } = useArea();
+  const { loading, editCity, error } = useCity();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -19,14 +19,14 @@ const EditRegion = (props) => {
 
     regionData.append("id", props.region.id);
     regionData.append("name", form.current[0].value);
-    regionData.append("cityId", form.current[1].value);
+    regionData.append("topic", form.current[1].value);
 
     try {
-      const response = await editArea(regionData);
+      const response = await editCity(regionData);
       // Assuming `response` contains information to check if the operation succeeded
 
-      if (response.name) {
-        props.showMessage("success", "تم التعديل", "تم تعديل ألمنطقه بنجاح");
+      if (response) {
+        props.showMessage("success", "تم التعديل", "تم تعديل المدينه بنجاح");
         props.close(); // Uncomment if you need to close a modal or similar
       } else {
         props.showMessage(
@@ -63,37 +63,38 @@ const EditRegion = (props) => {
               </div>
             ) : null}
             <div className="head center">
-              <h5>تديل منطقه</h5>
+              <h5>تعديل مدينه</h5>
               <FontAwesomeIcon icon={faClose} onClick={props.close} />
             </div>
             <Form className="form" ref={form} onSubmit={submitHandler}>
               <Form.Group className="mb-3" controlId="name">
                 <Form.Label>
-                  اسم المنطقه<span>*</span>
+                  اسم المدينه<span>*</span>
                 </Form.Label>
                 <Form.Control
                   type="text"
                   defaultValue={props.region?.name}
-                  placeholder="اسم القسم"
+                  placeholder="اسم المدينه"
                   required
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="status">
-                <Form.Label>المدينه</Form.Label>
-                <Form.Select>
-                  {props.cities?.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  ))}
-                </Form.Select>
+              <Form.Group className="mb-3" controlId="name">
+                <Form.Label>
+                  اسم المدينه باللغه الانجليزيه<span>*</span>
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="اسم المدينه باللغه الانجليزي"
+                  defaultValue={props.region?.topic}
+                  required
+                />
               </Form.Group>
               <div className="buttons">
-                <button className="cancel" onClick={props.close} type="button">
+                <button className="cancel" onClick={props.close} type="none">
                   إلغاء
                 </button>
                 <button className="button" type="submit">
-                  حفظ منطقه
+                  حفظ
                 </button>
               </div>
             </Form>
@@ -103,4 +104,4 @@ const EditRegion = (props) => {
     </>
   );
 };
-export default EditRegion;
+export default EditCity;

@@ -1,13 +1,13 @@
 import DropDownButtons from "components/Ui/DropDownButtons/DropDownButtons";
 
-const Region = (props) => {
+const City = (props) => {
   return (
     <tr className="item">
       <td>{props.region?.id}</td>
       <td className="name">
         <h6>{props.region?.name}</h6>
       </td>
-      <td>{props.region?.city ? props.region.city.name : "لا يوجد"}</td>
+      <td>{props.region?.topic}</td>
       <td>
         <DropDownButtons
           region={props.region}
@@ -24,4 +24,4 @@ const Region = (props) => {
   );
 };
 
-export default Region;
+export default City;

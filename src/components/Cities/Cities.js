@@ -4,21 +4,20 @@ import { useSelector } from "react-redux";
 import { useState, useRef } from "react";
 import { Toast } from "primereact/toast";
 import DeleteItem from "components/Ui/DeleteItem/DeleteItem";
-import useArea from "hooks/useArea";
-import Region from "./Region/Region";
-import AddRegion from "./AddRegion/AddRegion";
-import EditRegion from "./EditRegion/EditRegion";
+// import useCity from "@hooks/useCity";
+import City from "./City/City";
 import useCity from "hooks/useCity";
+import AddCity from "./AddCity/AddCity";
+import EditCity from "./EditCity/EditCity";
 
-const Regions = () => {
+const Cities = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState(null);
-  const { loading, deleteArea } = useArea();
-  const data = useSelector((state) => state.area.areas);
+  const { loading, deleteCity } = useCity();
+  const data = useSelector((state) => state.city.cities);
   const toast = useRef(null);
-  const { cities } = useCity();
 
   const showMessage = (type, head, content) => {
     toast.current.show({
@@ -47,7 +46,7 @@ const Regions = () => {
 
   const confirmDelete = async () => {
     try {
-      const response = await deleteArea(selectedRegion.id);
+      const response = await deleteCity(selectedRegion.id);
       // Assuming `response` contains information to check if the operation succeeded
 
       if (response) {
@@ -75,7 +74,7 @@ const Regions = () => {
           <div className="controls">
             <div>
               <button className="button" onClick={toggleAddForm}>
-                إضافه منطقه
+                إضافه مدينه
               </button>
             </div>
           </div>
@@ -85,14 +84,14 @@ const Regions = () => {
                 <tr>
                   <th style={{ width: "10px" }}>#</th>
                   <th style={{ width: "100px" }}>الاسم</th>
-                  <th style={{ width: "100px" }}>المدينه</th>
+                  <th style={{ width: "100px" }}>الاسم باللغه الانجليزيه</th>
                   <th style={{ width: "50px" }}>الاعدادات</th>
                 </tr>
               </thead>
               <tbody>
                 {data ? (
                   data.map((region) => (
-                    <Region
+                    <City
                       key={region.id}
                       region={region}
                       selectedRegion={selectedRegion}
@@ -102,23 +101,21 @@ const Regions = () => {
                     />
                   ))
                 ) : (
-                  <h4>لا يوجد مناطق!</h4>
+                  <h4>لا يوجد مدن!</h4>
                 )}
               </tbody>
             </table>
           </div>
-          <AddRegion
+          <AddCity
             show={showAddForm}
             close={toggleAddForm}
             showMessage={showMessage}
-            cities={cities}
           />
-          <EditRegion
+          <EditCity
             show={showEditForm}
             close={toggleEditForm}
             showMessage={showMessage}
             region={selectedRegion}
-            cities={cities}
           />
           <DeleteItem
             show={showDelete}
@@ -131,4 +128,4 @@ const Regions = () => {
     </div>
   );
 };
-export default Regions;
+export default Cities;

@@ -18,6 +18,7 @@ const AddRegion = (props) => {
     const regionData = new FormData();
 
     regionData.append("name", form.current[0].value);
+    regionData.append("cityId", form.current[1].value);
 
     try {
       const response = await addArea(regionData);
@@ -43,21 +44,18 @@ const AddRegion = (props) => {
     <>
       <div
         className={`model ${props.show ? "model-show" : ""}`}
-        onClick={props.close}
-      >
+        onClick={props.close}>
         <CSSTransition
           mountOnEnter
           unmountOnExit
           nodeRef={nodeRef}
           in={props.show}
           timeout={400}
-          classNames="show"
-        >
+          classNames="show">
           <div
             className="addItem"
             ref={nodeRef}
-            onClick={(e) => e.stopPropagation()}
-          >
+            onClick={(e) => e.stopPropagation()}>
             {loading ? (
               <div className="loading-spinner center">
                 <Ring size={40} lineWeight={5} speed={2} color="#0f7f3d" />
@@ -74,7 +72,18 @@ const AddRegion = (props) => {
                 </Form.Label>
                 <Form.Control type="text" placeholder="اسم القسم" required />
               </Form.Group>
-
+              <Form.Group className="mb-3" controlId="status">
+                <Form.Label>
+                  المدينه<span>*</span>
+                </Form.Label>
+                <Form.Select>
+                  {props.cities?.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
               <div className="buttons">
                 <button className="cancel" onClick={props.close} type="none">
                   إلغاء

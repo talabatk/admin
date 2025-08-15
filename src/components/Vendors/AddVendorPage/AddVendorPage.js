@@ -13,6 +13,7 @@ import useArea from "hooks/useArea";
 import AreaCost from "./AreaCost/AreaCost";
 import useVendorCategories from "hooks/useVendorCategories";
 import Select from "react-select";
+import useCity from "hooks/useCity";
 
 const AddVendorPage = (props) => {
   const { loading, addVendor, error, addDeliveryCost } = useVendors();
@@ -28,6 +29,7 @@ const AddVendorPage = (props) => {
   const imageRef = useRef();
   const coverRef = useRef();
   const navigate = useNavigate();
+  const { cities } = useCity();
 
   useEffect(() => {
     if (categories) {
@@ -79,8 +81,9 @@ const AddVendorPage = (props) => {
     vendorData.append("type", form.current[6].value);
     vendorData.append("status", form.current[7].value);
     vendorData.append("vendorCategoryId", form.current[8].value);
-    vendorData.append("password", form.current[9].value);
-    vendorData.append("confirm_password", form.current[10].value);
+    vendorData.append("cityId", form.current[10].value);
+    vendorData.append("password", form.current[11].value);
+    vendorData.append("confirm_password", form.current[12].value);
 
     try {
       const response = await addVendor(vendorData);
@@ -268,6 +271,20 @@ const AddVendorPage = (props) => {
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">
+          <Form.Group className="mb-3" controlId="status">
+            <Form.Label>
+              المدينه<span style={{ color: "red" }}>*</span>
+            </Form.Label>
+            <Form.Select>
+              {cities?.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+        </div>
+        <div className="col-md-4 col-lg-4">
           <Form.Group className="mb-3" controlId="password">
             <Form.Label>
               كلمه المرور<span style={{ color: "red" }}>*</span>
@@ -302,8 +319,7 @@ const AddVendorPage = (props) => {
                 />,
               ]);
             }}
-            type="button"
-          >
+            type="button">
             إضافه منطقه
           </button>
           <button
@@ -313,8 +329,7 @@ const AddVendorPage = (props) => {
               setAreaNumber((pre) => (pre = pre.slice(0, pre.length - 1)));
               setVendorArea((pre) => (pre = pre.slice(0, pre.length - 1)));
             }}
-            type="button"
-          >
+            type="button">
             حذف منطقه
           </button>
         </div>
@@ -328,8 +343,7 @@ const AddVendorPage = (props) => {
               float: "left",
             }}
             className="button"
-            type="submit"
-          >
+            type="submit">
             إضافه المطعم
           </button>
         </div>

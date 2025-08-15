@@ -11,6 +11,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Toast } from "primereact/toast";
 import { Form } from "react-bootstrap";
+import useCity from "hooks/useCity";
 
 const Home = () => {
   const [data, setData] = useState();
@@ -19,7 +20,7 @@ const Home = () => {
   const statusForm = useRef();
   const alertForm = useRef();
   const toast = useRef(null);
-
+  const { cities } = useCity();
   const fetchNumbers = async () => {
     try {
       const response = await fetchData();
@@ -149,8 +150,7 @@ const Home = () => {
                           rows={2}
                           placeholder="اكتب رساله الاغلاق...."
                           className="form-control"
-                          defaultValue={data?.app_status?.content}
-                        ></textarea>
+                          defaultValue={data?.app_status?.content}></textarea>
                       </div>
                       <FormGroup>
                         <FormControlLabel
@@ -171,8 +171,7 @@ const Home = () => {
                           margin: "auto",
                         }}
                         className="button"
-                        type="submit"
-                      >
+                        type="submit">
                         حفظ
                       </button>
                     </div>
@@ -189,8 +188,7 @@ const Home = () => {
                           rows={2}
                           placeholder="اكتب رساله الاغلاق...."
                           className="form-control"
-                          defaultValue={data?.alert?.content}
-                        ></textarea>
+                          defaultValue={data?.alert?.content}></textarea>
                       </div>
                       <FormGroup>
                         <FormControlLabel
@@ -211,8 +209,7 @@ const Home = () => {
                           margin: "auto",
                         }}
                         className="button"
-                        type="submit"
-                      >
+                        type="submit">
                         حفظ
                       </button>
                     </div>
@@ -230,6 +227,11 @@ const Home = () => {
                           <option value={"customer"}>المستخدمين</option>
                           <option value={"restaurant"}>المطاعم</option>
                           <option value={"delivery"}>الديلفيرى</option>
+                          {cities?.map((c) => (
+                            <option key={c.id} value={c.topic}>
+                              {c.name}
+                            </option>
+                          ))}
                         </Form.Select>
                       </div>
                       <div className="mb-3">
@@ -257,8 +259,7 @@ const Home = () => {
                           margin: "auto",
                         }}
                         className="button"
-                        type="submit"
-                      >
+                        type="submit">
                         ارسال
                       </button>
                     </div>

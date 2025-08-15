@@ -13,6 +13,7 @@ import useArea from "hooks/useArea";
 import AreaCost from "../AddVendorPage/AreaCost/AreaCost";
 import useVendorCategories from "hooks/useVendorCategories";
 import Select from "react-select";
+import useCity from "hooks/useCity";
 
 const EditVendor = (props) => {
   const { loading, updateVendor, error, addDeliveryCost, getVendor } =
@@ -31,6 +32,7 @@ const EditVendor = (props) => {
   const coverRef = useRef();
   const navigate = useNavigate();
   const { id } = useParams();
+  const { cities } = useCity();
 
   const handleChange = (selectedOptions) => {
     setSelectedCategories(selectedOptions);
@@ -113,10 +115,11 @@ const EditVendor = (props) => {
     vendorData.append("type", form.current[6].value);
     vendorData.append("status", form.current[7].value);
     vendorData.append("vendorCategoryId", form.current[8].value);
+    vendorData.append("cityId", form.current[10].value);
 
     if (form.current[8].value) {
-      vendorData.append("password", form.current[9].value);
-      vendorData.append("confirm_password", form.current[10].value);
+      vendorData.append("password", form.current[11].value);
+      vendorData.append("confirm_password", form.current[12].value);
     }
 
     try {
@@ -322,6 +325,20 @@ const EditVendor = (props) => {
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">
+          <Form.Group className="mb-3" controlId="status">
+            <Form.Label>
+              المدينه<span style={{ color: "red" }}>*</span>
+            </Form.Label>
+            <Form.Select defaultValue={vendor.cityId}>
+              {cities?.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+        </div>
+        <div className="col-md-4 col-lg-4">
           <Form.Group className="mb-3" controlId="password2">
             <Form.Label>كلمه المرور</Form.Label>
             <Form.Control
@@ -352,8 +369,7 @@ const EditVendor = (props) => {
                 />,
               ]);
             }}
-            type="button"
-          >
+            type="button">
             إضافه منطقه
           </button>
           <button
@@ -363,8 +379,7 @@ const EditVendor = (props) => {
               setAreaNumber((pre) => (pre = pre.slice(0, pre.length - 1)));
               setVendorArea((pre) => (pre = pre.slice(0, pre.length - 1)));
             }}
-            type="button"
-          >
+            type="button">
             حذف منطقه
           </button>
         </div>
@@ -378,8 +393,7 @@ const EditVendor = (props) => {
               float: "left",
             }}
             className="button"
-            type="submit"
-          >
+            type="submit">
             حفظ التعديلات
           </button>
         </div>

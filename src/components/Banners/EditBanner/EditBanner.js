@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
@@ -6,27 +6,36 @@ import { Form } from "react-bootstrap";
 
 import { CSSTransition } from "react-transition-group";
 import { Ring } from "@uiball/loaders";
-import useArea from "hooks/useArea";
+import useBanner from "hooks/userBanners";
 
-const EditRegion = (props) => {
+const EditBanner = (props) => {
   const form = useRef();
   const nodeRef = useRef();
-  const { loading, editArea, error } = useArea();
+  const { loading, editBanner, error } = useBanner();
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const regionData = new FormData();
+    const sliderData = new FormData();
 
-    regionData.append("id", props.region.id);
-    regionData.append("name", form.current[0].value);
-    regionData.append("cityId", form.current[1].value);
+    if (form.current[0].files[0]) {
+      sliderData.append(
+        "image",
+        form.current[0].files[0],
+        form.current[0].files[0].name
+      );
+    }
+    sliderData.append("id", props.slider.id);
+
+    sliderData.append("title", form.current[1].value);
+    sliderData.append("discription", form.current[2].value);
+    sliderData.append("status", form.current[3].value);
 
     try {
-      const response = await editArea(regionData);
+      const response = await editBanner(sliderData);
       // Assuming `response` contains information to check if the operation succeeded
 
-      if (response.name) {
-        props.showMessage("success", "تم التعديل", "تم تعديل ألمنطقه بنجاح");
+      if (response) {
+        props.showMessage("success", "تم التعديل", "تم تعديل سلايدر بنجاح");
         props.close(); // Uncomment if you need to close a modal or similar
       } else {
         props.showMessage(
@@ -63,37 +72,51 @@ const EditRegion = (props) => {
               </div>
             ) : null}
             <div className="head center">
-              <h5>تديل منطقه</h5>
+              <h5>تعديل بانر</h5>
               <FontAwesomeIcon icon={faClose} onClick={props.close} />
             </div>
             <Form className="form" ref={form} onSubmit={submitHandler}>
+              <Form.Group className="mb-3" controlId="image">
+                <Form.Label>صوره البانر</Form.Label>
+                <Form.Control type="file" accept=".png,.jpg,.svg" />
+              </Form.Group>
               <Form.Group className="mb-3" controlId="name">
                 <Form.Label>
-                  اسم المنطقه<span>*</span>
+                  اسم البانر<span>*</span>
                 </Form.Label>
                 <Form.Control
                   type="text"
-                  defaultValue={props.region?.name}
-                  placeholder="اسم القسم"
+                  placeholder="اسم البانر"
+                  defaultValue={props.slider?.title}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="name2">
+                <Form.Label>
+                  وصف البانر<span>*</span>
+                </Form.Label>
+                <Form.Control
+                  defaultValue={props.slider?.description}
+                  type="text"
+                  placeholder="وصف البانر"
                   required
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="status">
-                <Form.Label>المدينه</Form.Label>
-                <Form.Select>
-                  {props.cities?.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  ))}
+                <Form.Label>الحاله</Form.Label>
+                <Form.Select defaultValue={props.slider?.status}>
+                  <option value={"disabled"}>عدم ظهور</option>
+                  <option value={"required"}>ظهور اجباري</option>
+                  <option value={"optional"}>ظهور اختياري</option>
                 </Form.Select>
               </Form.Group>
+
               <div className="buttons">
-                <button className="cancel" onClick={props.close} type="button">
+                <button className="cancel" onClick={props.close} type="none">
                   إلغاء
                 </button>
                 <button className="button" type="submit">
-                  حفظ منطقه
+                  حفظ سلايدر
                 </button>
               </div>
             </Form>
@@ -103,4 +126,4 @@ const EditRegion = (props) => {
     </>
   );
 };
-export default EditRegion;
+export default EditBanner;

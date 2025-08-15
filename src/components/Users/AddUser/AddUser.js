@@ -28,8 +28,9 @@ const AddUser = (props) => {
     userData.append("email", form.current[2].value);
     userData.append("phone", form.current[3].value);
     userData.append("role", form.current[4].value);
-    userData.append("password", form.current[5].value);
-    userData.append("confirm_password", form.current[6].value);
+    userData.append("cityId", form.current[5].value);
+    userData.append("password", form.current[6].value);
+    userData.append("confirm_password", form.current[7].value);
     try {
       let response = null;
       if (form.current[4].value === "admin") {
@@ -60,21 +61,18 @@ const AddUser = (props) => {
     <>
       <div
         className={`model ${props.show ? "model-show" : ""}`}
-        onClick={props.close}
-      >
+        onClick={props.close}>
         <CSSTransition
           mountOnEnter
           unmountOnExit
           nodeRef={nodeRef}
           in={props.show}
           timeout={400}
-          classNames="show"
-        >
+          classNames="show">
           <div
             className="addItem"
             ref={nodeRef}
-            onClick={(e) => e.stopPropagation()}
-          >
+            onClick={(e) => e.stopPropagation()}>
             {loading ? (
               <div className="loading-spinner center">
                 <Ring size={40} lineWeight={5} speed={2} color="#0f7f3d" />
@@ -114,7 +112,18 @@ const AddUser = (props) => {
                   <option value={"admin"}>مشرف</option>
                 </Form.Select>
               </Form.Group>
-
+              <Form.Group className="mb-3" controlId="status">
+                <Form.Label>
+                  المدينه<span>*</span>
+                </Form.Label>
+                <Form.Select>
+                  {props.cities?.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
               <Form.Group className="mb-3" controlId="password">
                 <Form.Label>
                   كلمه المرور<span>*</span>

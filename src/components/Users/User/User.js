@@ -24,6 +24,7 @@ const User = (props) => {
         </span>
       </td>
       <td>{props.user?.address || "لا يوجد"}</td>
+      <td>{props.user?.city ? props.user.city.name : "لا يوجد"}</td>
       <td>
         {props.user?.role === "customer"
           ? "مستخدم"
@@ -44,8 +45,7 @@ const User = (props) => {
           delete={() => {
             props.setSelectedUserValue(props.user);
             props.toggleDelete();
-          }}
-        ></DropDownButtons>
+          }}></DropDownButtons>
       </td>
     </tr>
   );

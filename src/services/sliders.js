@@ -18,7 +18,6 @@ export const createSlider = async (data) => {
 
 export const updateSlider = async (data) => {
   const response = await api.patch(`${editSlider + data.get("id")}`, data);
-  console.log(response);
 
   return response.data;
 };

@@ -44,6 +44,7 @@ const Order = (props) => {
         {props.order?.deliveryId ? props.order.delivery.user.name : "لا يوجد"}
       </td>
       <td>{props.order.lang === "delivery" ? "توصيل" : "استلام"}</td>
+      <td>{props.order.isFree ? "مجاني" : "غير مجاني"}</td>
       <td>{date.toLocaleString()}</td>
       <td
         style={{
@@ -51,15 +52,13 @@ const Order = (props) => {
           gap: 10,
           alignItems: "center",
           paddingTop: "10px",
-        }}
-      >
+        }}>
         <a
           href={`https://wa.me/972${props.order?.phone.slice(
             1
           )}?text="مرحبا طلبت طلبية من تطبيق طلباتك"`}
           target="_blank"
-          rel="noopener noreferrer"
-        >
+          rel="noopener noreferrer">
           <FontAwesomeIcon icon={faWhatsapp} size="xl" />
         </a>
         <DropDownButtons
@@ -67,8 +66,7 @@ const Order = (props) => {
           delete={() => {
             props.setSelectedOrderValue(props.order);
             props.toggleDelete();
-          }}
-        ></DropDownButtons>
+          }}></DropDownButtons>
       </td>
     </tr>
   );

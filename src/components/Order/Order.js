@@ -141,8 +141,7 @@ const Orders = (props) => {
         <>
           <div
             className="row row-cols-2 row-cols-md-3 filters"
-            style={{ padding: "20px", alignItems: "center" }}
-          >
+            style={{ padding: "20px", alignItems: "center" }}>
             <div className="col">
               <h6>المطاعم</h6>
               <Form.Select
@@ -155,8 +154,7 @@ const Orders = (props) => {
                     searchParams.set("vendor", e.target.value);
                     setSearchParams(searchParams);
                   }
-                }}
-              >
+                }}>
                 <option value={""}>الكل</option>
                 {vendors?.map((vendor) => (
                   <option key={vendor.id} value={vendor.id}>
@@ -177,8 +175,7 @@ const Orders = (props) => {
                     searchParams.set("delivery", e.target.value);
                     setSearchParams(searchParams);
                   }
-                }}
-              >
+                }}>
                 <option value={""}>الكل</option>
                 {users?.map((user) => (
                   <option key={user.id} value={user.id}>
@@ -199,8 +196,7 @@ const Orders = (props) => {
                     searchParams.set("status", e.target.value);
                     setSearchParams(searchParams);
                   }
-                }}
-              >
+                }}>
                 <option value={""}>الكل</option>
                 {status?.map((s) => (
                   <option key={s.en} value={s.en}>
@@ -265,8 +261,7 @@ const Orders = (props) => {
           </div>
           <div
             className="row row-cols-1 row-cols-md-2"
-            style={{ padding: "20px" }}
-          >
+            style={{ padding: "20px" }}>
             <div className="col" style={{ display: "flex", flexWrap: "wrap" }}>
               <div className="orders-total" style={{ marginLeft: "10px" }}>
                 <span
@@ -274,8 +269,7 @@ const Orders = (props) => {
                     fontWeight: "bold",
                     marginLeft: "10px",
                     color: "#0f7f3d",
-                  }}
-                >
+                  }}>
                   الاجمالي:
                 </span>
                 <span>{total?.toLocaleString() || 0}</span>
@@ -286,8 +280,7 @@ const Orders = (props) => {
                     fontWeight: "bold",
                     marginLeft: "10px",
                     color: "#0f7f3d",
-                  }}
-                >
+                  }}>
                   نسبه 5%:
                 </span>
                 <span>{(total * 0.05).toLocaleString() || 0}</span>
@@ -298,8 +291,7 @@ const Orders = (props) => {
                     fontWeight: "bold",
                     marginLeft: "10px",
                     color: "#0f7f3d",
-                  }}
-                >
+                  }}>
                   اجمالي الشحن:
                 </span>
                 <span>{shipping?.toLocaleString() || 0}</span>
@@ -335,8 +327,7 @@ const Orders = (props) => {
                   setDeleteAllOrders(true);
                   toggleDelete();
                 }}
-                style={{ backgroundColor: "red", color: "#fff" }}
-              >
+                style={{ backgroundColor: "red", color: "#fff" }}>
                 حذف الكل
               </button>
             ) : null}
@@ -353,6 +344,7 @@ const Orders = (props) => {
                   <th style={{ width: "100px" }}>وقت التحضير</th>
                   <th style={{ width: "100px" }}>الديلفرى</th>
                   <th style={{ width: "100px" }}>نوع الطلب</th>
+                  <th style={{ width: "100px" }}>طلب مجاني؟</th>
                   <th style={{ width: "100px" }}>وقت الانشاء</th>
                   <th style={{ width: "50px" }}>الاعدادات</th>
                 </tr>

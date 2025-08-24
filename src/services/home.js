@@ -16,11 +16,7 @@ export const updateUserNotifications = async () => {
 };
 
 export const updateAlerts = async (data) => {
-  const response = await api.patch("api/alert", data, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await api.patch("api/alert", data);
   return response.data;
 };
 export const sendUserNotifications = async (data) => {

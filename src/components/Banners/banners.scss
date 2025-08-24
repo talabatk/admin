@@ -1,0 +1,14 @@
+.items {
+  .content {
+    padding: 20px;
+    .image {
+      margin-bottom: 20px;
+      img {
+        max-width: 500px;
+        max-height: 400px;
+        object-fit: contain;
+        border-radius: 5px;
+      }
+    }
+  }
+}

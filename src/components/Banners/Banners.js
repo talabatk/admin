@@ -1,26 +1,22 @@
 import { Ring } from "@uiball/loaders";
-import "assets/styles/table.scss";
+import "./banners.scss";
 import { useSelector } from "react-redux";
 import { useState, useRef, useEffect } from "react";
 import { Toast } from "primereact/toast";
-import DeleteItem from "components/Ui/DeleteItem/DeleteItem";
-import useBanner from "hooks/userBanners";
-import Banner from "./Banner/Banner";
-import AddBanner from "./AddBanner/AddBanner";
-import EditBanner from "./EditBanner/EditBanner";
+import useHome from "hooks/useHome";
+import useCity from "hooks/useCity";
+import notfound from "assets/images/notfound.png";
+import { Form } from "react-bootstrap";
+import { Checkbox, FormControlLabel, Select } from "@mui/material";
 
 const Banners = () => {
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [showEditForm, setShowEditForm] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
-  const [selectedSlider, setSelectedSlider] = useState(null);
-  const { loading, deleteBanner, fetchBanner } = useBanner();
-  const data = useSelector((state) => state.banner.banners);
   const toast = useRef(null);
+  const [data, setData] = useState();
+  const { cities } = useCity();
+  const form = useRef();
+  const [seletedCities, setSelectedCities] = useState([]);
 
-  useEffect(() => {
-    fetchBanner();
-  }, []);
+  const { loading, fetchData, updateAlertsContent } = useHome();
 
   const showMessage = (type, head, content) => {
     toast.current.show({
@@ -31,36 +27,49 @@ const Banners = () => {
     });
   };
 
-  const toggleAddForm = () => {
-    setShowAddForm((pre) => (pre = !pre));
-  };
-
-  const toggleEditForm = () => {
-    setShowEditForm((pre) => (pre = !pre));
-  };
-
-  const setSelectedSliderValue = (slider) => {
-    setSelectedSlider(slider);
-  };
-
-  const toggleDelete = () => {
-    setShowDelete((pre) => (pre = !pre));
-  };
-
-  const confirmDelete = async () => {
+  const fetchNumbers = async () => {
     try {
-      const response = await deleteBanner(selectedSlider.id);
-      // Assuming `response` contains information to check if the operation succeeded
+      const response = await fetchData();
 
-      if (response) {
-        showMessage("warn", "تم الحذف", "تم حذف سلايدر بنجاح");
-        toggleDelete();
-      } else {
-        showMessage("error", "هناك خطأ", "حدث خطأ غير متوقع");
-      }
-    } catch (err) {
-      console.error("Error adding vendor:", err);
-      showMessage("error", "هناك خطأ", "حدث خطأ غير متوقع");
+      // Set all city IDs at once
+      setSelectedCities(response.banner.cities.map((c) => c.id));
+
+      setData(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchNumbers();
+  }, [cities]);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const sliderData = new FormData();
+
+    seletedCities.forEach((c) => {
+      sliderData.append("cities[]", c);
+    });
+
+    if (form.current[0].files[0]) {
+      sliderData.append(
+        "image",
+        form.current[0].files[0],
+        form.current[0].files[0].name
+      );
+    }
+    sliderData.append("name", "banner");
+
+    sliderData.append("content", form.current[1].value);
+    sliderData.append("discription", form.current[2].value);
+    sliderData.append("status", form.current[3].value);
+    try {
+      await updateAlertsContent(sliderData);
+      fetchNumbers();
+      showMessage("success", "تم التعديل", "تم التعديل بنجاح");
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -74,59 +83,87 @@ const Banners = () => {
         </div>
       ) : (
         <>
-          <div className="controls">
-            <div>
-              <button className="button" onClick={toggleAddForm}>
-                إضافه بانر
-              </button>
+          <div className="content">
+            <div className="image">
+              <img
+                src={data && data.banner?.image ? data.banner?.image : notfound}
+              />
             </div>
-          </div>
-          <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th style={{ width: "10px" }}>#</th>
-                  <th style={{ width: "100px" }}>العنوان</th>
-                  <th style={{ width: "80px" }}>الوصف</th>
-                  <th style={{ width: "80px" }}>الحاله</th>
-                  <th style={{ width: "50px" }}>الاعدادات</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.length ? (
-                  data.map((slider) => (
-                    <Banner
-                      key={slider.id}
-                      slider={slider}
-                      selectedSlider={selectedSlider}
-                      toggleEditForm={toggleEditForm}
-                      setSelectedSliderValue={setSelectedSliderValue}
-                      toggleDelete={toggleDelete}
+            {data ? (
+              <Form
+                className="form row row-cols-1 row-cols-lg-2 row-cols-ms-2"
+                ref={form}
+                onSubmit={submitHandler}>
+                <Form.Group className="mb-3 col" controlId="image">
+                  <Form.Label>صوره البانر</Form.Label>
+                  <Form.Control type="file" accept=".png,.jpg,.svg" />
+                </Form.Group>
+                <Form.Group className="mb-3 col" controlId="name">
+                  <Form.Label>
+                    العنوان<span>*</span>
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="اسم البانر"
+                    defaultValue={data.banner?.content}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3 col" controlId="name2">
+                  <Form.Label>
+                    الوصف<span>*</span>
+                  </Form.Label>
+                  <Form.Control
+                    defaultValue={data.banner?.discription}
+                    type="text"
+                    placeholder="وصف البانر"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3 col" controlId="status">
+                  <Form.Label>الحاله</Form.Label>
+                  <Form.Select defaultValue={data.banner?.status}>
+                    <option value={"disabled"}>عدم ظهور</option>
+                    <option value={"required"}>ظهور اجباري</option>
+                    <option value={"optional"}>ظهور اختياري</option>
+                  </Form.Select>
+                </Form.Group>
+                <Form.Group className="mb-3 col" controlId="city">
+                  <Form.Label style={{ display: "block" }}>
+                    المدن<span style={{ color: "red" }}>*</span>
+                  </Form.Label>
+                  {cities?.map((c) => (
+                    <FormControlLabel
+                      key={c.id} // always add key when mapping
+                      style={{ margin: 0 }}
+                      control={
+                        <Checkbox
+                          value={c.id}
+                          color="success"
+                          checked={seletedCities?.includes(c.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedCities((prev) => [...prev, c.id]);
+                            } else {
+                              setSelectedCities((prev) =>
+                                prev.filter((id) => id !== c.id)
+                              );
+                            }
+                          }}
+                        />
+                      }
+                      label={c.name}
                     />
-                  ))
-                ) : (
-                  <h4>لا يوجد بيانات!</h4>
-                )}
-              </tbody>
-            </table>
+                  ))}
+                </Form.Group>
+                <div className="buttons" style={{ width: "100%" }}>
+                  <button className="button" type="submit">
+                    حفظ
+                  </button>
+                </div>
+              </Form>
+            ) : null}
           </div>
-          <AddBanner
-            show={showAddForm}
-            close={toggleAddForm}
-            showMessage={showMessage}
-          />
-          <EditBanner
-            show={showEditForm}
-            close={toggleEditForm}
-            showMessage={showMessage}
-            slider={selectedSlider}
-          />
-          <DeleteItem
-            show={showDelete}
-            close={toggleDelete}
-            loading={loading}
-            confirm={confirmDelete}
-          />
         </>
       )}
     </div>

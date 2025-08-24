@@ -12,6 +12,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { Toast } from "primereact/toast";
 import { Form } from "react-bootstrap";
 import useCity from "hooks/useCity";
+import { Checkbox } from "@mui/material";
 
 const Home = () => {
   const [data, setData] = useState();
@@ -19,12 +20,18 @@ const Home = () => {
     useHome();
   const statusForm = useRef();
   const alertForm = useRef();
+  const pointsForm = useRef();
   const toast = useRef(null);
   const { cities } = useCity();
+  const [seletedAlertCities, setSelectedAlertCities] = useState([]);
+  const [seleteddialogCities, setSelectedDialogCities] = useState([]);
+
   const fetchNumbers = async () => {
     try {
       const response = await fetchData();
-      console.log(response);
+
+      setSelectedAlertCities(response.alert.cities.map((c) => c.id));
+      setSelectedDialogCities(response.app_status.cities.map((c) => c.id));
 
       setData(response);
     } catch (error) {
@@ -46,12 +53,17 @@ const Home = () => {
 
   const statusSubmitHandler = async (e) => {
     e.preventDefault();
+    const alertData = new FormData();
+
+    seleteddialogCities.forEach((c) => {
+      alertData.append("cities[]", c);
+    });
+    alertData.append("name", "app_status");
+    alertData.append("content", statusForm.current[0].value);
+    alertData.append("active", statusForm.current[1].checked);
+
     try {
-      await updateAlertsContent({
-        name: "app_status",
-        content: statusForm.current[0].value,
-        active: statusForm.current[1].checked,
-      });
+      await updateAlertsContent(alertData);
       fetchNumbers();
       showMessage("success", "تم التعديل", "تم التعديل بنجاح");
     } catch (error) {
@@ -61,12 +73,33 @@ const Home = () => {
 
   const alertSubmitHandler = async (e) => {
     e.preventDefault();
+
+    const alertData = new FormData();
+
+    seletedAlertCities.forEach((c) => {
+      alertData.append("cities[]", c);
+    });
+    alertData.append("name", "alert");
+    alertData.append("content", alertForm.current[0].value);
+    alertData.append("active", alertForm.current[1].checked);
     try {
-      await updateAlertsContent({
-        name: "alert",
-        content: alertForm.current[0].value,
-        active: alertForm.current[1].checked,
-      });
+      await updateAlertsContent(alertData);
+      fetchNumbers();
+      showMessage("success", "تم التعديل", "تم التعديل بنجاح");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const pointsSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    const alertData = new FormData();
+
+    alertData.append("name", "points");
+    alertData.append("content", pointsForm.current[0].value);
+    alertData.append("active", pointsForm.current[1].checked);
+    try {
+      await updateAlertsContent(alertData);
       fetchNumbers();
       showMessage("success", "تم التعديل", "تم التعديل بنجاح");
     } catch (error) {
@@ -152,7 +185,7 @@ const Home = () => {
                           className="form-control"
                           defaultValue={data?.app_status?.content}></textarea>
                       </div>
-                      <FormGroup>
+                      <FormGroup style={{ marginBottom: "20px" }}>
                         <FormControlLabel
                           control={
                             <Switch
@@ -164,6 +197,34 @@ const Home = () => {
                           label="تفعيل"
                         />
                       </FormGroup>
+                      <Form.Group controlId="city">
+                        {cities?.map((c) => (
+                          <FormControlLabel
+                            key={c.id} // always add key when mapping
+                            style={{ margin: 0 }}
+                            control={
+                              <Checkbox
+                                value={c.id}
+                                color="success"
+                                checked={seleteddialogCities?.includes(c.id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedDialogCities((prev) => [
+                                      ...prev,
+                                      c.id,
+                                    ]);
+                                  } else {
+                                    setSelectedDialogCities((prev) =>
+                                      prev.filter((id) => id !== c.id)
+                                    );
+                                  }
+                                }}
+                              />
+                            }
+                            label={c.name}
+                          />
+                        ))}
+                      </Form.Group>
                     </div>
                     <div className="submit">
                       <button
@@ -190,7 +251,7 @@ const Home = () => {
                           className="form-control"
                           defaultValue={data?.alert?.content}></textarea>
                       </div>
-                      <FormGroup>
+                      <FormGroup style={{ marginBottom: "20px" }}>
                         <FormControlLabel
                           control={
                             <Switch
@@ -202,6 +263,34 @@ const Home = () => {
                           label="تفعيل"
                         />
                       </FormGroup>
+                      <Form.Group controlId="city">
+                        {cities?.map((c) => (
+                          <FormControlLabel
+                            key={c.id} // always add key when mapping
+                            style={{ margin: 0 }}
+                            control={
+                              <Checkbox
+                                value={c.id}
+                                color="success"
+                                checked={seletedAlertCities?.includes(c.id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedAlertCities((prev) => [
+                                      ...prev,
+                                      c.id,
+                                    ]);
+                                  } else {
+                                    setSelectedAlertCities((prev) =>
+                                      prev.filter((id) => id !== c.id)
+                                    );
+                                  }
+                                }}
+                              />
+                            }
+                            label={c.name}
+                          />
+                        ))}
+                      </Form.Group>
                     </div>
                     <div className="submit">
                       <button
@@ -261,6 +350,45 @@ const Home = () => {
                         className="button"
                         type="submit">
                         ارسال
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div className="col">
+                <div className="cont">
+                  <h5>نقاط الربح لكل طلب</h5>
+                  <form ref={pointsForm} onSubmit={pointsSubmitHandler}>
+                    <div style={{ minHeight: "130px" }}>
+                      <div className="mb-3">
+                        <input
+                          className="form-control"
+                          type="number"
+                          defaultValue={data?.points?.content}
+                          min={0}
+                        />
+                      </div>
+                      <FormGroup style={{ marginBottom: "20px" }}>
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              defaultChecked={data?.points?.active}
+                              color="warning"
+                              onChange={(e) => {}}
+                            />
+                          }
+                          label="تفعيل"
+                        />
+                      </FormGroup>
+                    </div>
+                    <div className="submit">
+                      <button
+                        style={{
+                          margin: "auto",
+                        }}
+                        className="button"
+                        type="submit">
+                        حفظ
                       </button>
                     </div>
                   </form>

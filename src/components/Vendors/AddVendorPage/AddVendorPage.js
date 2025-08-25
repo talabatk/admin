@@ -81,9 +81,9 @@ const AddVendorPage = (props) => {
     vendorData.append("type", form.current[6].value);
     vendorData.append("status", form.current[7].value);
     vendorData.append("vendorCategoryId", form.current[8].value);
-    vendorData.append("cityId", form.current[10].value);
-    vendorData.append("password", form.current[11].value);
-    vendorData.append("confirm_password", form.current[12].value);
+    vendorData.append("cityId", form.current[9].value);
+    vendorData.append("password", form.current[10].value);
+    vendorData.append("confirm_password", form.current[11].value);
 
     try {
       const response = await addVendor(vendorData);

@@ -316,6 +316,7 @@ const EditVendor = (props) => {
               التصنيف<span style={{ color: "red" }}>*</span>
             </Form.Label>
             <Select
+              id="status2"
               value={seletedCategories}
               options={newCategories}
               isMulti
@@ -339,10 +340,11 @@ const EditVendor = (props) => {
           </Form.Group>
         </div>
         <div className="col-md-4 col-lg-4">
-          <Form.Group className="mb-3" controlId="password2">
+          <Form.Group className="mb-3" controlId="newPass">
             <Form.Label>كلمه المرور</Form.Label>
             <Form.Control
-              name="password2"
+              id="newPass"
+              name="newPass"
               type="password"
               placeholder="كلمه المرور"
             />

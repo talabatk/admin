@@ -330,7 +330,7 @@ const EditVendor = (props) => {
             <Form.Label>
               المدينه<span style={{ color: "red" }}>*</span>
             </Form.Label>
-            <Form.Select defaultValue={vendor.cityId}>
+            <Form.Select defaultValue={vendor?.cityId}>
               {cities?.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}

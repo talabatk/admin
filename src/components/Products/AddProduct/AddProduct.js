@@ -57,6 +57,7 @@ const AddProduct = (props) => {
       }
     }
   };
+  console.log(productOptions);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -79,15 +80,28 @@ const AddProduct = (props) => {
 
     try {
       const response = await createProduct(productData);
+      const groupFormData = new FormData();
+      groupFormData.append("products", JSON.stringify([response.product?.id]));
+      groupFormData.append("groups", JSON.stringify(productOptions));
+      productOptions.forEach((group, groupIndex) => {
+        group.options.forEach((option, optionIndex) => {
+          // Example: if you have a File object for this option
+          const file = option.image; // 👈 must come from <input type="file" /> or similar
 
-      const groupResponse = await createGroup({
-        products: [response.product?.id],
-        groups: productOptions,
+          if (file) {
+            // The key includes indexes so the backend knows which option this image belongs to
+            groupFormData.append(
+              `groups[${groupIndex}][options][${optionIndex}][image]`,
+              file
+            );
+          }
+        });
       });
+      const groupResponse = await createGroup(groupFormData);
 
       if (response.product) {
         props.showMessage("success", "تمت الاضافه", "تمت إضافه المنتج بنجاح");
-        navigate("/products");
+        // navigate("/products");
       } else {
         props.showMessage("error", "هناك خطأ", response || "حدث خطأ غير متوقع");
       }

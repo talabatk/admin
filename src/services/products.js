@@ -30,7 +30,6 @@ export const addGroup = async (data) => {
 
 export const updateProduct = async (data) => {
   const response = await api.patch(`${editProduct + data.get("id")}`, data);
-  console.log(response);
 
   return response.data;
 };

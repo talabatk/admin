@@ -1,17 +1,26 @@
 import { Form } from "react-bootstrap";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 const Option = (props) => {
-  const name = useRef();
+  const inputnameRef = useRef();
   const value = useRef();
+  const image = useRef();
+
+  const [preview, setPreview] = useState(null);
 
   const onChangeInputs = (e) => {
+    const file = image.current?.files?.[0] || null;
+
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
     props.getOptionData({
       id: props.index,
-      name: name.current.value,
+      name: inputnameRef.current.value,
       value: +value.current.value,
+      image: image.current.files[0],
       group: props.groupIndex,
     });
   };
@@ -23,9 +32,39 @@ const Option = (props) => {
           الاختيارت<span style={{ color: "red" }}>*</span>
         </Form.Label>
         <Form.Control
+          type="file"
+          onChange={onChangeInputs}
+          ref={image}
+          placeholder="الصوره"
+          required
+        />
+
+        {(preview || props.option?.image) && (
+          <div
+            style={{
+              width: 60,
+              height: 60,
+              border: "1px solid #ddd",
+              borderRadius: 4,
+              marginTop: 8,
+              overflow: "hidden",
+            }}>
+            <img
+              src={preview ? preview : props.option?.image}
+              alt="preview"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
+        )}
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="optionName">
+        <Form.Label>
+          الأسم<span style={{ color: "red" }}>*</span>
+        </Form.Label>
+        <Form.Control
           type="text"
           onChange={onChangeInputs}
-          ref={name}
+          ref={inputnameRef}
           placeholder="الأسم"
           defaultValue={props.option?.name}
           required
@@ -54,8 +93,7 @@ const Option = (props) => {
         type="button"
         onClick={() => {
           props.deleteOption(props.index);
-        }}
-      >
+        }}>
         <FontAwesomeIcon icon={faTrashCan} size="lg" />
       </span>
     </div>

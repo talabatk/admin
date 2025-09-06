@@ -85,8 +85,7 @@ const OptionGroup = (props) => {
           onClick={() => {
             setOptionsNumber((pre) => (pre += 1));
           }}
-          type="button"
-        >
+          type="button">
           إضافه قيمه
         </button>
         <button
@@ -95,8 +94,7 @@ const OptionGroup = (props) => {
           onClick={() => {
             setOptionsNumber((pre) => (pre -= 1));
           }}
-          type="button"
-        >
+          type="button">
           حذف
         </button>
       </div>

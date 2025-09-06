@@ -125,10 +125,24 @@ const EditProduct = (props) => {
 
     try {
       const response = await editProduct(productData);
-      const groupResponse = await createGroup({
-        products: [response.product?.id],
-        groups: productOptions,
+      const groupFormData = new FormData();
+      groupFormData.append("products", JSON.stringify([response.product?.id]));
+      groupFormData.append("groups", JSON.stringify(productOptions));
+      productOptions.forEach((group, groupIndex) => {
+        group.options.forEach((option, optionIndex) => {
+          // Example: if you have a File object for this option
+          const file = option.image; // 👈 must come from <input type="file" /> or similar
+
+          if (file) {
+            // The key includes indexes so the backend knows which option this image belongs to
+            groupFormData.append(
+              `groups[${groupIndex}][options][${optionIndex}][image]`,
+              file
+            );
+          }
+        });
       });
+      const groupResponse = await createGroup(groupFormData);
       // Assuming `response` contains information to check if the operation succeeded
       if ((response.product, groupResponse.groups)) {
         props.showMessage("success", "تم التعديل", "تم تعديل المنتج بنجاح");

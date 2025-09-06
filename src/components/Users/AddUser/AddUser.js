@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
@@ -7,11 +7,30 @@ import { Form } from "react-bootstrap";
 import { CSSTransition } from "react-transition-group";
 import { Ring } from "@uiball/loaders";
 import useUser from "hooks/useUser";
+import Select from "react-select";
+import { useSelector } from "react-redux";
+
+const rolesOptions = [
+  { label: "ادارة الطلبات", value: "manage_orders" },
+  { label: "ادارة المنتجات", value: "manage_products" },
+  { label: "ادارة المستخدمين", value: "manage_users" },
+  { label: "ادارة المدن", value: "manage_cities" },
+  { label: "ادارة الفئات", value: "manage_categories" },
+  { label: "ادارة المطاعم", value: "manage_vendors" },
+];
 
 const AddUser = (props) => {
   const form = useRef();
   const nodeRef = useRef();
   const { loading, addAdmin, addDelivery, error } = useUser();
+  const [roles, setRoles] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const adminInfo = useSelector((state) => state.auth.userData);
+  console.log(adminInfo);
+
+  const handleChange = (selectedOptions) => {
+    setRoles(selectedOptions);
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -27,13 +46,29 @@ const AddUser = (props) => {
     userData.append("name", form.current[1].value);
     userData.append("email", form.current[2].value);
     userData.append("phone", form.current[3].value);
-    userData.append("role", form.current[4].value);
-    userData.append("cityId", form.current[5].value);
-    userData.append("password", form.current[6].value);
-    userData.append("confirm_password", form.current[7].value);
+    if (form.current[4].value === "admin") {
+      userData.append("role", form.current[4].value);
+    } else {
+      userData.append("role", "admin");
+      userData.append("super_admin", true);
+    }
+    if (isAdmin) {
+      userData.append("roles", JSON.stringify(roles.map((r) => r.value)));
+      userData.append("cityId", form.current[6].value);
+      userData.append("password", form.current[7].value);
+      userData.append("confirm_password", form.current[8].value);
+    } else {
+      userData.append("cityId", form.current[5].value);
+      userData.append("password", form.current[6].value);
+      userData.append("confirm_password", form.current[7].value);
+    }
+
     try {
       let response = null;
-      if (form.current[4].value === "admin") {
+      if (
+        form.current[4].value === "admin" ||
+        form.current[4].value === "super_admin"
+      ) {
         response = await addAdmin(userData);
       } else {
         response = await addDelivery(userData);
@@ -107,11 +142,35 @@ const AddUser = (props) => {
                 <Form.Label>
                   نوع المستخدم<span>*</span>
                 </Form.Label>
-                <Form.Select required>
+                <Form.Select
+                  required
+                  onChange={(e) => {
+                    if (e.target.value === "admin") {
+                      setIsAdmin(true);
+                    } else {
+                      setIsAdmin(false);
+                    }
+                  }}>
                   <option value={"delivery"}>عامل توصيل</option>
                   <option value={"admin"}>مشرف</option>
+                  {adminInfo.super_admin ? (
+                    <option value={"super_admin"}>مشرف عام</option>
+                  ) : null}
                 </Form.Select>
               </Form.Group>
+              {isAdmin ? (
+                <Form.Group className="mb-3" controlId="status">
+                  <Form.Label>
+                    الصلاحيات<span style={{ color: "red" }}>*</span>
+                  </Form.Label>
+                  <Select
+                    value={roles}
+                    options={rolesOptions}
+                    isMulti
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              ) : null}
               <Form.Group className="mb-3" controlId="status">
                 <Form.Label>
                   المدينه<span>*</span>

@@ -32,6 +32,8 @@ const User = (props) => {
           ? "مطعم"
           : props.user?.role === "delivery"
           ? "ديلفرى"
+          : props.user?.admin?.super_admin
+          ? "مشرف عام"
           : "مشرف"}
       </td>
       <td>{props.user?.active ? "غير محظور" : "محظور"}</td>

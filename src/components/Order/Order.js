@@ -31,6 +31,7 @@ const Orders = (props) => {
   const count = useSelector((state) => state.order.count);
   const total = useSelector((state) => state.order.total);
   const shipping = useSelector((state) => state.order.shipping);
+  const cities = useSelector((state) => state.city.cities);
   const dispatch = useDispatch();
   const toast = useRef(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -40,6 +41,9 @@ const Orders = (props) => {
     let newParams = {};
     newParams.page = page;
     newParams.size = 12;
+    if (!adminInfo?.super_admin) {
+      newParams.cityId = adminInfo.cityId;
+    }
 
     if (searchParams.get("vendor")) {
       newParams.vendorId = searchParams.get("vendor");
@@ -59,10 +63,13 @@ const Orders = (props) => {
     if (searchParams.get("search")) {
       newParams.search = searchParams.get("search");
     }
+    if (searchParams.get("city") && adminInfo?.super_admin) {
+      newParams.cityId = searchParams.get("city");
+    }
     setParams(newParams);
     fetchOrders(newParams);
     fetchUsers({ role: "delivery" });
-  }, [page, props.newOrder, searchParams]);
+  }, [page, props.newOrder, searchParams, adminInfo]);
 
   const handleChangePage = (event, newPage) => {
     dispatch(setPage(newPage));
@@ -184,6 +191,29 @@ const Orders = (props) => {
                 ))}
               </Form.Select>
             </div>
+            {adminInfo?.super_admin ? (
+              <div className="col">
+                <h6>المدينه</h6>
+                <Form.Select
+                  defaultValue={searchParams.get("city") || ""}
+                  onChange={(e) => {
+                    if (e.target.value === "") {
+                      searchParams.delete("city");
+                      setSearchParams(searchParams);
+                    } else {
+                      searchParams.set("city", e.target.value);
+                      setSearchParams(searchParams);
+                    }
+                  }}>
+                  <option value={""}>الكل</option>
+                  {cities?.map((user) => (
+                    <option key={user.id} value={user.id}>
+                      {user.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </div>
+            ) : null}
             <div className="col">
               <h6>الحاله</h6>
               <Form.Select

@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import Layout from "components/layout/Layout";
 import LoginScreen from "screens/Login";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import ProtectedRoute from "components/Auth/ProtectedRoute/ProtectedRoute ";
 import VendorScreen from "screens/Vendor";
 import CategoriesScreen from "screens/Categories";
@@ -26,9 +26,11 @@ import { io } from "socket.io-client";
 import VendorCategories from "components/VendorCategories/VendorCategories";
 import Cities from "components/Cities/Cities";
 import Banners from "components/Banners/Banners";
+import { useSelector } from "react-redux";
 function App() {
   const [newOrder, setNewOrder] = useState(1);
   const toast = useRef(null);
+  const adminInfo = useSelector((state) => state.auth.userData);
 
   useEffect(() => {
     // Initialize the socket connection
@@ -125,7 +127,6 @@ function App() {
         {/* Public Route */}
         <Route path="/login" element={<LoginScreen />} />
 
-        {/* Protected Routes */}
         <Route
           path="/"
           element={
@@ -133,39 +134,187 @@ function App() {
               <Layout newOrder={newOrder} />
             </ProtectedRoute>
           }>
-          {/* Nested Protected Routes */}
           <Route index element={<Home />} />
-          <Route path="vendors" element={<VendorScreen />} />
-          <Route path="complains" element={<Complains />} />
+
           <Route
-            path="vendors/:id"
-            element={<EditVendor showMessage={showMessage} />}
+            path="orders/*"
+            element={
+              <ProtectedRoute
+                condition={
+                  adminInfo?.super_admin || adminInfo?.roles?.manage_orders
+                }>
+                <Orders newOrder={newOrder} />
+              </ProtectedRoute>
+            }
           />
-          <Route
-            path="vendors/add"
-            element={<AddVendorPage showMessage={showMessage} />}
-          />
-          <Route path="/orders/*" element={<Orders newOrder={newOrder} />} />
+
           <Route
             path="orders/:id"
-            element={<OrderDetails showMessage={showMessage} />}
+            element={
+              <ProtectedRoute
+                condition={
+                  adminInfo?.super_admin || adminInfo?.roles?.manage_orders
+                }>
+                <OrderDetails showMessage={showMessage} />
+              </ProtectedRoute>
+            }
           />
-          <Route path="products" element={<Products />} />
+
+          <Route
+            path="vendors"
+            element={
+              <ProtectedRoute
+                condition={
+                  adminInfo?.super_admin || adminInfo?.roles?.manage_vendors
+                }>
+                <VendorScreen />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="vendors/:id"
+            element={
+              <ProtectedRoute
+                condition={
+                  adminInfo?.super_admin || adminInfo?.roles?.manage_vendors
+                }>
+                <EditVendor showMessage={showMessage} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="vendors/add"
+            element={
+              <ProtectedRoute
+                condition={
+                  adminInfo?.super_admin || adminInfo?.roles?.manage_vendors
+                }>
+                <AddVendorPage showMessage={showMessage} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="products"
+            element={
+              <ProtectedRoute
+                condition={
+                  adminInfo?.super_admin || adminInfo?.roles?.manage_products
+                }>
+                <Products />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="products/:id"
-            element={<EditProduct showMessage={showMessage} />}
+            element={
+              <ProtectedRoute
+                condition={
+                  adminInfo?.super_admin || adminInfo?.roles?.manage_products
+                }>
+                <EditProduct showMessage={showMessage} />
+              </ProtectedRoute>
+            }
           />
+
           <Route
             path="products/add"
-            element={<AddProduct showMessage={showMessage} />}
+            element={
+              <ProtectedRoute
+                condition={
+                  adminInfo?.super_admin || adminInfo?.roles?.manage_products
+                }>
+                <AddProduct showMessage={showMessage} />
+              </ProtectedRoute>
+            }
           />
-          <Route path="sliders" element={<Sliders />} />
-          <Route path="banners" element={<Banners />} />
-          <Route path="cities" element={<Cities />} />
-          <Route path="regions" element={<Regions />} />
-          <Route path="users" element={<Users />} />
-          <Route path="categories" element={<CategoriesScreen />} />
-          <Route path="vendor-categories" element={<VendorCategories />} />
+
+          <Route
+            path="users"
+            element={
+              <ProtectedRoute
+                condition={
+                  adminInfo?.super_admin || adminInfo?.roles?.manage_users
+                }>
+                <Users />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="categories"
+            element={
+              <ProtectedRoute
+                condition={
+                  adminInfo?.super_admin || adminInfo?.roles?.manage_categories
+                }>
+                <CategoriesScreen />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="vendor-categories"
+            element={
+              <ProtectedRoute
+                condition={
+                  adminInfo?.super_admin || adminInfo?.roles?.manage_categories
+                }>
+                <VendorCategories />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="cities"
+            element={
+              <ProtectedRoute
+                condition={
+                  adminInfo?.super_admin || adminInfo?.roles?.manage_cities
+                }>
+                <Cities />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="complains"
+            element={
+              <ProtectedRoute>
+                <Complains />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="sliders"
+            element={
+              <ProtectedRoute>
+                <Sliders />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="banners"
+            element={
+              <ProtectedRoute>
+                <Banners />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="regions"
+            element={
+              <ProtectedRoute>
+                <Regions />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </>

@@ -64,9 +64,26 @@ const vendorSlice = createSlice({
         currentPageEndRows
       );
     },
+    filterDateByCity(state, action) {
+      const value = action.payload;
+      const filteredVendors = state.vendors.filter(
+        (vendor) => vendor.cityId === +value
+      );
+      let pagesNum = Math.ceil(filteredVendors.length / state.size);
+      state.pages = pagesNum;
+      state.currentPage = 1;
+      const currentPageStartRows = (state.currentPage - 1) * state.size;
+      const currentPageEndRows = state.currentPage * state.size;
+
+      state.currentPageData = filteredVendors.slice(
+        currentPageStartRows,
+        currentPageEndRows
+      );
+    },
   },
 });
 
-export const { setPage, setVendors, filterDateByName } = vendorSlice.actions;
+export const { setPage, setVendors, filterDateByName, filterDateByCity } =
+  vendorSlice.actions;
 
 export default vendorSlice;

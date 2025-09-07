@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 const SideBar = () => {
   const [unSeenComplains, setUnSeenComplains] = useState(0);
   const sideBarVisiablity = useSelector((state) => state.ui.sideBarIsVisiable);
+  const adminInfo = useSelector((state) => state.auth.userData);
 
   const dispatch = useDispatch();
 
@@ -61,72 +62,105 @@ const SideBar = () => {
                 <span>الرئيسيه</span>
               </NavLink>
             </div>
-            <div>
-              <NavLink
-                exact="true"
-                to="/orders"
-                activeclassname="true"
-                className="link"
-                onClick={sideBarHandler}>
-                <img src={icon6} alt="categories icon" />
-                <span>الطلبات</span>
-              </NavLink>
-            </div>
-            <div>
-              <NavLink
-                exact="true"
-                to="/vendors"
-                activeclassname="true"
-                className="link"
-                onClick={sideBarHandler}>
-                <img src={icon1} alt="categories icon" />
-                <span>المطاعم</span>
-              </NavLink>
-            </div>
-            <div>
-              <NavLink
-                exact="true"
-                to="/products"
-                activeclassname="true"
-                className="link"
-                onClick={sideBarHandler}>
-                <img src={icon7} alt="categories icon" />
-                <span>المنتجات</span>
-              </NavLink>
-            </div>
-            <div>
-              <NavLink
-                exact="true"
-                to="/users"
-                activeclassname="true"
-                className="link"
-                onClick={sideBarHandler}>
-                <img src={icon5} alt="categories icon" />
-                <span>المستخدمين</span>
-              </NavLink>
-            </div>
-            <div>
-              <NavLink
-                exact="true"
-                to="/categories"
-                activeclassname="true"
-                className="link"
-                onClick={sideBarHandler}>
-                <img src={icon2} alt="categories icon" />
-                <span>الاقسام</span>
-              </NavLink>
-            </div>
-            <div>
-              <NavLink
-                exact="true"
-                to="/vendor-categories"
-                activeclassname="true"
-                className="link"
-                onClick={sideBarHandler}>
-                <img src={icon2} alt="categories icon" />
-                <span>تصنيف المطاعم</span>
-              </NavLink>
-            </div>
+            {(!adminInfo?.super_admin && adminInfo?.roles?.manage_orders) ||
+            adminInfo?.super_admin ? (
+              <div>
+                <NavLink
+                  exact="true"
+                  to="/orders"
+                  activeclassname="true"
+                  className="link"
+                  onClick={sideBarHandler}>
+                  <img src={icon6} alt="categories icon" />
+                  <span>الطلبات</span>
+                </NavLink>
+              </div>
+            ) : null}
+            {(!adminInfo?.super_admin && adminInfo?.roles?.manage_vendors) ||
+            adminInfo?.super_admin ? (
+              <div>
+                <NavLink
+                  exact="true"
+                  to="/vendors"
+                  activeclassname="true"
+                  className="link"
+                  onClick={sideBarHandler}>
+                  <img src={icon1} alt="categories icon" />
+                  <span>المطاعم</span>
+                </NavLink>
+              </div>
+            ) : null}
+            {(!adminInfo?.super_admin && adminInfo?.roles?.manage_products) ||
+            adminInfo?.super_admin ? (
+              <div>
+                <NavLink
+                  exact="true"
+                  to="/products"
+                  activeclassname="true"
+                  className="link"
+                  onClick={sideBarHandler}>
+                  <img src={icon7} alt="categories icon" />
+                  <span>المنتجات</span>
+                </NavLink>
+              </div>
+            ) : null}
+            {(!adminInfo?.super_admin && adminInfo?.roles?.manage_users) ||
+            adminInfo?.super_admin ? (
+              <div>
+                <NavLink
+                  exact="true"
+                  to="/users"
+                  activeclassname="true"
+                  className="link"
+                  onClick={sideBarHandler}>
+                  <img src={icon5} alt="categories icon" />
+                  <span>المستخدمين</span>
+                </NavLink>
+              </div>
+            ) : null}
+            {(!adminInfo?.super_admin && adminInfo?.roles?.manage_categories) ||
+            adminInfo?.super_admin ? (
+              <>
+                <div>
+                  <NavLink
+                    exact="true"
+                    to="/categories"
+                    activeclassname="true"
+                    className="link"
+                    onClick={sideBarHandler}>
+                    <img src={icon2} alt="categories icon" />
+                    <span>الاقسام</span>
+                  </NavLink>
+                </div>
+
+                <div>
+                  <NavLink
+                    exact="true"
+                    to="/vendor-categories"
+                    activeclassname="true"
+                    className="link"
+                    onClick={sideBarHandler}>
+                    <img src={icon2} alt="categories icon" />
+                    <span>تصنيف المطاعم</span>
+                  </NavLink>
+                </div>
+              </>
+            ) : null}
+            {(!adminInfo?.super_admin && adminInfo?.roles?.manage_cities) ||
+            adminInfo?.super_admin ? (
+              <div>
+                <NavLink
+                  exact="true"
+                  to="/cities"
+                  activeclassname="true"
+                  className="link"
+                  onClick={sideBarHandler}>
+                  <img src={icon4} alt="categories icon" />
+                  <span>المدن</span>
+                </NavLink>
+              </div>
+            ) : null}
+
             <div>
               <NavLink
                 exact="true"
@@ -149,17 +183,7 @@ const SideBar = () => {
                 <span>بانر إعلاني</span>
               </NavLink>
             </div>
-            <div>
-              <NavLink
-                exact="true"
-                to="/cities"
-                activeclassname="true"
-                className="link"
-                onClick={sideBarHandler}>
-                <img src={icon4} alt="categories icon" />
-                <span>المدن</span>
-              </NavLink>
-            </div>
+
             <div>
               <NavLink
                 exact="true"

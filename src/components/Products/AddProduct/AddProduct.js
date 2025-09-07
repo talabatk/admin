@@ -101,7 +101,7 @@ const AddProduct = (props) => {
 
       if (response.product) {
         props.showMessage("success", "تمت الاضافه", "تمت إضافه المنتج بنجاح");
-        // navigate("/products");
+        navigate("/products");
       } else {
         props.showMessage("error", "هناك خطأ", response || "حدث خطأ غير متوقع");
       }

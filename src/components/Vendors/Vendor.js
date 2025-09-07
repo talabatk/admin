@@ -5,11 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import Vendor from "./Vendor/Vendor";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { filterDateByName, setPage, setVendors } from "store/vendorSlice";
-import { useState, useRef } from "react";
+import {
+  filterDateByName,
+  setPage,
+  setVendors,
+  filterDateByCity,
+} from "store/vendorSlice";
+import { useState, useRef, useEffect } from "react";
 import { Toast } from "primereact/toast";
 import DeleteItem from "components/Ui/DeleteItem/DeleteItem";
 import { NavLink } from "react-router-dom";
+import { Form } from "react-bootstrap";
 
 const Vendors = () => {
   const [showDelete, setShowDelete] = useState(false);
@@ -20,7 +26,14 @@ const Vendors = () => {
   const currentPage = useSelector((state) => state.vendor.currentPage);
   const dispatch = useDispatch();
   const toast = useRef(null);
+  const cities = useSelector((state) => state.city.cities);
+  const adminInfo = useSelector((state) => state.auth.userData);
 
+  useEffect(() => {
+    if (!adminInfo?.super_admin) {
+      dispatch(filterDateByCity(adminInfo.cityId));
+    }
+  }, [adminInfo]);
   const handleChangePage = (event, newPage) => {
     dispatch(setPage(newPage));
   };
@@ -38,6 +51,14 @@ const Vendors = () => {
     const value = e.target.value;
     if (value !== "") {
       dispatch(filterDateByName(value));
+    } else {
+      dispatch(setVendors(vendors));
+    }
+  };
+  const searchChangeCity = (e) => {
+    const value = e.target.value;
+    if (value !== "") {
+      dispatch(filterDateByCity(value));
     } else {
       dispatch(setVendors(vendors));
     }
@@ -78,12 +99,24 @@ const Vendors = () => {
       ) : (
         <>
           <div className="controls">
-            <input
-              type="search"
-              placeholder="البحث بإستخدام الاسم "
-              className="form-control"
-              onChange={searchChangeHandler}
-            />
+            <div style={{ display: "flex", gap: "10px" }}>
+              <input
+                type="search"
+                placeholder="البحث بإستخدام الاسم "
+                className="form-control"
+                onChange={searchChangeHandler}
+              />
+              {adminInfo?.super_admin ? (
+                <Form.Select onChange={searchChangeCity}>
+                  <option value={""}>الكل</option>
+                  {cities?.map((user) => (
+                    <option key={user.id} value={user.id}>
+                      {user.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              ) : null}
+            </div>
             <div>
               <NavLink to={"add"} className="button">
                 إضافه مطعم

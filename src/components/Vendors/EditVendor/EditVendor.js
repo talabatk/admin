@@ -86,6 +86,7 @@ const EditVendor = (props) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     const vendorData = new FormData();
+    console.log();
 
     seletedCategories.forEach((category) => {
       vendorData.append("categories[]", category.value);
@@ -114,12 +115,11 @@ const EditVendor = (props) => {
     vendorData.append("email", form.current[5].value);
     vendorData.append("type", form.current[6].value);
     vendorData.append("status", form.current[7].value);
-    vendorData.append("vendorCategoryId", form.current[8].value);
-    vendorData.append("cityId", form.current[10].value);
+    vendorData.append("cityId", form.current[9].value);
 
-    if (form.current[11].value) {
-      vendorData.append("password", form.current[11].value);
-      vendorData.append("confirm_password", form.current[12].value);
+    if (form.current[10].value) {
+      vendorData.append("password", form.current[10].value);
+      vendorData.append("confirm_password", form.current[11].value);
     }
 
     try {
@@ -316,12 +316,10 @@ const EditVendor = (props) => {
               التصنيف<span style={{ color: "red" }}>*</span>
             </Form.Label>
             <Select
-              id="status2"
               value={seletedCategories}
               options={newCategories}
               isMulti
               onChange={handleChange}
-              name="status2"
             />
           </Form.Group>
         </div>
@@ -353,7 +351,12 @@ const EditVendor = (props) => {
         <div className="col-md-4 col-lg-4">
           <Form.Group className="mb-3" controlId="confirm-password">
             <Form.Label>تأكيد كلمه المرور</Form.Label>
-            <Form.Control type="password" placeholder="تأكيد كلمه المرور" />
+            <Form.Control
+              id="confirm-password"
+              name="confirm-password"
+              type="password"
+              placeholder="تأكيد كلمه المرور"
+            />
           </Form.Group>
         </div>
         <div>

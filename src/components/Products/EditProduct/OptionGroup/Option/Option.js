@@ -36,7 +36,6 @@ const Option = (props) => {
           onChange={onChangeInputs}
           ref={image}
           placeholder="الصوره"
-          required
         />
 
         {(preview || props.option?.image) && (

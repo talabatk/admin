@@ -127,7 +127,8 @@ const EditProduct = (props) => {
       const response = await editProduct(productData);
       const groupFormData = new FormData();
       groupFormData.append("products", JSON.stringify([response.product?.id]));
-      groupFormData.append("groups", JSON.stringify(productOptions));
+      groupFormData.append("groupsData", JSON.stringify(productOptions));
+
       productOptions.forEach((group, groupIndex) => {
         group.options.forEach((option, optionIndex) => {
           // Example: if you have a File object for this option
@@ -142,6 +143,7 @@ const EditProduct = (props) => {
           }
         });
       });
+
       const groupResponse = await createGroup(groupFormData);
       // Assuming `response` contains information to check if the operation succeeded
       if (response.product) {

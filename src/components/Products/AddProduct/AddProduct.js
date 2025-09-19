@@ -57,7 +57,6 @@ const AddProduct = (props) => {
       }
     }
   };
-  console.log(productOptions);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -82,7 +81,8 @@ const AddProduct = (props) => {
       const response = await createProduct(productData);
       const groupFormData = new FormData();
       groupFormData.append("products", JSON.stringify([response.product?.id]));
-      groupFormData.append("groups", JSON.stringify(productOptions));
+      groupFormData.append("groupsData", JSON.stringify(productOptions));
+
       productOptions.forEach((group, groupIndex) => {
         group.options.forEach((option, optionIndex) => {
           // Example: if you have a File object for this option

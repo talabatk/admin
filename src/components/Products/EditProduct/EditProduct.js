@@ -144,7 +144,7 @@ const EditProduct = (props) => {
       });
       const groupResponse = await createGroup(groupFormData);
       // Assuming `response` contains information to check if the operation succeeded
-      if ((response.product, groupResponse.groups)) {
+      if (response.product) {
         props.showMessage("success", "تم التعديل", "تم تعديل المنتج بنجاح");
         navigate(-1);
       } else {

@@ -1,37 +1,11 @@
-.home {
+.settings {
   min-height: 80vh;
-  .statics {
-    background-color: #fff;
+  .header {
     padding: 20px;
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     h2 {
-      margin-bottom: 50px;
-    }
-    .col {
-      display: flex;
-      margin-bottom: 15px;
-      .image {
-        width: 45px;
-        height: 45px;
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: 10px;
-      }
-      div {
-        display: flex;
-        flex-direction: column;
-        span {
-          margin: 0;
-          font-size: 14px;
-        }
-        span:first-child {
-          font-weight: bold;
-          font-size: 17px;
-        }
-      }
+      margin-bottom: 10px;
     }
   }
   .alerts {
@@ -70,9 +44,11 @@
   }
 }
 .dark {
-  .statics,
   .alerts .col .cont {
     background-color: var(--darkSecondColor);
+    color: var(--darkFont);
+  }
+  .header {
     color: var(--darkFont);
   }
 }

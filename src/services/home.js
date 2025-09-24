@@ -1,8 +1,8 @@
 import { api } from "api";
 import { getStatistics } from "api/apiURLs";
 
-export const statistics = async () => {
-  const response = await api.get(getStatistics);
+export const statistics = async (cityId) => {
+  const response = await api.get(getStatistics, { params: { cityId: cityId } });
   return response.data;
 };
 

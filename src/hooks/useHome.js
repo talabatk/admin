@@ -13,10 +13,10 @@ const useHome = () => {
   const [error, setError] = useState(null);
 
   // Fetch Categorys
-  const fetchData = async () => {
+  const fetchData = async (cityId) => {
     setLoading(true);
     try {
-      const data = await statistics();
+      const data = await statistics(cityId);
       return data;
     } catch (err) {
       setError(err.message || "Failed to fetch Categorys");

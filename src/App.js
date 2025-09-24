@@ -27,6 +27,7 @@ import VendorCategories from "components/VendorCategories/VendorCategories";
 import Cities from "components/Cities/Cities";
 import Banners from "components/Banners/Banners";
 import { useSelector } from "react-redux";
+import Setting from "components/Settings/Settings";
 function App() {
   const [newOrder, setNewOrder] = useState(1);
   const toast = useRef(null);
@@ -312,6 +313,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Regions />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="settings"
+            element={
+              <ProtectedRoute>
+                <Setting />
               </ProtectedRoute>
             }
           />

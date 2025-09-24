@@ -16,6 +16,8 @@ import icon9 from "assets/icons/complain.png";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "firbase";
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear, faHome } from "@fortawesome/free-solid-svg-icons";
 
 const SideBar = () => {
   const [unSeenComplains, setUnSeenComplains] = useState(0);
@@ -58,8 +60,20 @@ const SideBar = () => {
                 activeclassname="true"
                 className="link"
                 onClick={sideBarHandler}>
-                <img src={icon8} alt="categories icon" />
+                <FontAwesomeIcon icon={faHome} size="lg" color="#000" />
+
                 <span>الرئيسيه</span>
+              </NavLink>
+            </div>
+            <div>
+              <NavLink
+                exact="true"
+                to="/settings"
+                activeclassname="true"
+                className="link"
+                onClick={sideBarHandler}>
+                <FontAwesomeIcon icon={faGear} size="lg" color="#000" />
+                <span>الاعدادات</span>
               </NavLink>
             </div>
             {(!adminInfo?.super_admin && adminInfo?.roles?.manage_orders) ||

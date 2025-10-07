@@ -351,7 +351,8 @@ const Orders = (props) => {
                 />
               </button>
             </form>
-            {adminInfo.name === "05432668291" || adminInfo.name === "دار" ? (
+            {(adminInfo.name === "05432668291" || adminInfo.name === "دار") &&
+            params.vendorId ? (
               <button
                 onClick={() => {
                   setDeleteAllOrders(true);

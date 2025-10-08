@@ -351,7 +351,9 @@ const Orders = (props) => {
                 />
               </button>
             </form>
-            {(adminInfo.name === "05432668291" || adminInfo.name === "دار") &&
+            {(adminInfo.phone === "05432668291" ||
+              adminInfo.phone === "0509004192" ||
+              adminInfo.name === "omar mohamed") &&
             params?.vendorId ? (
               <button
                 onClick={() => {

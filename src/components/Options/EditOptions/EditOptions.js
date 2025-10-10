@@ -1,0 +1,107 @@
+import { useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
+
+import { Form } from "react-bootstrap";
+
+import { CSSTransition } from "react-transition-group";
+import { Ring } from "@uiball/loaders";
+import useOptions from "hooks/useOptions";
+
+const EditOptions = (props) => {
+  const form = useRef();
+  const nodeRef = useRef();
+  const { loading, editOption, error } = useOptions();
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const categoryData = new FormData();
+
+    if (form.current[0].files[0]) {
+      categoryData.append(
+        "image",
+        form.current[0].files[0],
+        form.current[0].files[0].name
+      );
+    }
+    categoryData.append("id", props.category.id);
+    categoryData.append("name", form.current[1].value);
+
+    try {
+      const response = await editOption(categoryData);
+      // Assuming `response` contains information to check if the operation succeeded
+
+      if (response.name) {
+        props.showMessage("success", "تم التعديل", "تم التعديل القسم بنجاح");
+        props.close(); // Uncomment if you need to close a modal or similar
+      } else {
+        props.showMessage(
+          "error",
+          "هناك خطأ",
+          response.response.data.message || "حدث خطأ غير متوقع"
+        );
+      }
+    } catch (err) {
+      console.error("Error adding vendor:", err);
+      props.showMessage("error", "هناك خطأ", error || "حدث خطأ غير متوقع");
+    }
+  };
+
+  return (
+    <>
+      <div
+        className={`model ${props.show ? "model-show" : ""}`}
+        onClick={props.close}>
+        <CSSTransition
+          mountOnEnter
+          unmountOnExit
+          nodeRef={nodeRef}
+          in={props.show}
+          timeout={400}
+          classNames="show">
+          <div
+            className="addItem"
+            ref={nodeRef}
+            onClick={(e) => e.stopPropagation()}>
+            {loading ? (
+              <div className="loading-spinner center">
+                <Ring size={40} lineWeight={5} speed={2} color="#0f7f3d" />
+              </div>
+            ) : null}
+            <div className="head center">
+              <h5>تعديل اضافه</h5>
+              <FontAwesomeIcon icon={faClose} onClick={props.close} />
+            </div>
+            <Form className="form" ref={form} onSubmit={submitHandler}>
+              <Form.Group className="mb-3" controlId="image">
+                <Form.Label>صوره الاضافه</Form.Label>
+                <Form.Control type="file" accept=".png,.jpg,.svg" />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="name">
+                <Form.Label>
+                  اسم الاضافه<span>*</span>
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  defaultValue={props.category?.name}
+                  placeholder="اسم الاضافه"
+                  required
+                />
+              </Form.Group>
+
+              <div className="buttons">
+                <button className="cancel" onClick={props.close} type="none">
+                  إلغاء
+                </button>
+                <button className="button" type="submit">
+                  تعديل قسم
+                </button>
+              </div>
+            </Form>
+          </div>
+        </CSSTransition>
+      </div>
+    </>
+  );
+};
+export default EditOptions;

@@ -10,7 +10,6 @@ import icon4 from "assets/icons/map.png";
 import icon5 from "assets/icons/group.png";
 import icon6 from "assets/icons/checkout.png";
 import icon7 from "assets/icons/menu.png";
-import icon8 from "assets/icons/home.png";
 import icon9 from "assets/icons/complain.png";
 
 import { collection, onSnapshot, query, where } from "firebase/firestore";
@@ -118,6 +117,17 @@ const SideBar = () => {
                 </NavLink>
               </div>
             ) : null}
+            <div>
+              <NavLink
+                exact="true"
+                to="/options"
+                activeclassname="true"
+                className="link"
+                onClick={sideBarHandler}>
+                <img src={icon2} alt="categories icon" />
+                <span>الاضافات</span>
+              </NavLink>
+            </div>
             {(!adminInfo?.super_admin && adminInfo?.roles?.manage_users) ||
             adminInfo?.super_admin ? (
               <div>

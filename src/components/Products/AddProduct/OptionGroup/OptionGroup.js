@@ -76,6 +76,7 @@ const OptionGroup = (props) => {
           groupIndex={props.index}
           key={index}
           getOptionData={setOptionData}
+          options={props.options}
         />
       ))}
       <div>

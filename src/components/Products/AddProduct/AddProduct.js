@@ -12,6 +12,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import OptionGroup from "./OptionGroup/OptionGroup";
 import { useNavigate } from "react-router-dom";
 import imageCompression from "browser-image-compression";
+import useOptions from "hooks/useOptions";
 
 const AddProduct = (props) => {
   const [image, setImage] = useState(null);
@@ -24,12 +25,17 @@ const AddProduct = (props) => {
   const form = useRef();
   const { loading, createProduct, error, createGroup } = useProduct();
   const navigate = useNavigate();
+  const { options, fetchOptions } = useOptions();
 
   const getOptionData = (data) => {
     let options = productOptions.filter((option) => +option.id !== +data.id);
     options.push(data);
     setProductOptions(options);
   };
+
+  useEffect(() => {
+    fetchOptions({});
+  }, []);
 
   useEffect(() => {
     const optionList = [];
@@ -285,6 +291,7 @@ const AddProduct = (props) => {
             key={index}
             index={index}
             getOptionData={getOptionData}
+            options={options}
           />
         ))}
         <div className="submit">

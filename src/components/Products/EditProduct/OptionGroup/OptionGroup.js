@@ -97,6 +97,7 @@ const OptionGroup = (props) => {
           key={item.id}
           getOptionData={setOptionData}
           deleteOption={deleteOptionHandler}
+          options={props.options}
         />
       ))}
       <div>
@@ -114,8 +115,7 @@ const OptionGroup = (props) => {
               },
             ]);
           }}
-          type="button"
-        >
+          type="button">
           إضافه قيمه
         </button>
         <button
@@ -123,8 +123,7 @@ const OptionGroup = (props) => {
             props.deleteGroup(props.index);
           }}
           style={{ background: "red", color: "#fff" }}
-          type="button"
-        >
+          type="button">
           حذف الخيار
         </button>
       </div>

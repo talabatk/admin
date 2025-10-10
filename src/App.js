@@ -28,6 +28,7 @@ import Cities from "components/Cities/Cities";
 import Banners from "components/Banners/Banners";
 import { useSelector } from "react-redux";
 import Setting from "components/Settings/Settings";
+import Options from "components/Options/Options";
 function App() {
   const [newOrder, setNewOrder] = useState(1);
   const toast = useRef(null);
@@ -286,6 +287,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <Complains />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="options"
+            element={
+              <ProtectedRoute>
+                <Options />
               </ProtectedRoute>
             }
           />

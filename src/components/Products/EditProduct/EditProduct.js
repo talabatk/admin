@@ -12,6 +12,7 @@ import OptionGroup from "./OptionGroup/OptionGroup";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import imageCompression from "browser-image-compression";
+import useOptions from "hooks/useOptions";
 
 const EditProduct = (props) => {
   const {
@@ -37,6 +38,11 @@ const EditProduct = (props) => {
   const { id } = useParams();
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
+  const { options, fetchOptions } = useOptions();
+
+  useEffect(() => {
+    fetchOptions({});
+  }, []);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -102,6 +108,7 @@ const EditProduct = (props) => {
       }
     }
   };
+  console.log(productOptions);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -366,6 +373,7 @@ const EditProduct = (props) => {
             group={item}
             deleteGroup={deleteGroupHandler}
             deleteOption={deleteOption}
+            options={options}
           />
         ))}
         <div className="submit">

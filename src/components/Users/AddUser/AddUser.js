@@ -26,7 +26,6 @@ const AddUser = (props) => {
   const [roles, setRoles] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const adminInfo = useSelector((state) => state.auth.userData);
-  console.log(adminInfo);
 
   const handleChange = (selectedOptions) => {
     setRoles(selectedOptions);

@@ -34,6 +34,7 @@ const Vendors = () => {
       dispatch(filterDateByCity(adminInfo.cityId));
     }
   }, [adminInfo]);
+
   const handleChangePage = (event, newPage) => {
     dispatch(setPage(newPage));
   };

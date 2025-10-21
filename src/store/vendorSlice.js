@@ -66,9 +66,11 @@ const vendorSlice = createSlice({
     },
     filterDateByCity(state, action) {
       const value = action.payload;
+
       const filteredVendors = state.vendors.filter(
-        (vendor) => vendor.cityId === +value
+        (vendor) => +vendor.cityId === +value
       );
+
       let pagesNum = Math.ceil(filteredVendors.length / state.size);
       state.pages = pagesNum;
       state.currentPage = 1;

@@ -51,6 +51,7 @@ const AddUser = (props) => {
       userData.append("role", "admin");
       userData.append("super_admin", true);
     }
+
     if (isAdmin) {
       userData.append("roles", JSON.stringify(roles.map((r) => r.value)));
       userData.append("cityId", form.current[6].value);

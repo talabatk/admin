@@ -8,7 +8,6 @@ const Vendor = (props) => {
   const categories = props.vendor.vendorCategories.map(
     (category) => category.name
   );
-  console.log(props.vendor.type);
 
   return (
     <tr className="item">

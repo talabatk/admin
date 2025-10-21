@@ -17,36 +17,93 @@ const Option = (props) => {
   }, []);
 
   const onChangeInputs = (e) => {
-    props.getOptionData({
-      id: props.index,
-      generalOptionId: option.value,
-      value: +value.current.value,
-      group: props.groupIndex,
-    });
-  };
+    const file = image.current?.files?.[0] || null;
 
-  const handleChange = (selectedOption) => {
-    setOption(selectedOption);
-    props.getOptionData({
-      id: props.index,
-      generalOptionId: selectedOption.value,
-      value: +value.current.value,
-      group: props.groupIndex,
-    });
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
+    if (props.generalOptionId) {
+      props.getOptionData({
+        id: props.index,
+        generalOptionId: props.generalOptionId,
+        generalOptionName: props.generalOptionName,
+        value: +value.current.value,
+        group: props.groupIndex,
+      });
+    } else {
+      props.getOptionData({
+        id: props.index,
+        image: image.current.files[0],
+        name: inputnameRef.current.value,
+        value: +value.current.value,
+        group: props.groupIndex,
+      });
+    }
   };
 
   return (
     <div className="option mb-2">
-      <Form.Group className="mb-3" controlId="optionName">
-        <Form.Label>الاختيارت</Form.Label>
-        <div></div>
-        <Select
-          style={{ width: "100%" }}
-          value={option}
-          options={options}
-          onChange={handleChange}
-        />
-      </Form.Group>
+      {props.generalOptionId ? (
+        <>
+          <Form.Group className="mb-3" controlId="optionName">
+            <Form.Label>الاختيارت</Form.Label>
+            <div></div>
+            <Form.Control
+              type="text"
+              // onChange={onChangeInputs}
+              // ref={inputnameRef}
+              readOnly
+              value={props.generalOptionName}
+              placeholder="الأسم"
+              required
+            />
+          </Form.Group>
+        </>
+      ) : (
+        <>
+          <Form.Group className="mb-3" controlId="optionName">
+            <Form.Label>الاختيارت</Form.Label>
+            <div></div>
+            <Form.Control
+              type="file"
+              onChange={onChangeInputs}
+              ref={image}
+              placeholder="الصوره"
+              required
+            />
+            {preview && (
+              <div
+                style={{
+                  width: 60,
+                  height: 60,
+                  border: "1px solid #ddd",
+                  borderRadius: 4,
+                  marginTop: 8,
+                  overflow: "hidden",
+                }}>
+                <img
+                  src={preview}
+                  alt="preview"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </div>
+            )}
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="optionName">
+            <Form.Label>
+              الأسم<span style={{ color: "red" }}>*</span>
+            </Form.Label>
+            <Form.Control
+              type="text"
+              onChange={onChangeInputs}
+              ref={inputnameRef}
+              placeholder="الأسم"
+              required
+            />
+          </Form.Group>
+        </>
+      )}
+
       <Form.Group className="mb-3" controlId="optionValue">
         <Form.Label>
           القيمه<span style={{ color: "red" }}>*</span>

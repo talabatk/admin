@@ -164,6 +164,7 @@ const EditProduct = (props) => {
       props.showMessage("error", "هناك خطأ", error || "حدث خطأ غير متوقع");
     }
   };
+  console.log(productOptions);
 
   return (
     <div className={`add-product`}>

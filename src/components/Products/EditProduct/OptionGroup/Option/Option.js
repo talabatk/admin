@@ -8,18 +8,10 @@ const Option = (props) => {
   const inputnameRef = useRef();
   const value = useRef();
   const image = useRef();
-  const [option, setOption] = useState(null);
-  const [options, setOptions] = useState([]);
   const [preview, setPreview] = useState(null);
 
-  useEffect(() => {
-    if (props.options) {
-      setOptions(props.options.map((o) => ({ value: o.id, label: o.name })));
-    }
-  }, []);
-
   const onChangeInputs = (e) => {
-    if (props.option.createdAt) {
+    if (props.option.createdAt || !props.generalOptionId) {
       const file = image.current?.files?.[0] || null;
 
       if (file) {
@@ -35,21 +27,11 @@ const Option = (props) => {
     } else {
       props.getOptionData({
         id: props.index,
-        generalOptionId: option.value,
+        generalOptionId: props.generalOptionId || 0,
         value: +value.current.value,
         group: props.groupIndex,
       });
     }
-  };
-
-  const handleChange = (selectedOption) => {
-    setOption(selectedOption);
-    props.getOptionData({
-      id: props.index,
-      generalOptionId: selectedOption.value,
-      value: +value.current.value,
-      group: props.groupIndex,
-    });
   };
 
   return (
@@ -58,13 +40,14 @@ const Option = (props) => {
         <Form.Label>
           الاختيارت<span style={{ color: "red" }}>*</span>
         </Form.Label>
-        {!props.option.createdAt ? (
+        {!props.option.createdAt && props.generalOptionId ? (
           <>
-            <Select
-              style={{ width: "100%" }}
-              value={option}
-              options={options}
-              onChange={handleChange}
+            <Form.Control
+              type="text"
+              readOnly
+              value={props.generalOptionName}
+              placeholder="الأسم"
+              required
             />
           </>
         ) : (
@@ -96,7 +79,7 @@ const Option = (props) => {
           </>
         )}
       </Form.Group>
-      {props.option.createdAt ? (
+      {props.option.createdAt || !props.generalOptionId ? (
         <Form.Group className="mb-3" controlId="optionName">
           <Form.Label>
             الأسم<span style={{ color: "red" }}>*</span>

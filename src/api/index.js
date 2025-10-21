@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseURL = "https://api.talabatk.top/";
+const baseURL = "http://localhost:5100/";
 
 export const api = axios.create({
   baseURL,

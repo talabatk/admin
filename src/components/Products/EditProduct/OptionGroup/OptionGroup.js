@@ -4,11 +4,22 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { Form } from "react-bootstrap";
 import Option from "./Option/Option";
 import { useEffect, useRef, useState } from "react";
+import Select from "react-select";
 
 const OptionGroup = (props) => {
   const [optionsValues, setOptionsValues] = useState([]);
   const groupName = useRef();
   const single = useRef();
+
+  const [generalOptions, setGeneralOptions] = useState([]);
+
+  useEffect(() => {
+    if (props.options) {
+      setGeneralOptions(
+        props.options.map((o) => ({ value: o.id, label: o.name }))
+      );
+    }
+  }, []);
 
   useEffect(() => {
     setOptionsValues(props.group.options);
@@ -31,22 +42,36 @@ const OptionGroup = (props) => {
   };
 
   const setOptionData = (data) => {
-    let options = optionsValues;
+    setOptionsValues((prevOptions) => {
+      // Make a shallow copy of the array
+      const newOptions = [...prevOptions];
+      const index = newOptions.findIndex((option) => +option.id === +data.id);
 
-    let index = options.findIndex((option) => +option.id === +data.id);
+      if (index > -1) {
+        newOptions[index] = data; // update existing
+      } else {
+        newOptions.push(data); // add new
+      }
 
-    if (index > -1) {
-      options[index] = data;
-    } else {
-      options.push(data);
-    }
-    setOptionsValues(options);
+      // Notify parent about change
+      props.getOptionData({
+        id: props.index,
+        name: groupName.current.value,
+        type: single.current.children[0].checked ? "multi" : "single",
+        options: newOptions,
+      });
 
-    props.getOptionData({
-      id: props.index,
-      name: groupName.current.value,
-      type: single.current.children[0].checked ? "multi" : "single",
-      options: options,
+      return newOptions; // <- important: return new array for state update
+    });
+  };
+
+  const handleChange = (selectedOption) => {
+    setOptionData({
+      id: optionsValues.length,
+      generalOptionId: selectedOption.value,
+      generalOptionName: selectedOption.label,
+      value: 0,
+      group: props.index,
     });
   };
 
@@ -89,15 +114,25 @@ const OptionGroup = (props) => {
           />
         </FormGroup>
       </div>
+      <div className="mb-3">
+        <Form.Label>خيارات عامه</Form.Label>
+        <Select
+          style={{ width: "50%" }}
+          // value={generalOptions}
+          options={generalOptions}
+          onChange={handleChange}
+        />
+      </div>
       {optionsValues.map((item) => (
         <Option
           index={item.id}
           option={item}
+          generalOptionId={item.generalOptionId}
+          generalOptionName={item.generalOptionName}
           groupIndex={props.index}
           key={item.id}
           getOptionData={setOptionData}
           deleteOption={deleteOptionHandler}
-          options={props.options}
         />
       ))}
       <div>

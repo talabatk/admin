@@ -41,9 +41,6 @@ const Orders = (props) => {
     let newParams = {};
     newParams.page = page;
     newParams.size = 12;
-    if (!adminInfo?.super_admin) {
-      newParams.cityId = adminInfo.cityId;
-    }
 
     if (searchParams.get("vendor")) {
       newParams.vendorId = searchParams.get("vendor");

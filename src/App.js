@@ -39,7 +39,8 @@ function App() {
     const SOCKET_URL = "https://api.talabatk.top";
 
     let socket = io(SOCKET_URL, {
-      autoConnect: false, // Automatically try to connect
+      transports: ["websocket"],
+      withCredentials: true,
     });
 
     socket.connect();

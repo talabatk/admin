@@ -36,17 +36,13 @@ function App() {
 
   useEffect(() => {
     // Initialize the socket connection
-    const SOCKET_URL = "wss://api.talabatk.top";
+    const SOCKET_URL = "https://api.talabatk.top";
 
     let socket = io(SOCKET_URL, {
-      transports: ["websocket"],
-      reconnection: true, // Enable reconnection
-      reconnectionAttempts: Infinity, // Keep trying to reconnect
-      reconnectionDelay: 3000, // Wait 3 seconds before retrying
-      withCredentials: true,
-      timeout: 20000, // Wait 20 seconds before giving up
-      autoConnect: true, // Automatically try to connect
+      autoConnect: false, // Automatically try to connect
     });
+
+    socket.connect();
 
     socket.on("connect", () => {
       console.log("✅ Connected to WebSocket server:", socket.id);

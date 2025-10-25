@@ -34,81 +34,81 @@ function App() {
   const toast = useRef(null);
   const adminInfo = useSelector((state) => state.auth.userData);
 
-  useEffect(() => {
-    // Initialize the socket connection
-    const SOCKET_URL = "https://api.talabatk.top";
+  // useEffect(() => {
+  //   // Initialize the socket connection
+  //   const SOCKET_URL = "https://api.talabatk.top";
 
-    let socket = io(SOCKET_URL, {
-      transports: ["websocket"],
-      withCredentials: true,
-    });
+  //   let socket = io(SOCKET_URL, {
+  //     transports: ["websocket"],
+  //     withCredentials: true,
+  //   });
 
-    socket.connect();
+  //   socket.connect();
 
-    socket.on("connect", () => {
-      console.log("✅ Connected to WebSocket server:", socket.id);
-      socket.emit("join-room", "admins");
-    });
+  //   socket.on("connect", () => {
+  //     console.log("✅ Connected to WebSocket server:", socket.id);
+  //     socket.emit("join-room", "admins");
+  //   });
 
-    // Listen for "new-order-admin" event
-    socket.on("new-order-admin", (orderData) => {
-      setNewOrder(orderData);
-      const audio = new Audio(sound); // Ensure this path is correct
+  //   // Listen for "new-order-admin" event
+  //   socket.on("new-order-admin", (orderData) => {
+  //     setNewOrder(orderData);
+  //     const audio = new Audio(sound); // Ensure this path is correct
 
-      // Play the sound after user interaction
-      audio.play().catch((error) => {
-        console.error("Error playing notification sound:", error);
-      });
+  //     // Play the sound after user interaction
+  //     audio.play().catch((error) => {
+  //       console.error("Error playing notification sound:", error);
+  //     });
 
-      // Display browser notification
-      new Notification("طلببه جديده", {
-        body: `هناك طلبيه جديده من ${orderData.name}`,
-        icon: "logo.png",
-      });
+  //     // Display browser notification
+  //     new Notification("طلببه جديده", {
+  //       body: `هناك طلبيه جديده من ${orderData.name}`,
+  //       icon: "logo.png",
+  //     });
 
-      showMessage(
-        "success",
-        "طلببه جديده",
-        `هناك طلبيه جديده من ${orderData.name}`
-      );
-    });
+  //     showMessage(
+  //       "success",
+  //       "طلببه جديده",
+  //       `هناك طلبيه جديده من ${orderData.name}`
+  //     );
+  //   });
 
-    // Listen for "update-order-admin" event
-    socket.on("update-order-admin", (orderData) => {
-      setNewOrder(orderData);
-      new Notification("تحديث للطلبيه", {
-        body: `هناك تحديث للطلبيه الخاصه ب ${orderData.name}`,
-        icon: "logo.png",
-      });
-    });
+  //   // Listen for "update-order-admin" event
+  //   socket.on("update-order-admin", (orderData) => {
+  //     setNewOrder(orderData);
+  //     new Notification("تحديث للطلبيه", {
+  //       body: `هناك تحديث للطلبيه الخاصه ب ${orderData.name}`,
+  //       icon: "logo.png",
+  //     });
+  //   });
 
-    socket.on("new-message", (message) => {
-      console.log(message);
-    });
+  //   socket.on("new-message", (message) => {
+  //     console.log(message);
+  //   });
 
-    socket.on("disconnect", (reason) => {
-      console.error("❌ Disconnected:", reason);
-      if (reason === "ping timeout") {
-        console.warn("🔄 Attempting to reconnect...");
-        socket.connect();
-      }
-    });
+  //   socket.on("disconnect", (reason) => {
+  //     console.error("❌ Disconnected:", reason);
+  //     if (reason === "ping timeout") {
+  //       console.warn("🔄 Attempting to reconnect...");
+  //       socket.connect();
+  //     }
+  //   });
 
-    socket.on("pong", () => {
-      console.log("📡 Pong received from server");
-    });
+  //   socket.on("pong", () => {
+  //     console.log("📡 Pong received from server");
+  //   });
 
-    // Send a ping manually every 20 seconds (extra safeguard)
-    setInterval(() => {
-      console.log("📡 Sending ping...");
-      socket.emit("ping");
-    }, 20000);
-    // Cleanup on component unmount
-    return () => {
-      socket.disconnect(); // Disconnect the socket
-      console.log("🛑 WebSocket disconnected");
-    };
-  }, []);
+  //   // Send a ping manually every 20 seconds (extra safeguard)
+  //   setInterval(() => {
+  //     console.log("📡 Sending ping...");
+  //     socket.emit("ping");
+  //   }, 20000);
+  //   // Cleanup on component unmount
+  //   return () => {
+  //     socket.disconnect(); // Disconnect the socket
+  //     console.log("🛑 WebSocket disconnected");
+  //   };
+  // }, []);
 
   const showMessage = (type, head, content) => {
     toast.current.show({

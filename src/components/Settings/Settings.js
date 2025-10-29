@@ -271,7 +271,7 @@ const Setting = () => {
                       <div className="mb-3">
                         <Form.Select required>
                           <option value={"all"}>الكل</option>
-                          <option value={"customer"}>المستخدمين</option>
+                          <option value={"users"}>المستخدمين</option>
                           <option value={"restaurant"}>المطاعم</option>
                           <option value={"delivery"}>الديلفيرى</option>
                           {cities?.map((c) => (
